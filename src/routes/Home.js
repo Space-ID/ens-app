@@ -127,7 +127,8 @@ const HowToUse = styled(HowToUseDefault)`
 `
 
 const Hero = styled('section')`
-  background: url(${bg});
+  //background: url(${bg});
+  background-color: #040414;
   background-size: cover;
   padding: 60px 20px 20px;
   position: relative;

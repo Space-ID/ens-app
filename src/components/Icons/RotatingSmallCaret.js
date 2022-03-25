@@ -12,14 +12,9 @@ const RotatingSmallCaretTop = styled(DefaultSmallCaret)`
   flex-shrink: 0;
   transform: ${p => (p.rotated ? 'rotate(-180deg)' : 'rotate(0)')};
   transition: 0.2s;
-  ${p =>
-    p.highlight &&
-    p.rotated &&
-    `
-      path {
-        fill: #5284FF;
-      }
-  `}
+  path {
+    fill: #2af8b3;
+  }
 `
 
 export default function RotatingSmallCaret({

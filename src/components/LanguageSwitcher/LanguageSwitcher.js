@@ -62,7 +62,7 @@ function getLang(lang) {
 }
 
 const ActiveLanguage = styled('div')`
-  color: #adbbcd;
+  color: #2af8b3;
   text-transform: uppercase;
   display: flex;
   justify-content: center;
@@ -79,13 +79,14 @@ const ActiveLanguage = styled('div')`
 `
 
 const LanguageSwitcherContainer = styled('div')`
-  background: white;
+  background: transparent;
   position: relative;
+  font-color: #2af8b3;
 `
 
 const Dropdown = styled(motion.div)`
   position: absolute;
-  background: white;
+  background: #040414;
   top: 100%;
   right: 0;
   margin-top: 20px;
@@ -94,15 +95,15 @@ const Dropdown = styled(motion.div)`
   width: 230px;
   z-index: 2;
   li {
-    color: #adbbcd;
+    color: #2af8b3;
     padding: 20px 30px;
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #2af8b3;
     list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
     &:hover {
-      color: #2b2b2b;
+      background-color: #2b2b2b;
       cursor: pointer;
       div {
         /* ball */
@@ -124,7 +125,7 @@ const Ball = styled('div')`
   ${p =>
     p.selected &&
     `
-    background: #5284ff;
+    background: #2AF8B3;
   `}
 `
 

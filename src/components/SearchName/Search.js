@@ -14,27 +14,19 @@ import LanguageSwitcher from '../LanguageSwitcher'
 const SearchForm = styled('form')`
   display: flex;
   position: relative;
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translate(0, -50%);
-    display: block;
-    width: 27px;
-    height: 27px;
-    background: url(${searchIcon}) no-repeat;
-  }
+  height: 60px;
+  border: 3px solid #2AF8B3;
+  border-radius: 20px;
 
   input {
-    padding: 20px 0 20px 55px;
+    padding: 20px 0 20px 20px;
     width: 100%;
+    background-color: transparent;
     border: none;
-    border-radius: 0;
     font-size: 18px;
+    color: #2AF8B3;
     font-family: Overpass;
-    font-weight: 100;
+    font-weight: normal;
     ${mq.medium`
       width: calc(100% - 162px);
       font-size: 28px;
@@ -46,20 +38,22 @@ const SearchForm = styled('form')`
 
     &::-webkit-input-placeholder {
       /* Chrome/Opera/Safari */
-      color: #ccd4da;
+      color: #2AF8B3;
+      font-weight: lighter;
     }
   }
 
   button {
-    ${p => (p && p.hasSearch ? 'background: #5284ff;' : 'background: #c7d3e3;')}
-    color: white;
-    font-size: 22px;
-    font-family: Overpass;
-    padding: 20px 0;
-    height: 90px;
-    width: 162px;
+    ${p =>
+      p && p.hasSearch ? 'background: #5284ff;' : 'background: transparent;'}
+    background-image: url(${searchIcon});
+    background-repeat: no-repeat;
+    background-size: 28px 28px;
+    background-position: left;
+    padding: 20px 20px;
+    width: 50px;
     border: none;
-    display: none;
+
     ${mq.medium`
       display: block;
     `}
@@ -137,9 +131,7 @@ function Search({ history, className, style }) {
         disabled={!hasSearch}
         type="submit"
         data-testid={'home-search-button'}
-      >
-        {t('search.button')}
-      </button>
+      />
     </SearchForm>
   )
 }
