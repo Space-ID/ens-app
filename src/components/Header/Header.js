@@ -62,7 +62,9 @@ const Header = styled('header')`
 const SearchHeader = styled(Search)`
   margin-top: 50px;
   width: 100%;
-
+  @media (max-width: 768px) {
+    background: #18e199;
+  }
   ${mq.medium`
     margin-top: 0;
     width: calc(100% - 200px);

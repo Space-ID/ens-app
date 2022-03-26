@@ -60,8 +60,12 @@ const NetworkStatus = styled('div')`
   text-transform: capitalize;
   display: flex;
   align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
   ${mq.small`
-    display: flex;
+    display: none;
   `}
   ${mq.medium`
     left: 40px;
