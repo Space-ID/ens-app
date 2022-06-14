@@ -23,9 +23,9 @@ jobs:
         uses: reggionick/s3-deploy@v3
         with:
           folder: 'build'
-          bucket: 'app-prd-space-id'
+          bucket: 'prd-app-space-id'
           bucket-region: 'us-west-2'
-          dist-id: 'E2G0DJ759WT58R'
+          dist-id: 'E2WEVVPV40MG9V'
           invalidation: /
           delete-removed: true
           no-cache: false
