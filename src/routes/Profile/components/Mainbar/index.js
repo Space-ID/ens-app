@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
+import { useMutation } from '@apollo/client'
 
 //Import components
 import AddressList from './AddressList'
@@ -9,6 +10,8 @@ import MainBoard from './MainBoard'
 import AnimationSpin from 'components/AnimationSpin'
 import EditButton from '../../../../components/Button/EditButton'
 import TopAddress from './TopAddress'
+import TransferAddressModal from 'components/Modal/TransferAddressModal'
+import ExtendPeriodModal from 'components/Modal/ExtendPeriodModal'
 
 //Import sdk objects
 import getENS, { getRegistrar } from 'apollo/mutations/ens'
@@ -16,23 +19,38 @@ import getENS, { getRegistrar } from 'apollo/mutations/ens'
 //Import Reducer
 import { toggleEditMode } from 'app/slices/accountSlice'
 
+//Import graphql quires
+import { SET_REGISTRANT, SET_RESOLVER } from 'graphql/mutations'
+
+//Import custom hooks
+import { useEditable } from 'components/hooks'
 export default function Mainbar({
   sid,
   selectedDomain,
   isAccountConnected,
   account
 }) {
-  const editOn = useSelector(state => state.account.profileEditMode)
   const [loading, setLoading] = useState(true)
+  const [title, setTitle] = useState('')
   const [loadingRegistration, setLoadingRegistration] = useState(true)
   const [registrantAddress, setRegistrantAddress] = useState('')
   const [resolverAddress, setResolverAddress] = useState('')
   const [loadingResolverAddress, setLoadingResolverAddress] = useState(true)
-  const dispatch = useDispatch()
+  const [transferShowModal, setTransferShowModal] = useState(false)
+  const [extendPeriodShowModal, setExtendPeriodShowModal] = useState(false)
+  const [mutationQuery, setMutationQuery] = useState(null)
+  const [isRegsitrant, setIsRegsitrant] = useState(false)
 
-  const toggleOn = param => {
-    dispatch(toggleEditMode(param))
-  }
+  const { state, actions } = useEditable()
+  const { editing, txHash, pending, confirmed } = state
+  const { startPending, setConfirmed } = actions
+
+  const [mutation] = useMutation(mutationQuery ?? SET_REGISTRANT, {
+    onCompleted: data => {
+      const txHash = Object.values(data)[0]
+      startPending(txHash)
+    }
+  })
 
   const fetchRegistrantAddress = async () => {
     const t_address = await refetchRegistrantAddress()
@@ -73,6 +91,29 @@ export default function Mainbar({
     }
   }, [sid, selectedDomain])
 
+  const transferAddress = values => {
+    setTransferShowModal(false)
+    if (title === 'Registrant') {
+      const variables = {
+        address: values.address,
+        name: selectedDomain.name + '.bnb'
+      }
+      console.log(variables)
+      setMutationQuery(SET_REGISTRANT)
+      mutation({
+        variables
+      })
+    } else {
+      setMutationQuery(SET_RESOLVER)
+
+      var variables = {
+        address: values.address,
+        name: selectedDomain.name + '.bnb'
+      }
+      mutation({ variables })
+    }
+  }
+
   if (loading) {
     return (
       <div className="bg-[rgba(72,143,139,0.25)] rounded-[24px] backdrop-blur-sm p-5 relative min-w-[840px] flex justify-center items-center">
@@ -83,27 +124,6 @@ export default function Mainbar({
 
   return (
     <div className="bg-[rgba(72,143,139,0.25)] rounded-[24px] backdrop-blur-sm p-[40px] relative">
-      {/* {selectedDomain && (
-        <div className="text-center">
-          <div className="text-[#1EEFA4] text-[32px] font-bold">
-            {selectedDomain?.name}.bnb
-          </div>
-          <div className="text-white text-urbanist font-semibold text-[14px]">
-            Expiration Date:{' '}
-            {moment(
-              selectedDomain?.expires_at.split(',')[0].replaceAll('.', '-')
-            ).format('YYYY-MM-DD hh:mm')}
-          </div>
-        </div>
-      )} */}
-      {/* {isAccountConnected && (
-        <EditButton
-          className="absolute top-[20px] right-[20px]"
-          isON={editOn}
-          handleClick={toggleOn}
-        />
-      )} */}
-
       {/* <AddressList
         className="mt-[14px]"
         sid={sid}
@@ -117,6 +137,21 @@ export default function Mainbar({
           selectedDomain={selectedDomain}
           registrantAddress={registrantAddress}
           loadingRegistration={loadingRegistration}
+          transferRegistrantAddress={() => {
+            setTitle('Registrant')
+            setTransferShowModal(true)
+          }}
+          pending={
+            editing ? null : pending && !confirmed && title === 'Registrant'
+          }
+          setConfirmed={setConfirmed}
+          refetchAddress={refetchRegistrantAddress}
+          fetchAddress={fetchRegistrantAddress}
+          txHash={txHash}
+          address={registrantAddress}
+          extendHandler={() => {
+            setExtendPeriodShowModal(true)
+          }}
         />
       )}
 
@@ -126,8 +161,33 @@ export default function Mainbar({
           className="mt-8"
           resolverAddress={resolverAddress}
           loadingResolverAddress={loadingResolverAddress}
+          setResolver={() => {
+            setTitle('Resolver')
+            setTransferShowModal(true)
+          }}
+          pending={
+            editing ? null : pending && !confirmed && title === 'Resolver'
+          }
+          setConfirmed={setConfirmed}
+          refetchAddress={refetchResolverAddress}
+          fetchAddress={fetchResolverAddress}
+          txHash={txHash}
+          address={resolverAddress}
         />
       )}
+      <TransferAddressModal
+        title={title}
+        show={transferShowModal}
+        saveHandler={transferAddress}
+        account={account}
+        closeModal={() => setTransferShowModal(false)}
+        address={title === 'Registrant' ? registrantAddress : resolverAddress}
+      />
+      <ExtendPeriodModal
+        show={extendPeriodShowModal}
+        selectedDomain={selectedDomain}
+        duration={duration}
+      />
     </div>
   )
 }

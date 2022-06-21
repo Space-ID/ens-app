@@ -151,6 +151,7 @@ const resolvers = {
       }
     },
     async setRegistrant(_, { name, address }) {
+      console.log('registrar calling now ----')
       const registrar = getRegistrar()
       console.log('registrar', registrar)
       const tx = await registrar.transferOwner(name, address)
