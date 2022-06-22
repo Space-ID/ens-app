@@ -3169,10 +3169,10 @@
     ethers "^5.0.13"
     js-sha3 "^0.8.0"
 
-"@siddomains/ui@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@siddomains/ui/-/ui-1.4.2.tgz#1f860e129c292823a319884dfa524e8451d1dc2e"
-  integrity sha512-n6cChJPz6Vqa3Je5R01S++0jtpxx/GA5cMM4YkPiVIn8LhuaC+0IBMUuUlVO3IARBBbeLECIr0I6D3vzddAS2Q==
+"@siddomains/ui@1.4.11":
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/@siddomains/ui/-/ui-1.4.11.tgz#64de3f6517362b753ad1ae28b6bc4a1192069707"
+  integrity sha512-SLfVeSpyfhYu5De9i6j3zcM+gzFqQDdrY4HOBBgD/ua9v0+MTU189NrBoydPwCrIsIQ7oP7gZpzk6scPEsCf6w==
   dependencies:
     "@0xproject/utils" "^2.0.2"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
