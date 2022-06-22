@@ -54,6 +54,7 @@ export default function Mainbar({
 
   const fetchRegistrantAddress = async () => {
     const t_address = await refetchRegistrantAddress()
+    console.log('t_address', t_address)
     setRegistrantAddress(t_address)
     if (t_address === account) setIsRegsitrant(true)
     setLoadingRegistration(false)
@@ -61,7 +62,9 @@ export default function Mainbar({
 
   const refetchRegistrantAddress = async () => {
     const registrar = getRegistrar()
-    const entry = await registrar.getEntry(selectedDomain.name)
+    console.log('registrar', registrar)
+    console.log('selectedDomain.name', selectedDomain.name)
+    const entry = await registrar.getEntry(selectedDomain.name + '.bnb')
     return entry.registrant
   }
 
@@ -186,7 +189,7 @@ export default function Mainbar({
       <ExtendPeriodModal
         show={extendPeriodShowModal}
         selectedDomain={selectedDomain}
-        duration={duration}
+        // duration={duration}
       />
     </div>
   )

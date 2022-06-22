@@ -49,7 +49,6 @@ export function refetchTilUpdatedSingle({ refetch, interval, prevData }) {
         tries--
         incrementedInterval = interval * (maxTries - tries + 1)
         refetch().then(data => {
-          console.log(data)
           const updated = prevData !== data
           if (updated) return
           return recurseRefetch()

@@ -213,10 +213,6 @@ export default function MainBoard({
 
   useUpdatedRecords(recordsLoading, initialRecords, setUpdatedRecords)
 
-  useEffect(() => {
-    console.log(getCoins(updatedRecords))
-  }, [updatedRecords])
-
   async function copyTextToClipboard(text) {
     if ('clipboard' in navigator) {
       return await navigator.clipboard.writeText(text)

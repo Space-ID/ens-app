@@ -214,7 +214,6 @@ async function getRegistrarEntry(name) {
       expiryTime: expiryTime || null
     }
   } catch (err) {
-    console.log('error here;')
     console.log(err)
   }
 }
@@ -367,9 +366,6 @@ const resolvers = {
 
     singleName: async (_, { name }) => {
       try {
-        console.log('isENSReadyReactive', isENSReadyReactive())
-        console.log('name', name)
-        console.log(!isENSReadyReactive() || !name)
         if (!isENSReadyReactive() || !name)
           return {
             name: null,

@@ -84,7 +84,6 @@ export const connect = async () => {
 }
 
 export const disconnect = async function() {
-  console.log(web3Modal)
   if (web3Modal) {
     await web3Modal.clearCachedProvider()
   }

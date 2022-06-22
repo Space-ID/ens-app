@@ -47,7 +47,6 @@ const resolvers = {
         const minCommitmentAge = await registrar.getMinimumCommitmentAge()
         return parseInt(minCommitmentAge)
       } catch (e) {
-        console.log('error from here: please check!')
         console.log(e)
       }
     },
@@ -77,27 +76,23 @@ const resolvers = {
       return sendHelper(tx)
     },
     async register(_, { label, duration, signature }) {
-      console.log('register has been called')
       try {
         const registrar = getRegistrar()
         const tx = await registrar.register(label, duration, signature)
         return sendHelper(tx)
       } catch (err) {
-        console.log('err', err)
         console.log('err message', err.message)
         if (
           err.message.includes(
             'MetaMask Tx Signature: User denied transaction signature.'
           )
         ) {
-          console.log('user denined to register')
           return { err }
         }
         return err
       }
     },
     async reclaim(_, { name, address }) {
-      console.log('reclaiming now')
       const registrar = getRegistrar()
       const tx = await registrar.reclaim(name, address)
       return sendHelper(tx)
@@ -151,11 +146,8 @@ const resolvers = {
       }
     },
     async setRegistrant(_, { name, address }) {
-      console.log('registrar calling now ----')
       const registrar = getRegistrar()
-      console.log('registrar', registrar)
       const tx = await registrar.transferOwner(name, address)
-      console.log('tx', tx)
       return sendHelper(tx)
     },
     async submitProof(_, { name, parentOwner }) {
