@@ -5,7 +5,7 @@ export default function InsufficientBalanceModal({ closeModal }) {
   return (
     <div>
       <Modal width="574px">
-        <div className="text-[white]">
+        <div className="text-white">
           <div className="text-[28px] font-cocoSharp text-center">
             Insufficient Balance
           </div>
