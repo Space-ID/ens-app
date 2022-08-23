@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react'
+import React, { useState, useReducer, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useQuery } from '@apollo/client'
@@ -72,6 +72,15 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const [canRegister, setCanRegister] = useState(false)
 
+  const handleYearChange = useCallback((v) => {
+    const n = Number(v)
+    if (Number.isNaN(n) || n < 1){
+      setYears(1);
+    } else {
+      setYears(n)
+    }
+  }, [])
+
   const {
     data: { getEthPrice: ethUsdPrice } = {},
     loading: ethUsdPriceLoading,
@@ -115,7 +124,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const account = useAccount()
   useEffect(() => {
     const fetchSignature = async () => {
-      setWinnerLoading(true)
+      // setWinnerLoading(true)
       try {
         const result = await axios({
           method: 'get',
@@ -334,7 +343,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     connectProvider()
   }
 
-  if (winnerLoading) return <AnimationSpin size={40} />
+  // if (winnerLoading) return <AnimationSpin size={40} />
 
   return (
     <div className="max-w-[448px] mx-auto">
@@ -350,7 +359,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
               name={domain.label}
               duration={duration}
               years={years}
-              setYears={setYears}
+              setYears={handleYearChange}
               ethUsdPriceLoading={ethUsdPriceLoading}
               ethUsdPremiumPrice={currentPremium}
               ethUsdPrice={ethUsdPrice}
