@@ -367,7 +367,7 @@ export default ({ children }) => {
                   {accounts && accounts[0] && !isReadOnly && (
                     <div className="flex items-center">
                       <div
-                        className="block md:hidden"
+                        className="block hidden"
                         onClick={() => setSearchOpen(!searchOpen)}
                       >
                         <SearchIcon className="text-[rgba(204,252,255,0.6)] cursor-pointer" />

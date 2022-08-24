@@ -30,7 +30,7 @@ function PricerInner({
   const registrationFee =
     years === 1 && isAuctionWinner
       ? ethVal
-      : ethVal / (1 - discount.percent / 100)
+      : ethVal / (1 - discount?.percent ?? 0 / 100)
   return (
     <>
       <div className={cn('flex justify-between', className)} ref={reference}>

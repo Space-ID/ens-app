@@ -67,15 +67,18 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [transactionHash, setTransactionHash] = useState('')
   const [signature, setSignature] = useState([])
   const [isAuctionWinner, setIsAuctionWinner] = useState(false)
-  const [discountAmount, setDiscountAmount] = useState(null)
+  const [discountAmount, setDiscountAmount] = useState({
+    percent: 0,
+    amount: 0,
+  })
   const [winnerLoading, setWinnerLoading] = useState(false)
 
   const [canRegister, setCanRegister] = useState(false)
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
-    if (Number.isNaN(n) || n < 1){
-      setYears(1);
+    if (Number.isNaN(n) || n < 1) {
+      setYears(1)
     } else {
       setYears(n)
     }
