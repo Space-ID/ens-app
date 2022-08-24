@@ -450,7 +450,7 @@ export default ({ children }) => {
                     >
                       <div
                         onClick={moveToWishList}
-                        className="hidden md:flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
+                        className="flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
                       >
                         Wishlist
                       </div>
