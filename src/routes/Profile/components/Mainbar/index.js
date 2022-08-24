@@ -187,7 +187,7 @@ export default function Mainbar({
 
   useEffect(() => {
     setIsRegsitrant(registrantAddress === account)
-  }, [registrantAddress])
+  }, [registrantAddress, account])
 
   useEffect(() => {
     loadEthUSDPriceData()

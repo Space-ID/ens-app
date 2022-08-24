@@ -61,7 +61,7 @@ export default function DomainList({
   const [sortBy, setSortBy] = useState(null)
 
   const onChangeHandler = event => {
-    setSearchKey(event.target.value)
+    setSearchKey(event.target.value.trim())
   }
 
   useEffect(() => {
@@ -72,9 +72,14 @@ export default function DomainList({
 
   const handleSortBy = useCallback(
     param => {
-      let lDomains = domainsList.filter(
-        item => item.name.indexOf(searchKey) !== -1
-      )
+      let lDomains
+      if (searchKey) {
+        lDomains = domainsList.filter(
+          item => item.name.indexOf(searchKey) !== -1,
+        )
+      } else {
+        lDomains = [...domainsList]
+      }
       if (param === 'AToZ') {
         lDomains.sort(sortFunctionByZToA)
       } else if (param === 'ZToA') {
@@ -87,14 +92,14 @@ export default function DomainList({
       // if(searchKey) {
       //   lDomains = domains.filter(item => item.name.indexOf(searchKey) !== -1)
       // }
-      setDomains([...lDomains])
+      setDomains(lDomains)
     },
-    [searchKey]
+    [searchKey, domainsList]
   )
 
   useEffect(() => {
     handleSortBy(sortBy)
-  }, [searchKey, sortBy])
+  }, [searchKey, sortBy, domainsList])
 
   return (
     <div className={cn('', className)}>
