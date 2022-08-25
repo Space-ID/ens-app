@@ -88,9 +88,6 @@ const CTA = ({
     const variables = {
       label,
       duration,
-      signature,
-      freeDuration,
-      index,
     }
     mutationRegister({ variables })
   }
