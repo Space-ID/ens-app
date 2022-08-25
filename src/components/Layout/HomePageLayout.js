@@ -292,19 +292,21 @@ export default ({ children }) => {
                     </div>
                   </a>
                 </div>
-                <div className="">
-                  <button
-                    className="flex items-center bg-green-100 text-dark-100 text-xl px-5 py-2 rounded-[16px] font-semibold"
-                    onClick={connectProvider}
-                  >
-                    Connect{' '}
-                    {loadingWallet && (
-                      <div className="ml-2">
-                        <AnimationSpin />
-                      </div>
-                    )}
-                  </button>
-                </div>
+                {(!accounts || !accounts[0]) && (
+                  <div className="">
+                    <button
+                      className="flex items-center bg-green-100 text-dark-100 text-xl px-5 py-2 rounded-[16px] font-semibold"
+                      onClick={connectProvider}
+                    >
+                      Connect{' '}
+                      {loadingWallet && (
+                        <div className="ml-2">
+                          <AnimationSpin />
+                        </div>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex items-center justify-between w-full">
@@ -339,12 +341,11 @@ export default ({ children }) => {
             )}
           </div>
 
-          {!isMenuOpen && (
-            <div className="relative">
-              {!isSafeApp && (
-                <div className="flex items-center w-full mt-0 md:w-auto">
-                  {/* //TODO should show in the public registration */}
-                  {/* {location.pathname !== '/' && (
+          <div className="relative">
+            {!isSafeApp && (
+              <div className="flex items-center w-full mt-0 md:w-auto">
+                {/* //TODO should show in the public registration */}
+                {/* {location.pathname !== '/' && (
                     <Search
                       className="mr-4 xl:w-[400px] hidden md:block"
                       errorShowing={true}
@@ -353,125 +354,124 @@ export default ({ children }) => {
                     />
                   )} */}
 
-                  {isReadOnly && (
-                    <div className="hidden md:block">
-                      <NoAccountsDefault
-                        onClick={connectProvider}
-                        loadingWallet={loadingWallet}
-                        buttonText={isReadOnly ? 'Connect' : network}
-                        isReadOnly={isReadOnly}
-                      />
-                    </div>
-                  )}
+                {isReadOnly && (
+                  <div className="hidden md:block">
+                    <NoAccountsDefault
+                      onClick={connectProvider}
+                      loadingWallet={loadingWallet}
+                      buttonText={isReadOnly ? 'Connect' : network}
+                      isReadOnly={isReadOnly}
+                    />
+                  </div>
+                )}
 
-                  {accounts && accounts[0] && !isReadOnly && (
-                    <div className="flex items-center">
-                      <div
-                        className="block hidden"
-                        onClick={() => setSearchOpen(!searchOpen)}
-                      >
-                        <SearchIcon className="text-[rgba(204,252,255,0.6)] cursor-pointer" />
-                      </div>
-
-                      <button
-                        className="flex items-center ml-4 cursor-pointer"
-                        onClick={() => {
-                          // if (windowDimenion.winWidth > 768) {
-                          showAvatarPopup()
-                          // }
-                        }}
-                      >
-                        {!reverseRecordLoading &&
-                        getReverseRecord &&
-                        getReverseRecord.avatar ? (
-                          <img
-                            src={imageUrl(
-                              getReverseRecord.avatar,
-                              displayName,
-                              network
-                            )}
-                          />
-                        ) : (
-                          <div className="w-[44px] h-[44px] rounded-full">
-                            <img
-                              className="rounded-full"
-                              src={DefaultAvatar}
-                              alt="default avatar"
-                            />
-                          </div>
-                        )}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* DropdownMenu for the avatar popup */}
-              {accounts && accounts[0] && avatarPopup && (
-                <ClickAwayListener
-                  onClickAway={() => {
-                    setAvatarPopup(false)
-                  }}
-                >
-                  <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
-                    <div>
-                      <div className="flex items-center border-b-[2px] border-[#7E9195] pb-4 flex justify-between">
-                        {!reverseRecordLoading &&
-                        getReverseRecord &&
-                        getReverseRecord.avatar ? (
-                          <img
-                            src={imageUrl(
-                              getReverseRecord.avatar,
-                              displayName,
-                              network
-                            )}
-                          />
-                        ) : (
-                          <div className="w-8 h-8">
-                            <img
-                              className="rounded-full"
-                              src={DefaultAvatar}
-                              alt="default avatar"
-                            />
-                          </div>
-                        )}
-                        <div className="font-semibold text-[20px] font-urbanist text-white ml-4">{`${accounts[0].substring(
-                          0,
-                          6
-                        )}....${accounts[0].substring(
-                          accounts[0].length - 6,
-                          accounts[0].length
-                        )}`}</div>
-                      </div>
-                    </div>
+                {accounts && accounts[0] && !isReadOnly && (
+                  <div className="flex items-center">
                     <div
-                      className="font-semibold text-white font-urbanist text-[18px] text-center pt-4"
-                      onClick={showAvatarPopup}
+                      className="block hidden"
+                      onClick={() => setSearchOpen(!searchOpen)}
                     >
-                      <div
-                        onClick={moveToWishList}
-                        className="flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
-                      >
-                        Wishlist
-                      </div>
-                      <div
-                        className="hidden md:flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
-                        onClick={moveToProfile}
-                      >
-                        Manage Account
-                      </div>
-                      <div
-                        className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-[12px] md:bg-transparent hover:bg-dark-200 hover:rounded-[12px]"
-                        onClick={disconnectProvider}
-                      >
-                        Disconnect
-                      </div>
+                      <SearchIcon className="text-[rgba(204,252,255,0.6)] cursor-pointer" />
+                    </div>
+
+                    <button
+                      className="flex items-center ml-4 cursor-pointer"
+                      onClick={() => {
+                        // if (windowDimenion.winWidth > 768) {
+                        showAvatarPopup()
+                        // }
+                      }}
+                    >
+                      {!reverseRecordLoading &&
+                      getReverseRecord &&
+                      getReverseRecord.avatar ? (
+                        <img
+                          src={imageUrl(
+                            getReverseRecord.avatar,
+                            displayName,
+                            network
+                          )}
+                        />
+                      ) : (
+                        <div className="w-[44px] h-[44px] rounded-full">
+                          <img
+                            className="rounded-full"
+                            src={DefaultAvatar}
+                            alt="default avatar"
+                          />
+                        </div>
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* DropdownMenu for the avatar popup */}
+            {accounts && accounts[0] && avatarPopup && (
+              <ClickAwayListener
+                onClickAway={() => {
+                  setAvatarPopup(false)
+                }}
+              >
+                <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
+                  <div>
+                    <div className="flex items-center border-b-[2px] border-[#7E9195] pb-4 flex justify-between">
+                      {!reverseRecordLoading &&
+                      getReverseRecord &&
+                      getReverseRecord.avatar ? (
+                        <img
+                          src={imageUrl(
+                            getReverseRecord.avatar,
+                            displayName,
+                            network
+                          )}
+                        />
+                      ) : (
+                        <div className="w-8 h-8">
+                          <img
+                            className="rounded-full"
+                            src={DefaultAvatar}
+                            alt="default avatar"
+                          />
+                        </div>
+                      )}
+                      <div className="font-semibold text-[20px] font-urbanist text-white ml-4">{`${accounts[0].substring(
+                        0,
+                        6
+                      )}....${accounts[0].substring(
+                        accounts[0].length - 6,
+                        accounts[0].length
+                      )}`}</div>
                     </div>
                   </div>
-                </ClickAwayListener>
-              )}
-            </div>
-          )}
+                  <div
+                    className="font-semibold text-white font-urbanist text-[18px] text-center pt-4"
+                    onClick={showAvatarPopup}
+                  >
+                    <div
+                      onClick={moveToWishList}
+                      className="flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
+                    >
+                      Wishlist
+                    </div>
+                    <div
+                      className="hidden md:flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
+                      onClick={moveToProfile}
+                    >
+                      Manage Account
+                    </div>
+                    <div
+                      className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-[12px] md:bg-transparent hover:bg-dark-200 hover:rounded-[12px]"
+                      onClick={disconnectProvider}
+                    >
+                      Disconnect
+                    </div>
+                  </div>
+                </div>
+              </ClickAwayListener>
+            )}
+          </div>
         </div>
 
         {searchOpen && (

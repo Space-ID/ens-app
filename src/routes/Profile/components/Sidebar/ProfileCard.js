@@ -125,7 +125,7 @@ export default function ProfileCard({
       )}
     >
       {account ? (
-        <div className="mr-4 flex-none w-[40px] xl:w-[64px] h-[40px] xl:h-[64px]">
+        <div className="mr-4 flex-none w-[64px] h-[64px]">
           {!reverseRecordLoading &&
           getReverseRecord &&
           getReverseRecord.avatar ? (
