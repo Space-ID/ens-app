@@ -51,7 +51,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     registerReducer,
     registerMachine.initialState
   )
-  const [customStep, setCustomStep] = useState('SUCCESS')
+  const [customStep, setCustomStep] = useState('START')
   let now, currentPremium, underPremium
   const [years, setYears] = useState(false)
   const [secondsPassed, setSecondsPassed] = useState(0)
