@@ -9,6 +9,7 @@ import axios from 'axios'
 import last from 'lodash/last'
 import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
+import { Button } from 'react-daisyui'
 
 import {
   CHECK_COMMITMENT,
@@ -50,7 +51,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     registerReducer,
     registerMachine.initialState
   )
-  const [customStep, setCustomStep] = useState('START')
+  const [customStep, setCustomStep] = useState('SUCCESS')
   let now, currentPremium, underPremium
   const [years, setYears] = useState(false)
   const [secondsPassed, setSecondsPassed] = useState(0)
@@ -346,10 +347,14 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     connectProvider()
   }
 
+  const backToHome = () => {
+    window.location.href = process.env.REACT_APP_BACK_TO_HOME
+  }
+
   // if (winnerLoading) return <AnimationSpin size={40} />
 
   return (
-    <div className="max-w-[448px] mx-auto">
+    <div className="min-w-[448px] mx-auto">
       <div className="flex justify-center">
         <p className="min-w-full max-w-full block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center max-w-max px-6">
           {domain.name}
@@ -487,20 +492,29 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
             {customStep === 'ERROR' ? (
               <div className="flex justify-center mt-10">
-                <button
+                <Button
+                  color="primary"
                   className={cn(
-                    'py-2 border rounded-[16px] text-[#071A2F] font-semibold bg-[#30DB9E] border-0 px-[30px]'
+                    'py-2 rounded-2xl text-[#071A2F] font-semibold border-0 px-[30px] normal-case'
                   )}
                   onClick={() => setCustomStep('START')}
                 >
                   Retry
-                </button>
+                </Button>
               </div>
             ) : (
-              <div className="flex justify-center mt-10">
-                <button
+              <div className="flex justify-between px-8 mt-10 space-x-4">
+                <Button
+                  className="text-lg font-semibold leading-6 normal-case rounded-2xl btn-outline font-urbanist"
+                  color="primary"
+                  onClick={() => backToHome()}
+                >
+                  Back To Home
+                </Button>
+                <Button
+                  color="primary"
                   className={cn(
-                    'py-2 border rounded-[16px] font-semibold border-0 px-[30px]',
+                    'py-2 rounded-2xl font-semibold border-0 px-[19px] normal-case text-lg leading-6 font-urbanist',
                     customStep === 'SUCCESS'
                       ? 'text-[#071A2F] bg-[#30DB9E]'
                       : 'bg-[#7E9195] text-white'
@@ -509,7 +523,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                   onClick={() => history.push('/profile')}
                 >
                   Manage Profile
-                </button>
+                </Button>
               </div>
             )}
           </div>
