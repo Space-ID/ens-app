@@ -1,5 +1,5 @@
 // Import packages
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { useLocation, Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
@@ -10,6 +10,7 @@ import cn from 'classnames'
 import ClickAwayListener from 'react-click-away-listener'
 
 import { Button } from 'react-daisyui'
+import axios from 'axios'
 
 // Import components
 import NoAccountsDefault from 'components/NoAccounts/NoAccounts'
@@ -99,6 +100,30 @@ export default ({ children }) => {
       address: accounts?.[0],
     },
   })
+  const fetchDomainsList = useCallback(async (netId, account, selected) => {
+    const params = {
+      ChainID: netId,
+      Address: account,
+    }
+    let result = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/listname`,
+      params
+    )
+    const data = result?.data?.map((item) => {
+      const date = new Date(item?.expires)
+      return {
+        expires_at: date,
+        ...item,
+      }
+    })
+    if (data.length > 0) {
+      if (!selected) {
+        dispatch(setSelectedDomain(data[0]))
+      }
+    }
+    dispatch(setAllDomains(data))
+    return data
+  }, [])
 
   useEffect(() => {
     if (accounts) {
@@ -115,13 +140,18 @@ export default ({ children }) => {
   const initActions = async () => {
     const networkId = await getNetworkId()
     setNetworkID(networkId)
+    return networkId
   }
 
   const { network, displayName, isReadOnly, isSafeApp, loadingWallet } = data
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!isReadOnly && accounts?.[0] !== EMPTY_ADDRESS) {
-      initActions()
+      const netId = await initActions()
+      fetchDomainsList(netId, accounts[0], selectedDomain)
+    }
+    if (isReadOnly) {
+      dispatch(setAllDomains([]))
     }
   }, [isReadOnly, accounts])
 
