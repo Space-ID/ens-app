@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useQuery } from '@apollo/client'
 import cn from 'classnames'
 import moment from 'moment'
@@ -74,7 +74,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   })
   const [winnerLoading, setWinnerLoading] = useState(false)
 
-  const [canRegister, setCanRegister] = useState(false)
+  const accountSlice = useSelector((state) => state.account)
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
@@ -136,7 +136,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
         })
         setFreeDuration(result?.data?.data?.isaution ? 31556952 : 0)
         if (result?.data?.data?.index) {
-          setCanRegister(true)
           setIndex(result?.data?.data?.index)
           if (result?.data?.data?.isaution) {
             setIsAuctionWinner(true)
@@ -172,9 +171,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           setWinnerLoading(false)
         }
         //Cannot get index from merkletree
-        else {
-          canRegister(false)
-        }
       } catch (err) {
         setWinnerLoading(false)
       }
@@ -398,7 +394,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             paymentSuccess={() => setCustomStep('PAYMENT')}
             freeDuration={freeDuration}
             index={index}
-            canRegister={canRegister}
+            canRegister={accountSlice.redeemableQuota}
           />
         </div>
       )}

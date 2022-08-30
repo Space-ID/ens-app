@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Button } from 'react-daisyui'
 import { useQuery } from '@apollo/client'
 import Search from 'components/SearchName/Search'
@@ -13,12 +13,16 @@ import { connectProvider } from 'utils/providerUtils'
 
 import AnimationSpin from 'components/AnimationSpin'
 
+import { setRedeemableQuota } from 'app/slices/accountSlice'
+
 export default function Redemption() {
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
 
   const account = useAccount()
+
+  const dispatch = useDispatch()
 
   const { data, loading } = useQuery(GET_ELIGIBLE_COUNT, {
     variables: {
@@ -27,11 +31,15 @@ export default function Redemption() {
     fetchPolicy: 'no-cache',
   })
 
-  console.log('data', data)
-
   const connect = () => {
     connectProvider()
   }
+
+  useEffect(() => {
+    if (data?.getEligibleCount) {
+      dispatch(setRedeemableQuota(data?.getEligibleCount?.toString()))
+    }
+  }, [data])
 
   const renderMainContent = () => {
     if (loading) {

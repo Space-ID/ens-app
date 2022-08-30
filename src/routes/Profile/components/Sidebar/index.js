@@ -62,7 +62,6 @@ export default function Sidebar({ className, isReadOnly }) {
   }, [isReadOnly, account])
 
   const selectDomain = async (domain, index) => {
-    console.log('debug: domain', domain.expires_at)
     dispatch(setSelectedDomain(domain))
   }
 
