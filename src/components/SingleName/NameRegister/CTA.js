@@ -74,7 +74,8 @@ const CTA = ({
   })
 
   const goBack = () => {
-    window.location.href = process.env.REACT_APP_AUCTION_WISHLIST_URL
+    // window.location.href = process.env.REACT_APP_AUCTION_WISHLIST_URL
+    history.push('/redemption')
   }
 
   const startRegisterFuc = () => {

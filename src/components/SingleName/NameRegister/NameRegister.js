@@ -20,7 +20,9 @@ import {
   GET_BALANCE,
   GET_ETH_PRICE,
   GET_PRICE_CURVE,
+  GET_ELIGIBLE_COUNT,
 } from 'graphql/queries'
+
 import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
 import { registerMachine, registerReducer } from './registerReducer'
@@ -41,6 +43,8 @@ import EditIcon from 'components/Icons/EditIcon'
 import SuccessfulTickIcon from 'components/Icons/SuccessfulTickIcon'
 import FailedIcon from 'components/Icons/FailedIcon'
 import AnimationSpin from 'components/AnimationSpin'
+
+import { setRedeemableQuota } from 'app/slices/accountSlice'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const { t } = useTranslation()
@@ -125,7 +129,16 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }, [transactionHistory])
 
   const history = useHistory()
+
   const account = useAccount()
+
+  const { data: eligibleObject, loading } = useQuery(GET_ELIGIBLE_COUNT, {
+    variables: {
+      account,
+    },
+    fetchPolicy: 'no-cache',
+  })
+
   useEffect(() => {
     const fetchSignature = async () => {
       // setWinnerLoading(true)
@@ -347,10 +360,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     window.location.href = process.env.REACT_APP_BACK_TO_HOME
   }
 
-  // if (winnerLoading) return <AnimationSpin size={40} />
-
   return (
-    <div className="min-w-[448px] mx-auto">
+    <div className="w-full mx-auto md:w-auto">
       <div className="flex justify-center">
         <p className="min-w-full max-w-full block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center max-w-max px-6">
           {domain.name}
@@ -394,7 +405,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             paymentSuccess={() => setCustomStep('PAYMENT')}
             freeDuration={freeDuration}
             index={index}
-            canRegister={accountSlice.redeemableQuota}
+            canRegister={
+              parseInt(eligibleObject?.getEligibleCount?.toString()) > 0
+            }
           />
         </div>
       )}
