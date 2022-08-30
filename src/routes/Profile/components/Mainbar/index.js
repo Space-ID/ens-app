@@ -166,7 +166,7 @@ export default function Mainbar({
     const data = result?.data?.map((item) => {
       const date = new Date(item?.expires)
       return {
-        expires_at: date,
+        expires_at: date.toISOString(),
         ...item,
       }
     })

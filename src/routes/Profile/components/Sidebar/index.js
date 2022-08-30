@@ -37,9 +37,8 @@ export default function Sidebar({ className, isReadOnly }) {
     )
     const data = result?.data?.map((item) => {
       const date = new Date(item?.expires)
-      console.log('date', date)
       return {
-        expires_at: date,
+        expires_at: date.toISOString(),
         ...item,
       }
     })
@@ -63,6 +62,7 @@ export default function Sidebar({ className, isReadOnly }) {
   }, [isReadOnly, account])
 
   const selectDomain = async (domain, index) => {
+    console.log('debug: domain', domain.expires_at)
     dispatch(setSelectedDomain(domain))
   }
 

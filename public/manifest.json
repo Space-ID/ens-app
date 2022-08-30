@@ -2,17 +2,11 @@
   "short_name": "SPACE ID App",
   "name": "SPACE ID App",
   "description": "Decentralised naming for wallets, websites, & more.",
-  "iconPath": "android-chrome-144x144.png",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "/android-chrome-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png"
     }
   ],
   "start_url": "./index.html",
