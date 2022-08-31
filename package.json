@@ -19,7 +19,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@siddomains/address-encoder": "^0.0.3",
     "@siddomains/react-ens-address": "^0.0.4",
-    "@siddomains/sid-contracts": "^0.1.4",
+    "@siddomains/sid-contracts": "^0.1.8",
     "@siddomains/sidjs": "^0.1.8",
     "@siddomains/ui": "1.4.14",
     "@siddomains/web3modal": "0.1.7",

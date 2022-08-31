@@ -402,7 +402,7 @@ export default class Registrar {
     return permanentRegistrarController.commit(commitment)
   }
 
-  async register(label, duration, freeDuration, index, merkleProof) {
+  async register(label, duration, secret) {
     const permanentRegistrarControllerWithoutSigner =
       this.permanentRegistrarController
     const signer = await getSigner()
@@ -418,9 +418,7 @@ export default class Registrar {
           label,
           account,
           duration,
-          freeDuration,
-          index,
-          merkleProof,
+          secret,
           { value: priceWithBuffer }
         )
       })
@@ -429,9 +427,7 @@ export default class Registrar {
         label,
         account,
         duration,
-        freeDuration,
-        index,
-        merkleProof,
+        secret,
         { value: priceWithBuffer, gasLimit }
       )
     } else {
@@ -439,12 +435,10 @@ export default class Registrar {
         return permanentRegistrarController.estimateGas.registerWithConfig(
           label,
           account,
-          duration + freeDuration,
-          freeDuration,
+          duration,
+          secret,
           resolverAddr,
           account,
-          index,
-          merkleProof,
           { value: priceWithBuffer }
         )
       })
@@ -452,12 +446,10 @@ export default class Registrar {
       return permanentRegistrarController.registerWithConfig(
         label,
         account,
-        duration + freeDuration,
-        freeDuration,
+        duration,
+        secret,
         resolverAddr,
         account,
-        index,
-        merkleProof,
         { value: priceWithBuffer, gasLimit }
       )
     }

@@ -1,12 +1,13 @@
 import crypto from 'crypto'
 import moment from 'moment'
+import { RegisterState } from './constant'
 
 function randomSecret() {
   return '0x' + crypto.randomBytes(32).toString('hex')
 }
 
 const Store = {
-  get: label => {
+  get: (label) => {
     return window.localStorage.getItem('progress')
       ? JSON.parse(window.localStorage.getItem('progress'))[label]
       : null
@@ -19,11 +20,11 @@ const Store = {
     }
     data[label] = {
       ...data[label],
-      ...obj
+      ...obj,
     }
     window.localStorage.setItem('progress', JSON.stringify(data))
   },
-  remove: label => {
+  remove: (label) => {
     let data = {}
     let progress
     if ((progress = window.localStorage.getItem('progress'))) {
@@ -31,7 +32,7 @@ const Store = {
     }
     delete data[label]
     window.localStorage.setItem('progress', JSON.stringify(data))
-  }
+  },
 }
 
 const ProgressRecorder = ({
@@ -53,10 +54,9 @@ const ProgressRecorder = ({
   setSecondsPassed,
   commitmentExpirationDate,
   setCommitmentExpirationDate,
-  now
+  now,
 }) => {
   const stepIndex = Object.keys(states).indexOf(step)
-
   const label = `${networkId}-${domain.label}`
   let savedStepIndex = 0
   let savedStep, isBehind
@@ -101,12 +101,12 @@ const ProgressRecorder = ({
     ) {
       Store.remove(label)
     } else if (isBehind) {
-      dispatch('NEXT')
+      // todo behind
     }
   }
-
+  // todo change step
   switch (step) {
-    case 'PRICE_DECISION':
+    case RegisterState.request:
       if (!savedStep) {
         Store.set(label, { step, secret })
       } else {
@@ -115,8 +115,10 @@ const ProgressRecorder = ({
         } else {
           let commitmentDate = new Date(checkCommitment * 1000)
           if (commitmentDate > 0) {
-            dispatch('NEXT') // Go to pending
-            dispatch('NEXT') // Go to confirmed
+            // todo: expire?
+            dispatch(RegisterState.confirm)
+            // dispatch('NEXT') // Go to pending
+            // dispatch('NEXT') // Go to confirmed
           } else {
             // This should be called only when user increament/decrement years
             Store.set(label, { step, secret, years })
@@ -124,19 +126,19 @@ const ProgressRecorder = ({
         }
       }
       break
-    case 'COMMIT_CONFIRMED':
+    case RegisterState.requestSuccess:
       Store.set(label, {
         step,
         secret,
         waitUntil,
         secondsPassed,
-        commitmentExpirationDate
+        commitmentExpirationDate,
       })
       if (!timerRunning) {
         setTimerRunning(true)
       }
       break
-    case 'AWAITING_REGISTER':
+    case RegisterState.confirm:
       if (timerRunning) {
         setTimerRunning(false)
       }

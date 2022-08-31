@@ -1,6 +1,4 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { InlineLoader } from 'components/Loader'
 import priceCalculator from './PriceCalculator'
 
 const Price = ({
@@ -9,12 +7,9 @@ const Price = ({
   ethUsdPrice,
   ethUsdPremiumPrice,
   underPremium,
-  discount,
   years,
-  isAuctionWinner,
   registrationFee,
 }) => {
-  let ethPrice = <InlineLoader />
   let withPremium, c
   if (!loading && price) {
     c = priceCalculator({
@@ -22,10 +17,6 @@ const Price = ({
       premium: price, // in ETH
       ethUsdPrice,
     })
-    ethPrice =
-      isAuctionWinner && years === 1
-        ? c.price
-        : (c.price / (1 - discount.percent / 100)).toFixed(3)
     if (underPremium) {
       withPremium =
         underPremium && ethUsdPremiumPrice
@@ -36,7 +27,7 @@ const Price = ({
   const priceInUsd = c?.priceInUsd
   return (
     <div>
-      <div className="w-[120px] md:w-[180px] h-[40px] flex justify-center items-center bg-[#C4C4C4]/20 text-white font-bold font-urbanist text-[18px] rounded-[8px]">
+      <div className="w-[120px] md:w-[160px] h-[40px] flex justify-center items-center bg-[#C4C4C4]/20 text-white font-bold font-urbanist text-[18px] leading-[26px] rounded-[8px]">
         {registrationFee.toFixed(3)} <span>BNB</span>
         {withPremium && (
           <span>
@@ -44,7 +35,7 @@ const Price = ({
           </span>
         )}
       </div>
-      <div className="text-center text-white font-semibold mt-1 text-[14px]">
+      <div className="text-center text-white font-semibold mt-1 text-[12px] leading-[20px]">
         Registration Fee
       </div>
     </div>
