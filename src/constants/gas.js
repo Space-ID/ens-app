@@ -1,0 +1,4 @@
+export const GWEI = 1000000000
+export const COMMIT_GAS_WEI = 42000
+export const REGISTER_GAS_WEI = 240000
+export const TOGAL_GAS_WEI = COMMIT_GAS_WEI + REGISTER_GAS_WEI

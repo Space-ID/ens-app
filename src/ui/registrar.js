@@ -409,9 +409,7 @@ export default class Registrar {
     return permanentRegistrarController.commit(commitment)
   }
 
-  async register(label, duration) {
-    console.log('label', label)
-    console.log('duration', duration)
+  async register(label, duration, secret) {
     const permanentRegistrarControllerWithoutSigner =
       this.permanentRegistrarController
     const signer = await getSigner()
@@ -421,28 +419,31 @@ export default class Registrar {
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
     const resolverAddr = await this.getAddress('resolver.bnb')
-    console.log('resolverAddr', resolverAddr)
-    console.log('parseInt(resolverAddr, 16)', parseInt(resolverAddr, 16))
     if (parseInt(resolverAddr, 16) === 0) {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.register(
           label,
           account,
           duration,
+          secret,
           { value: priceWithBuffer }
         )
       })
 
-      return permanentRegistrarController.register(label, account, duration, {
-        value: priceWithBuffer,
-        gasLimit,
-      })
+      return permanentRegistrarController.register(
+        label,
+        account,
+        duration,
+        secret,
+        { value: priceWithBuffer, gasLimit }
+      )
     } else {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.registerWithConfig(
           label,
           account,
           duration,
+          secret,
           resolverAddr,
           account,
           { value: priceWithBuffer }
@@ -453,6 +454,7 @@ export default class Registrar {
         label,
         account,
         duration,
+        secret,
         resolverAddr,
         account,
         { value: priceWithBuffer, gasLimit }
@@ -704,7 +706,6 @@ export async function setupRegistrar(registryAddress) {
     namehash('bnb'),
     permanentRegistrarInterfaceId
   )
-
   let legacyAuctionRegistrarAddress = await Resolver.interfaceImplementer(
     namehash('bnb'),
     legacyRegistrarInterfaceId

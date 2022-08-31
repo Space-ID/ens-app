@@ -82,23 +82,10 @@ const resolvers = {
       const tx = await registrar.commit(label, secret)
       return sendHelper(tx)
     },
-    async register(_, { label, duration, signature, freeDuration, index }) {
-      try {
-        const registrar = getRegistrar()
-        const tx = await registrar.register(
-          label,
-          duration,
-          freeDuration,
-          index,
-          signature
-        )
-        return sendHelper(tx)
-      } catch (err) {
-        if (err.toString().includes('user rejected transaction')) {
-          return { err }
-        }
-        return err
-      }
+    async register(_, { label, duration, secret }) {
+      const registrar = getRegistrar()
+      const tx = await registrar.register(label, duration, secret)
+      return sendHelper(tx)
     },
     async reclaim(_, { name, address }) {
       const registrar = getRegistrar()

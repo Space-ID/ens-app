@@ -3414,10 +3414,10 @@
     "@openzeppelin/contracts" "^4.1.0"
     dns-packet "^5.3.0"
 
-"@siddomains/sid-contracts@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.7.tgz#98751158db32ea9612cd9dc25ce82d9051870735"
-  integrity sha512-RqRJdQZ0j2IWsNxDcDXbhM80KxSALITmPLaozNACDB7DF60y/KrSWkx0kZZOoiglLatZeEqHFvIHYmgCIq1K9Q==
+"@siddomains/sid-contracts@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.8.tgz#6aac51b5a2a3e4e918a68e5d124bddab9d30b204"
+  integrity sha512-9/r2P5Ge4FdvOZGLstAoQ4gR5TeB/TGKLwwfamEIzGnCTwdM4hqy/0BJk9UwoCpN2hJxEbGFD0OLlowJ5YmcWw==
   dependencies:
     "@ensdomains/buffer" "^0.0.13"
     "@ensdomains/solsha1" "0.0.3"

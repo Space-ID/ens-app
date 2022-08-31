@@ -18,7 +18,7 @@ export default function NotAvailable({ domain }) {
 
   return (
     <NotAvailableContainer>
-      <Message>{t('singleName.messages.alreadyregistered')}</Message>
+      <Message>This name is already registered</Message>
     </NotAvailableContainer>
   )
 }
