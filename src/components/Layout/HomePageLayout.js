@@ -479,12 +479,12 @@ export default ({ children }) => {
                     className="font-semibold text-white font-urbanist text-[18px] text-center pt-4"
                     onClick={showAvatarPopup}
                   >
-                    <div
-                      onClick={moveToWishList}
-                      className="flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
-                    >
-                      Wishlist
-                    </div>
+                    {/*<div*/}
+                    {/*  onClick={moveToWishList}*/}
+                    {/*  className="flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"*/}
+                    {/*>*/}
+                    {/*  Wishlist*/}
+                    {/*</div>*/}
                     <div
                       className="hidden md:flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
                       onClick={moveToProfile}
