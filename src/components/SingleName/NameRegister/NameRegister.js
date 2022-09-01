@@ -351,7 +351,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   return (
     <div className="max-w-[448px] mx-auto">
       <div className="flex justify-center">
-        <p className="min-w-full max-w-full block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center max-w-max px-6">
+        <p className="min-w-full max-w-[200px] block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-green-100 py-2 border-[4px] border-green-100 rounded-[22px] text-center px-6">
           {domain.name}
         </p>
       </div>
