@@ -289,6 +289,12 @@ export const GET_RENT_PRICE = gql`
   }
 `
 
+export const GET_ELIGIBLE_COUNT = gql`
+  query getEligibleCount($label: String) {
+    getEligibleCount(label: $label)
+  }
+`
+
 export const GET_RENT_PRICES = gql`
   query getRentPrices($labels: String, $duration: Number) {
     getRentPrices(labels: $labels, duration: $duration)

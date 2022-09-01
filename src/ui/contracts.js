@@ -3,12 +3,12 @@ import {
   BaseRegistrarImplementation as permanentRegistrarContract,
   BulkRenewal as bulkRenewalContract,
   SID as ensContract,
-  BNBRegistrarControllerV3 as permanentRegistrarControllerContract,
+  BNBRegistrarControllerV4 as permanentRegistrarControllerContract,
   DNSRegistrar as dnsRegistrarContract,
   Resolver as resolverContract,
   ReverseRegistrar as reverseRegistrarContract,
   TestRegistrar as testRegistrarContract,
-  AggregatorInterface as oracleContract
+  AggregatorInterface as oracleContract,
 } from '@siddomains/sid-contracts'
 
 import { abi as oldResolverContract } from '@ensdomains/contracts/abis/ens-022/PublicResolver.json'
@@ -81,5 +81,5 @@ export {
   getLegacyAuctionContract,
   getDeedContract,
   getBulkRenewalContract,
-  getOracleContract
+  getOracleContract,
 }

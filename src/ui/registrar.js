@@ -321,6 +321,13 @@ export default class Registrar {
     return price
   }
 
+  async getEligibleCount(name) {
+    const permanentRegistrarController = this.permanentRegistrarController
+    console.log('name', name)
+    let eligibleCount = await permanentRegistrarController.eligibleCount(name)
+    return eligibleCount
+  }
+
   async getEthPrice() {
     const contractAddress =
       process.env.REACT_APP_MAIN_APP === 'true'
@@ -402,7 +409,9 @@ export default class Registrar {
     return permanentRegistrarController.commit(commitment)
   }
 
-  async register(label, duration, freeDuration, index, merkleProof) {
+  async register(label, duration) {
+    console.log('label', label)
+    console.log('duration', duration)
     const permanentRegistrarControllerWithoutSigner =
       this.permanentRegistrarController
     const signer = await getSigner()
@@ -412,39 +421,30 @@ export default class Registrar {
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
     const resolverAddr = await this.getAddress('resolver.bnb')
+    console.log('resolverAddr', resolverAddr)
+    console.log('parseInt(resolverAddr, 16)', parseInt(resolverAddr, 16))
     if (parseInt(resolverAddr, 16) === 0) {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.register(
           label,
           account,
           duration,
-          freeDuration,
-          index,
-          merkleProof,
           { value: priceWithBuffer }
         )
       })
 
-      return permanentRegistrarController.register(
-        label,
-        account,
-        duration,
-        freeDuration,
-        index,
-        merkleProof,
-        { value: priceWithBuffer, gasLimit }
-      )
+      return permanentRegistrarController.register(label, account, duration, {
+        value: priceWithBuffer,
+        gasLimit,
+      })
     } else {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.registerWithConfig(
           label,
           account,
-          duration + freeDuration,
-          freeDuration,
+          duration,
           resolverAddr,
           account,
-          index,
-          merkleProof,
           { value: priceWithBuffer }
         )
       })
@@ -452,12 +452,9 @@ export default class Registrar {
       return permanentRegistrarController.registerWithConfig(
         label,
         account,
-        duration + freeDuration,
-        freeDuration,
+        duration,
         resolverAddr,
         account,
-        index,
-        merkleProof,
         { value: priceWithBuffer, gasLimit }
       )
     }
@@ -707,6 +704,7 @@ export async function setupRegistrar(registryAddress) {
     namehash('bnb'),
     permanentRegistrarInterfaceId
   )
+
   let legacyAuctionRegistrarAddress = await Resolver.interfaceImplementer(
     namehash('bnb'),
     legacyRegistrarInterfaceId

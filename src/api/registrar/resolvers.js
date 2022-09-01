@@ -27,6 +27,13 @@ const resolvers = {
       const rentPrice = await registrar.getRentPrice(label, duration)
       return rentPrice[0]
     },
+    async getEligibleCount(_, { account }) {
+      const registrar = getRegistrar()
+      console.log('label', account)
+      console.log('registrar', registrar)
+      const eligibleCount = await registrar.getEligibleCount(account)
+      return eligibleCount
+    },
     async getRentPrices(_, { labels, duration }) {
       const registrar = getRegistrar()
       return labels.length && registrar.getRentPrices(labels, duration)

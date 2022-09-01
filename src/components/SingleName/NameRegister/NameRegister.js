@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useQuery } from '@apollo/client'
 import cn from 'classnames'
 import moment from 'moment'
@@ -9,6 +9,7 @@ import axios from 'axios'
 import last from 'lodash/last'
 import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
+import { Button } from 'react-daisyui'
 
 import {
   CHECK_COMMITMENT,
@@ -19,7 +20,9 @@ import {
   GET_BALANCE,
   GET_ETH_PRICE,
   GET_PRICE_CURVE,
+  GET_ELIGIBLE_COUNT,
 } from 'graphql/queries'
+
 import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
 import { registerMachine, registerReducer } from './registerReducer'
@@ -40,6 +43,8 @@ import EditIcon from 'components/Icons/EditIcon'
 import SuccessfulTickIcon from 'components/Icons/SuccessfulTickIcon'
 import FailedIcon from 'components/Icons/FailedIcon'
 import AnimationSpin from 'components/AnimationSpin'
+
+import { setRedeemableQuota } from 'app/slices/accountSlice'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const { t } = useTranslation()
@@ -73,7 +78,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   })
   const [winnerLoading, setWinnerLoading] = useState(false)
 
-  const [canRegister, setCanRegister] = useState(false)
+  const accountSlice = useSelector((state) => state.account)
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
@@ -124,7 +129,16 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }, [transactionHistory])
 
   const history = useHistory()
+
   const account = useAccount()
+
+  const { data: eligibleObject, loading } = useQuery(GET_ELIGIBLE_COUNT, {
+    variables: {
+      account,
+    },
+    fetchPolicy: 'no-cache',
+  })
+
   useEffect(() => {
     const fetchSignature = async () => {
       // setWinnerLoading(true)
@@ -135,7 +149,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
         })
         setFreeDuration(result?.data?.data?.isaution ? 31556952 : 0)
         if (result?.data?.data?.index) {
-          setCanRegister(true)
           setIndex(result?.data?.data?.index)
           if (result?.data?.data?.isaution) {
             setIsAuctionWinner(true)
@@ -171,9 +184,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           setWinnerLoading(false)
         }
         //Cannot get index from merkletree
-        else {
-          canRegister(false)
-        }
       } catch (err) {
         setWinnerLoading(false)
       }
@@ -346,10 +356,12 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     connectProvider()
   }
 
-  // if (winnerLoading) return <AnimationSpin size={40} />
+  const backToHome = () => {
+    window.location.href = process.env.REACT_APP_BACK_TO_HOME
+  }
 
   return (
-    <div className="max-w-[448px] mx-auto">
+    <div className="w-full mx-auto md:w-auto">
       <div className="flex justify-center">
         <p className="min-w-full max-w-full block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center max-w-max px-6">
           {domain.name}
@@ -393,7 +405,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             paymentSuccess={() => setCustomStep('PAYMENT')}
             freeDuration={freeDuration}
             index={index}
-            canRegister={canRegister}
+            canRegister={
+              parseInt(eligibleObject?.getEligibleCount?.toString()) > 0
+            }
           />
         </div>
       )}
@@ -487,20 +501,29 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
             {customStep === 'ERROR' ? (
               <div className="flex justify-center mt-10">
-                <button
+                <Button
+                  color="primary"
                   className={cn(
-                    'py-2 border rounded-[16px] text-[#071A2F] font-semibold bg-[#30DB9E] border-0 px-[30px]'
+                    'py-2 rounded-2xl text-[#071A2F] font-semibold border-0 px-[30px] normal-case'
                   )}
                   onClick={() => setCustomStep('START')}
                 >
                   Retry
-                </button>
+                </Button>
               </div>
             ) : (
-              <div className="flex justify-center mt-10">
-                <button
+              <div className="flex justify-between px-8 mt-10 space-x-4">
+                <Button
+                  className="text-lg font-semibold leading-6 normal-case rounded-2xl btn-outline font-urbanist"
+                  color="primary"
+                  onClick={() => backToHome()}
+                >
+                  Back To Home
+                </Button>
+                <Button
+                  color="primary"
                   className={cn(
-                    'py-2 border rounded-[16px] font-semibold border-0 px-[30px]',
+                    'py-2 rounded-2xl font-semibold border-0 px-[19px] normal-case text-lg leading-6 font-urbanist',
                     customStep === 'SUCCESS'
                       ? 'text-[#071A2F] bg-[#30DB9E]'
                       : 'bg-[#7E9195] text-white'
@@ -509,7 +532,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                   onClick={() => history.push('/profile')}
                 >
                   Manage Profile
-                </button>
+                </Button>
               </div>
             )}
           </div>

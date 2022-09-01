@@ -2,6 +2,7 @@ import React, { lazy } from 'react'
 import { BrowserRouter, Route as DefaultRoute, Switch } from 'react-router-dom'
 
 const Home = lazy(() => import('./routes/Home'))
+const Redemption = lazy(() => import('./routes/redemption'))
 const SingleName = lazy(() => import('./routes/SingleName'))
 const Profile = lazy(() => import('./routes/Profile'))
 const HomePageLayout = lazy(() => import('components/Layout/HomePageLayout'))
@@ -37,6 +38,12 @@ const App = () => {
     <BrowserRouter basename="app">
       <Switch>
         {/* <Route exact path="/" component={Home} layout={HomePageLayout} /> */}
+        <Route
+          exact
+          path="/redemption"
+          component={Redemption}
+          layout={HomePageLayout}
+        />
         <Route
           exact
           path="/profile"

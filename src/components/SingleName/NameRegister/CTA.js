@@ -74,7 +74,8 @@ const CTA = ({
   })
 
   const goBack = () => {
-    window.location.href = process.env.REACT_APP_AUCTION_WISHLIST_URL
+    // window.location.href = process.env.REACT_APP_AUCTION_WISHLIST_URL
+    history.push('/redemption')
   }
 
   const startRegisterFuc = () => {
@@ -88,9 +89,6 @@ const CTA = ({
     const variables = {
       label,
       duration,
-      signature,
-      freeDuration,
-      index,
     }
     mutationRegister({ variables })
   }

@@ -268,20 +268,15 @@ function AddReverseRecord({ account, currentAddress }) {
           {hasValidReverseRecord(getReverseRecord) ? (
             <MessageContent data-testid="editable-reverse-record-set">
               <Check />
-              {t('singleName.record.messages.setTo') + getReverseRecord.name}
+              {'singleName.record.messages.setTo' + getReverseRecord.name}
             </MessageContent>
           ) : (
             <EditableNotSet
               dangerouslySetInnerHTML={{
-                __html: textLight(
-                  t('singleName.record.messages.notSet'),
-                  'ENS'
-                ),
+                __html: textLight('singleName.record.messages.notSet', 'ENS'),
               }}
               data-testid="editable-reverse-record-not-set"
-            >
-              {/*{t('singleName.record.messages.notSet')}*/}
-            </EditableNotSet>
+            ></EditableNotSet>
           )}
           {pending && !confirmed && txHash ? (
             <PendingTx
@@ -317,7 +312,7 @@ function AddReverseRecord({ account, currentAddress }) {
             </Explanation>
             {options?.length > 0 ? (
               <Select
-                placeholder={t('singleName.record.messages.selectPlaceholder')}
+                placeholder={'singleName.record.messages.selectPlaceholder'}
                 isClearable={true}
                 value={newName}
                 onChange={handleSelect}
@@ -326,7 +321,7 @@ function AddReverseRecord({ account, currentAddress }) {
               />
             ) : (
               <Warning>
-                {t('singleName.record.messages.noForwardRecordAavilable')}
+                {'singleName.record.messages.noForwardRecordAavilable'}
               </Warning>
             )}
             <Explanation>
@@ -349,7 +344,7 @@ function AddReverseRecord({ account, currentAddress }) {
                   <Bin onClick={() => setIsDeleteModalOpen(true)} />
                   {isDeleteModalOpen && (
                     <Modal closeModal={() => setIsDeleteModalOpen(false)}>
-                      {t('singleName.record.messages.reverseRecordRemoval')}
+                      {'singleName.record.messages.reverseRecordRemoval'}
                       <Gap size={5} />
                       <SaveCancel
                         mutation={() => {
@@ -385,12 +380,11 @@ function AddReverseRecord({ account, currentAddress }) {
             <ReadOnlyMessage>
               {hasValidReverseRecord(getReverseRecord) ? (
                 <MessageContent data-testid="readonly-reverse-record-set">
-                  {t('singleName.record.messages.setTo') +
-                    getReverseRecord.name}
+                  {'singleName.record.messages.setTo' + getReverseRecord.name}
                 </MessageContent>
               ) : (
                 <div data-testid="readonly-reverse-record-not-set">
-                  {t('singleName.record.messages.notSet')}
+                  {'singleName.record.messages.notSet'}
                 </div>
               )}
             </ReadOnlyMessage>
