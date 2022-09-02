@@ -84,7 +84,7 @@
   },
   "scripts": {
     "react-serve": "yarn node scripts/serve.js",
-    "start": "env-cmd -f .env.prod yarn react-serve start",
+    "start": "env-cmd -f .env.stg yarn react-serve start",
     "start:heap": "yarn react-serve --max_old_space_size=16384 start",
     "start:ipfs": "REACT_APP_IPFS=True PUBLIC_URL='.' yarn start",
     "start:test": "REACT_APP_STAGE=local yarn start",
