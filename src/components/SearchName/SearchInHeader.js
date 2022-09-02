@@ -47,7 +47,7 @@ function Search({
     if (searchingDomainName) {
       dispatch(setSearchDomainName(''))
       const params = {
-        ChainID: 97,
+        ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
         name: searchingDomainName,
       }
       axios
@@ -109,7 +109,7 @@ function Search({
         onSubmit={(values, { setSubmitting }) => {
           setActive(true)
           const params = {
-            ChainID: 97,
+            ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
             name: values.searchKey,
           }
           axios
