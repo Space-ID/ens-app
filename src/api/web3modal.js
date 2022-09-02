@@ -1,3 +1,6 @@
+import Web3Modal from 'web3modal'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+
 import { getNetwork, getNetworkId, isReadOnly } from '../ui'
 import { setup as setupENS } from '../apollo/mutations/ens'
 import {
@@ -16,8 +19,8 @@ const PORTIS_ID = '57e5d6ca-e408-4925-99c4-e7da3bdb8bf5'
 
 let provider
 const option = {
-  network: 'mainnet', // optional
   cacheProvider: true, // optional
+  network: 'binance',
   theme: {
     background: '#D7ECE3',
     main: '#379070',
@@ -27,10 +30,12 @@ const option = {
   },
   providerOptions: {
     walletconnect: {
-      package: () => import('@walletconnect/web3-provider'),
-      packageFactory: true,
+      package: WalletConnectProvider,
       options: {
-        infuraId: INFURA_ID,
+        rpc: {
+          56: 'https://bsc-dataseed.binance.org/',
+        },
+        network: 'binance',
       },
     },
     walletlink: {
@@ -66,8 +71,7 @@ const option = {
 let web3Modal
 export const connect = async () => {
   try {
-    const Web3Modal = (await import('@siddomains/web3modal')).default
-    web3Modal = new Web3Modal(option)
+    let web3Modal = new Web3Modal(option)
     provider = await web3Modal.connect()
     await setupENS({
       customProvider: provider,
