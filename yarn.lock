@@ -23687,6 +23687,18 @@ web3modal@^1.9.9:
     styled-components "^5.3.3"
     tslib "^1.10.0"
 
+web3modal@^1.9.9:
+  version "1.9.9"
+  resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.9.tgz#1a09771e1b9264842ab98d42c620568f470ff96b"
+  integrity sha512-ML1C4xH+JTSHHkKbjxuF+f5B3cDUOCnrdQZ8Mlzippq7zRKHf3NBeuIvDdNjtVclJ2S4zYYVmVqRWrgB11ej8A==
+  dependencies:
+    detect-browser "^5.1.0"
+    prop-types "^15.7.2"
+    react "^16.8.6"
+    react-dom "^16.8.6"
+    styled-components "^5.3.3"
+    tslib "^1.10.0"
+
 webidl-conversions@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"
