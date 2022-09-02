@@ -66,7 +66,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [targetDate, setTargetDate] = useState(false)
   const [commitmentExpirationDate, setCommitmentExpirationDate] =
     useState(false)
-  const [freeDuration, setFreeDuration] = useState(0)
   const [index, setIndex] = useState(0)
   const [registering, setRegistering] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
@@ -76,9 +75,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     percent: 0,
     amount: 0,
   })
-  const [winnerLoading, setWinnerLoading] = useState(false)
 
-  const accountSlice = useSelector((state) => state.account)
+  const freeDuration = 0
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
@@ -138,58 +136,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     },
     fetchPolicy: 'no-cache',
   })
-
-  useEffect(() => {
-    const fetchSignature = async () => {
-      // setWinnerLoading(true)
-      try {
-        const result = await axios({
-          method: 'get',
-          url: `${process.env.REACT_APP_BACKEND_URL}/merkleleaf?domain=${domain.label}`,
-        })
-        setFreeDuration(result?.data?.data?.isaution ? 31556952 : 0)
-        if (result?.data?.data?.index) {
-          setIndex(result?.data?.data?.index)
-          if (result?.data?.data?.isaution) {
-            setIsAuctionWinner(true)
-          } else {
-            setIsAuctionWinner(false)
-          }
-          const params = {
-            inputs: [
-              {
-                name: domain.label,
-                index: result?.data?.data?.index,
-                owner: account?.toLowerCase(), //
-                duration,
-                resolver:
-                  process.env.REACT_APP_RESOLVER_ADDRESS.toLocaleLowerCase(),
-                addr: account?.toLowerCase(), //Eth wallet of user connected with metamask
-                freeDuration: result?.data?.data?.isaution ? 31556952 : 0,
-              },
-            ],
-          }
-          const result1 = await axios({
-            method: 'post',
-            url: `${process.env.REACT_APP_MERKLE_BASE_URL}/getproof`,
-            headers: {},
-            data: params,
-          })
-          const proofs = result1?.data
-          if (proofs && proofs.length > 0) {
-            setSignature(proofs)
-          } else {
-            setSignature([])
-          }
-          setWinnerLoading(false)
-        }
-        //Cannot get index from merkletree
-      } catch (err) {
-        setWinnerLoading(false)
-      }
-    }
-    fetchSignature()
-  }, [years])
 
   const { data: { getBalance } = {} } = useQuery(GET_BALANCE, {
     variables: { address: account },
