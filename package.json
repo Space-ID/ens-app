@@ -22,7 +22,6 @@
     "@siddomains/sid-contracts": "^0.1.7",
     "@siddomains/sidjs": "^0.1.8",
     "@siddomains/ui": "1.4.14",
-    "@siddomains/web3modal": "0.1.7",
     "@toruslabs/torus-embed": "^1.8.6",
     "@walletconnect/web3-provider": "^1.7.4",
     "assert": "npm:assert",
@@ -78,7 +77,8 @@
     "slugify": "^1.4.6",
     "stream": "npm:stream-browserify",
     "stream-http": "^3.2.0",
-    "walletlink": "2.5.0"
+    "walletlink": "2.5.0",
+    "web3modal": "^1.9.9"
   },
   "scripts": {
     "react-serve": "yarn node scripts/serve.js",
