@@ -100,30 +100,28 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [mutationCommit] = useMutation(COMMIT, {
     onCompleted: (data) => {
       if (data?.commit) {
-        console.log('commit success;', data)
         setCommitmentTimerRunning(true)
       } else {
         setRegisterState(RegisterState.request)
       }
     },
     onError: (error) => {
-      console.log('commit error:', error)
+      console.error(error)
       setRegisterState(RegisterState.request)
     },
   })
   // register domain
   const [mutationRegister] = useMutation(REGISTER, {
     onCompleted: (data) => {
-      console.log('register result:', data)
       if (data?.register) {
         setTransactionHash(data.register)
       } else {
-        console.log('error')
         setRegisterState(RegisterState.registerError)
       }
     },
     onError: (error) => {
-      console.log('register: error:', error)
+      console.error(error)
+      setRegisterState(RegisterState.registerError)
     },
   })
 
@@ -394,7 +392,7 @@ const NameRegisterDataWrapper = (props) => {
   const { data, loading, error } = useQuery(GET_MINIMUM_COMMITMENT_AGE)
   if (loading) return <AnimationSpin size={40} />
   if (error) {
-    console.log(error)
+    console.error(error)
   }
   return <NameRegister waitTime={data?.getMinimumCommitmentAge} {...props} />
 }
