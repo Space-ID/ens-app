@@ -13,43 +13,47 @@ const RegisterProgress = ({ state }) => {
     window.clearInterval(timer.current)
     timer.current = window.setInterval(() => {
       if (progressRef.current < max) {
-        setProgress(progressRef.current + 0.1)
+        setProgress(progressRef.current + 0.05)
       } else if (timer) {
         window.clearInterval(timer.current)
       }
     }, time)
   }, [])
   useEffect(() => {
-    setWith(`40px`)
+    setWith(`${progress}%`)
   }, [progress])
   useEffect(() => {
     window.clearInterval(timer.current)
     switch (state) {
       case RegisterState.request: {
-        setProgress(5)
+        setWith('40px')
         break
       }
       case RegisterState.requesting: {
-        setProgress(20)
+        setWith('calc(10% + 40px)')
         break
       }
-      case RegisterState.confirm: {
+      case RegisterState.requestSuccess: {
+        setWith('calc(35%)')
         if (progressRef.current < 50) {
-          increase(50, (50 - progressRef.current) / 0.1 / 1000)
-        } else {
-          setProgress(50)
+          setProgress(35)
+          increase(48)
         }
         break
       }
+      case RegisterState.confirm:
+      case RegisterState.register: {
+        setWith('50%')
+        break
+      }
+      case RegisterState.registerError:
       case RegisterState.registering: {
-        if (progressRef.current < 50) {
-          setProgress(50)
-        }
-        increase(80)
+        setWith('80%')
         break
       }
       case RegisterState.registerSuccess: {
-        increase(100, (100 - progressRef.current) / 0.1 / 1000)
+        // increase(100, (100 - progressRef.current) / 0.1 / 1000)
+        setWith('calc(100% - 21px)')
         break
       }
       default: {
@@ -65,7 +69,9 @@ const RegisterProgress = ({ state }) => {
         <div
           className={cn(
             'absolute h-full rounded-[10px]',
-            state === 'REGISTER_ERROR' ? 'bg-[#ED7E17]' : 'bg-[#1EEFA4]'
+            state === RegisterState.registerError
+              ? 'bg-[#ED7E17]'
+              : 'bg-[#1EEFA4]'
           )}
           style={{ width: width }}
         />
@@ -86,9 +92,31 @@ const RegisterProgress = ({ state }) => {
             Confirm Registration
           </div>
         </div>
-        <div className="w-[80px] h-[54px] flex flex-col items-center">
-          <div className="w-[1px] h-[8px] bg-[#B1D6D3]" />
-          <div className="font-semibold text-center text-[14px] leading-[22px]">
+        <div
+          className="w-[80px] h-[54px] flex flex-col items-center"
+          style={{
+            filter:
+              state === RegisterState.registerSuccess
+                ? 'drop-shadow(0px 0px 6px rgba(30, 239, 164, 0.8))'
+                : 'none',
+          }}
+        >
+          <div
+            className={cn(
+              'w-[1px] h-[8px]',
+              state === RegisterState.registerSuccess
+                ? 'bg-[#1EEFA4]'
+                : 'bg-[#B1D6D3]'
+            )}
+          />
+          <div
+            className={cn(
+              'font-semibold text-center text-[14px] leading-[22px]',
+              state === RegisterState.registerSuccess
+                ? 'text-[#1EEFA4]'
+                : 'text-[#B1D6D3]'
+            )}
+          >
             Registration Completed
           </div>
         </div>
