@@ -111,7 +111,7 @@ const CTA = ({
         ) : (
           <button
             data-testid="request-register-button"
-            disabled={isReadOnly || parseFloat(years) < 0.1 || !canRegister}
+            disabled={true}
             onClick={async () => {
               if (hasSufficientBalance) {
                 registerHandle()
@@ -119,9 +119,7 @@ const CTA = ({
             }}
             className={cn(
               'order-2 font-semibold mx-auto px-[37px] py-[9px] rounded-[16px] w-[160px] flex justify-center items-center',
-              isReadOnly || parseFloat(years) < 0.1 || !canRegister
-                ? 'bg-gray-800 text-white cursor-not-allowed'
-                : 'bg-primary text-dark-common'
+              'bg-gray-800 text-white cursor-not-allowed'
             )}
           >
             Register{' '}
