@@ -106,7 +106,7 @@ const ProgressRecorder = ({
   }
   // todo change step
   switch (step) {
-    case RegisterState.request:
+    case RegisterState.request: // init state
       if (!savedStep) {
         Store.set(label, { step, secret })
       } else {
@@ -114,7 +114,14 @@ const ProgressRecorder = ({
           Store.set(label, { step, secret, years })
         } else {
           let commitmentDate = new Date(checkCommitment * 1000)
-          if (commitmentDate > 0) {
+
+          if (savedStep.waitUntil > now) {
+            const passed = Number(savedStep.secondsPassed)
+            if (!Number.isNaN(passed) && passed >= 0 && passed <= 60) {
+              dispatch(RegisterState.requestSuccess)
+              setSecondsPassed(passed)
+            }
+          } else if (commitmentDate > 0) {
             // todo: expire?
             dispatch(RegisterState.confirm)
             // dispatch('NEXT') // Go to pending
