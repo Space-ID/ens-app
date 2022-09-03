@@ -113,7 +113,7 @@ const CTA = ({
         ) : (
           <button
             data-testid="request-register-button"
-            disabled={isReadOnly || parseFloat(years) < 0.1 || !canRegister}
+            disabled={true}
             onClick={async () => {
               if (hasSufficientBalance) {
                 registerHandle()
