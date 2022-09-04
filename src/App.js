@@ -2,6 +2,7 @@ import React, { lazy } from 'react'
 import { BrowserRouter, Route as DefaultRoute, Switch } from 'react-router-dom'
 
 const Home = lazy(() => import('./routes/Home'))
+const HungerPhase = lazy(() => import('./routes/hunger-phase'))
 const Redemption = lazy(() => import('./routes/redemption'))
 const SingleName = lazy(() => import('./routes/SingleName'))
 const Profile = lazy(() => import('./routes/Profile'))
@@ -48,6 +49,13 @@ const App = () => {
           exact
           path="/profile"
           component={Profile}
+          f
+          layout={HomePageLayout}
+        />
+        <Route
+          exact
+          path="/hunger-phase"
+          component={HungerPhase}
           layout={HomePageLayout}
         />
         <Route
