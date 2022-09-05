@@ -142,16 +142,16 @@ function Search({
             >
               <SearchIcon
                 className={cn(
-                  active ? 'text-[#1EEFA4]' : 'text-[rgba(204,252,255,0.6)]'
+                  active ? 'text-green-100' : 'text-[rgba(204,252,255,0.6)]'
                 )}
               />
             </button>
             <div>
               <input
                 className={cn(
-                  'w-full bg-[#104151]/[0.25] py-[10px] pl-[40px] text-[#BDCED1] text-[16px] border rounded-[18px] focus:bg-transparent text-[#30DB9E] active:bg-transparent focus:outline-none',
+                  'w-full bg-[#104151]/[0.25] py-[10px] pl-[40px] text-[16px] border rounded-[18px] focus:bg-transparent text-green-100 active:bg-transparent focus:outline-none',
                   isShowSearchBtn ? 'pr-[150px]' : 'pr-[50px]',
-                  active ? 'border-[#1EEFA4]' : 'border-[rgba(204,252,255,0.6)]'
+                  active ? 'border-green-100' : 'border-[rgba(204,252,255,0.6)]'
                 )}
                 placeholder="Explore the space"
                 onChange={(e) => {
@@ -183,7 +183,7 @@ function Search({
               className={cn(
                 'font-urbanist font-semibold text-[16px] absolute top-[10px] transition-all',
                 active
-                  ? 'right-[110px] text-[#1EEFA4]'
+                  ? 'right-[110px] text-green-100'
                   : 'right-[20px] text-[rgba(204,252,255,0.6)]'
               )}
             >
@@ -192,7 +192,7 @@ function Search({
             {active && (
               <button
                 type="submit"
-                className="text-primary w-[92px] bg-[#1EEFA4] text-semibold text-[14px] font-semibold font-urbanist py-1 px-6 rounded-[10px] absolute top-[8px] right-2"
+                className="w-[92px] text-dark-common bg-green-100 text-semibold text-[14px] font-semibold font-urbanist py-1 px-6 rounded-[10px] absolute top-2 right-2"
               >
                 Search
               </button>
