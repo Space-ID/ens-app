@@ -94,8 +94,8 @@ const Step1Main = ({
         <div className="text-center text-[14px] leading-[22px]">
           In this step, you may request for registration and perform the first
           of the two transactions. Upon requesting, the system will undergo a
-          process to ensure no other user is registering this domain
-          simultaneously. This may take up to 30 seconds.
+          process to ensure other users are not trying to register for the same
+          domain and protect you after request. This may take up to 30 seconds.
         </div>
         {isReadOnly && state === RegisterState.request && (
           <>

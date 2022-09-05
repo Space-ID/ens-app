@@ -101,7 +101,7 @@ export default () => {
       return (
         <div className="mt-[55px]">
           <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl">
-            Please wait for the mainnet test to begin on Sep 7th.
+            Please wait for the staging launch to begin on Sep 7th.
           </p>
         </div>
       )
@@ -117,8 +117,8 @@ export default () => {
           />
           {!claimable && (
             <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-              Mainnet test for today has ended. Please come back for the next
-              round on tomorrow.
+              You have used up the quota for registration. Please wait for the
+              public registration.
             </p>
           )}
         </div>
@@ -134,7 +134,7 @@ export default () => {
             searchingDomainName={searchingDomainName}
           />
           <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-            Mainnet test has ended. Please wait for the public registration.
+            Staging Launch has ended. Please wait for the public registration.
           </p>
         </div>
       )
