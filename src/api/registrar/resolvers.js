@@ -60,10 +60,19 @@ const resolvers = {
 
     async getHungerPhaseInfo() {
       try {
-        console.log('debug; calling getHungerPhaseInfo:')
         const registrar = getRegistrar()
         const info = await registrar.getHungerPhaseInfo()
         return info
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getIsClaimable(_, { address }) {
+      try {
+        const registrar = getRegistrar()
+        const isClaimable = await registrar.getIsClaimable(address)
+        return isClaimable
       } catch (e) {
         console.log(e)
       }

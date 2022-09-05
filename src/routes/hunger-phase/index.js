@@ -6,7 +6,7 @@ import { SpaceIDTextIcon } from 'components/Icons'
 import { useAccount } from 'components/QueryAccount'
 import { isEmptyAddress } from 'utils/records'
 import { ethers } from '@siddomains/ui'
-import { GET_HUNGER_PHASE_INFO } from 'graphql/queries'
+import { GET_HUNGER_PHASE_INFO, GET_IS_CLAIMABLE } from 'graphql/queries'
 import AnimationSpin from 'components/AnimationSpin'
 
 export const HOME_DATA = gql`
@@ -23,6 +23,7 @@ export default () => {
   const [dailyUsed, setDailyUsed] = useState(null)
   const [dailyLimit, setDailyLimit] = useState(null)
   const [isInHungerPhase, setIsInHungerPhase] = useState(0)
+  const [claimable, setClaimable] = useState(false)
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
@@ -42,8 +43,14 @@ export default () => {
   const [getHungerInfo, { loading, error, data: hungerPhaseInfo }] =
     useLazyQuery(GET_HUNGER_PHASE_INFO)
 
+  const [getIsClaimable, { error: claimError, data: isClaimable }] =
+    useLazyQuery(GET_IS_CLAIMABLE, {
+      variables: { address: account },
+    })
+
   useEffect(() => {
     if (account) {
+      getIsClaimable()
       getHungerInfo()
     }
   }, [account])
@@ -75,6 +82,12 @@ export default () => {
     }
   }, [hungerPhaseInfo])
 
+  useEffect(() => {
+    if (isClaimable?.getIsClaimable) {
+      setClaimable(true)
+    } else setClaimable(false)
+  }, [isClaimable])
+
   const getMainContent = () => {
     if (isEmptyAddress(account) || isReadOnly) return null
     if (loading)
@@ -102,7 +115,7 @@ export default () => {
             className="px-7 md:px-0 md:w-[600px] mx-auto"
             searchingDomainName={searchingDomainName}
           />
-          {isTestEnded && (
+          {!claimable && (
             <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
               Mainnet test for today has ended. Please come back for the next
               round on tomorrow.

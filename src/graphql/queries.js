@@ -325,6 +325,12 @@ export const GET_HUNGER_PHASE_INFO = gql`
   }
 `
 
+export const GET_IS_CLAIMABLE = gql`
+  query getIsClaimable($address: String) {
+    getIsClaimable(address: $address)
+  }
+`
+
 export const GET_MAXIMUM_COMMITMENT_AGE = gql`
   query getMaximumCommitmentAge {
     getMaximumCommitmentAge
