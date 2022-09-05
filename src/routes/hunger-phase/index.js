@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, gql, useLazyQuery } from '@apollo/client'
 import Search from 'components/SearchName/Search'
 import { SpaceIDTextIcon } from 'components/Icons'
 import { useAccount } from 'components/QueryAccount'
 import { isEmptyAddress } from 'utils/records'
-
-import API from 'common/API'
+import { ethers } from '@siddomains/ui'
+import { GET_HUNGER_PHASE_INFO } from 'graphql/queries'
+import AnimationSpin from 'components/AnimationSpin'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -18,6 +19,10 @@ export const HOME_DATA = gql`
 `
 
 export default () => {
+  // const [loading, setLoading] = useState(false);
+  const [dailyUsed, setDailyUsed] = useState(null)
+  const [dailyLimit, setDailyLimit] = useState(null)
+  const [isInHungerPhase, setIsInHungerPhase] = useState(0)
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
@@ -32,35 +37,53 @@ export default () => {
 
   const { isReadOnly } = data
 
-  //If value is 0 it means not started hunger phase 1 means is in the hunger phase and 2 means passed hunger phase
-  const isInHungerPhase = 1
-  const isTestEnded = true
+  const isTestEnded = false
 
-  console.log('debug: account: ', account)
+  const [getHungerInfo, { loading, error, data: hungerPhaseInfo }] =
+    useLazyQuery(GET_HUNGER_PHASE_INFO)
 
   useEffect(() => {
     if (account) {
-      API.get(`/whitelist?address=${account}`)
-        .then((res) => {
-          console.log('debug: res.data: ', res.data)
-          // User is eligible to send the wishlist
-          if (res.data) {
-            const timeNow = new Date().getTime()
-            let tState = 1
-          } else {
-          }
-        })
-        .catch((err) => {
-          console.log('debug: error when getting whitelist: ', err)
-        })
-        .finally(() => {
-          dispatch(stopConnect())
-        })
+      getHungerInfo()
     }
   }, [account])
 
+  useEffect(() => {
+    if (hungerPhaseInfo?.getHungerPhaseInfo) {
+      const startTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
+      )
+      const endTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
+      )
+      const dailyQuota = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+      )
+      const dailyUsed = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+      )
+      const timeNow = new Date().getTime()
+      if (timeNow < startTime) {
+        setIsInHungerPhase(0)
+      } else if (timeNow > endTime) {
+        setIsInHungerPhase(2)
+      } else {
+        setIsInHungerPhase(1)
+      }
+      setDailyUsed(dailyUsed.toNumber())
+      setDailyLimit(dailyQuota.toNumber())
+    }
+  }, [hungerPhaseInfo])
+
   const getMainContent = () => {
     if (isEmptyAddress(account) || isReadOnly) return null
+    if (loading)
+      return (
+        <AnimationSpin
+          className="flex justify-center mt-10 text-center"
+          size={40}
+        />
+      )
     if (isInHungerPhase === 0)
       return (
         <div className="mt-[55px]">
@@ -73,7 +96,7 @@ export default () => {
       return (
         <div className="mt-5 space-y-7">
           <p className="text-lg font-semibold leading-6 text-center text-gray-700 font-urbanist">
-            Registration Limit: 122/300
+            Registration Limit: {dailyUsed}/{dailyLimit}
           </p>
           <Search
             className="px-7 md:px-0 md:w-[600px] mx-auto"
@@ -91,7 +114,7 @@ export default () => {
       return (
         <div className="mt-5 space-y-7">
           <p className="text-lg font-semibold leading-6 text-center text-gray-700 font-urbanist">
-            Registration Limit: 122/300
+            Registration Limit: {dailyUsed}/{dailyLimit}
           </p>
           <Search
             className="px-7 md:px-0 md:w-[600px] mx-auto"
