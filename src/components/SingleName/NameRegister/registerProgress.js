@@ -37,7 +37,7 @@ const RegisterProgress = ({ state }) => {
         setWith('calc(35%)')
         if (progressRef.current < 50) {
           setProgress(35)
-          increase(48)
+          increase(49)
         }
         break
       }
@@ -82,13 +82,13 @@ const RegisterProgress = ({ state }) => {
       <div className="w-full flex justify-between mt-[16px]">
         <div className="w-[80px] h-[54px] flex flex-col items-center">
           <div className="w-[1px] h-[8px] bg-[#B1D6D3]" />
-          <div className="font-semibold text-center text-[14px] leading-[22px]">
+          <div className="font-semibold text-center text-[14px] text-[#B1D6D3] leading-[22px]">
             Request to Register
           </div>
         </div>
         <div className="w-[80px] h-[54px] flex flex-col items-center">
           <div className="w-[1px] h-[8px] bg-[#B1D6D3]" />
-          <div className="font-semibold text-center text-[14px] leading-[22px]">
+          <div className="font-semibold text-center text-[14px] text-[#B1D6D3] leading-[22px]">
             Confirm Registration
           </div>
         </div>
