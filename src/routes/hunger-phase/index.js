@@ -1,18 +1,66 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useQuery, gql } from '@apollo/client'
 import Search from 'components/SearchName/Search'
 import { SpaceIDTextIcon } from 'components/Icons'
+import { useAccount } from 'components/QueryAccount'
+import { isEmptyAddress } from 'utils/records'
+
+import API from 'common/API'
+
+export const HOME_DATA = gql`
+  query getHomeData($address: string) @client {
+    network
+    displayName(address: $address)
+    isReadOnly
+    isSafeApp
+  }
+`
 
 export default () => {
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
 
+  const account = useAccount()
+
+  const { data } = useQuery(HOME_DATA, {
+    variables: {
+      address: account,
+    },
+  })
+
+  const { isReadOnly } = data
+
   //If value is 0 it means not started hunger phase 1 means is in the hunger phase and 2 means passed hunger phase
   const isInHungerPhase = 1
   const isTestEnded = true
 
+  console.log('debug: account: ', account)
+
+  useEffect(() => {
+    if (account) {
+      API.get(`/whitelist?address=${account}`)
+        .then((res) => {
+          console.log('debug: res.data: ', res.data)
+          // User is eligible to send the wishlist
+          if (res.data) {
+            const timeNow = new Date().getTime()
+            let tState = 1
+          } else {
+          }
+        })
+        .catch((err) => {
+          console.log('debug: error when getting whitelist: ', err)
+        })
+        .finally(() => {
+          dispatch(stopConnect())
+        })
+    }
+  }, [account])
+
   const getMainContent = () => {
+    if (isEmptyAddress(account) || isReadOnly) return null
     if (isInHungerPhase === 0)
       return (
         <div className="mt-[55px]">
