@@ -446,7 +446,7 @@ export default ({ children }) => {
               >
                 <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
                   <div>
-                    <div className="flex items-center border-b-[2px] border-[#7E9195] pb-4 flex justify-between">
+                    <div className="flex items-center border-b-[2px] border-[#7E9195] pb-4">
                       {!reverseRecordLoading &&
                       getReverseRecord &&
                       getReverseRecord.avatar ? (

@@ -29,7 +29,7 @@ export default () => {
         {/*  searchingDomainName={searchingDomainName}*/}
         {/*/>*/}
         <div>
-          <p className="text-[18px] md:text-[24px] leading-[34px] mt-[40px] md:mt-[95px] text-[#BDCED1] px-5">
+          <p className="text-[18px] md:text-[24px] leading-[34px] mt-[40px] md:mt-[95px] text-[#BDCED1] px-5 text-center">
             Thank you for joining SPACE ID Pre-registration Event!
           </p>
         </div>
