@@ -38,7 +38,8 @@ const App = () => {
   return (
     <BrowserRouter basename="/">
       <Switch>
-        <Route exact path="/" component={Home} layout={HomePageLayout} />
+        {/* <Route exact path="/" component={Home} layout={HomePageLayout} /> */}
+        <Route exact path="/" component={HungerPhase} layout={HomePageLayout} />
         <Route
           exact
           path="/redemption"
@@ -50,12 +51,6 @@ const App = () => {
           path="/profile"
           component={Profile}
           f
-          layout={HomePageLayout}
-        />
-        <Route
-          exact
-          path="/hunger-phase"
-          component={HungerPhase}
           layout={HomePageLayout}
         />
         <Route
