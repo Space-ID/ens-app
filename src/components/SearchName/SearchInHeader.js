@@ -5,12 +5,13 @@ import { Formik } from 'formik'
 import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { validate } from '@ensdomains/ens-validation'
-
+import { useQuery } from '@apollo/client'
+import { useAccount } from 'components/QueryAccount'
 import SearchIcon from 'components/Icons/SearchIcon'
 import FaceCryIcon from 'components/Icons/FaceCryIcon'
 import FaceHappyIcon from 'components/Icons/FaceHappyIcon'
 import { setSearchDomainName, setSelectedDomain } from 'app/slices/domainSlice'
-
+import { GET_IS_CLAIMABLE } from 'graphql/queries'
 import '../../api/subDomainRegistrar'
 import { parseSearchTerm, validateName } from '../../utils/utils'
 
@@ -29,7 +30,13 @@ function Search({
   const [showPopup, setShowPopup] = useState(false)
   const [result, setResult] = useState(null)
   const [active, setActive] = useState(false)
+  const account = useAccount()
   const dispatch = useDispatch()
+
+  const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
+    variables: { address: account },
+    fetchPolicy: 'no-cache',
+  })
 
   const gotoDetailPage = () => {
     setShowPopup(false)
@@ -232,15 +239,20 @@ function Search({
             >
               {result.Owner ? 'Unavailable' : 'available'}
             </div>
-            <div
+            <button
+              disabled={!isClaimable?.getIsClaimable}
               onClick={gotoDetailPage}
               className={cn(
                 'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
-                result.Owner ? 'bg-[#ED7E17]' : 'bg-[#2980E8]'
+                result.Owner
+                  ? 'bg-[#ED7E17]'
+                  : isClaimable?.getIsClaimable
+                  ? 'bg-[#2980E8]'
+                  : 'bg-gray-800 text-white cursor-not-allowed'
               )}
             >
               {result.Owner ? <span>View</span> : <span>Register</span>}
-            </div>
+            </button>
           </div>
         </div>
       )}

@@ -3,7 +3,13 @@ import cn from 'classnames'
 import { useHistory } from 'react-router'
 import { RegisterState } from './constant'
 import InsufficientBalanceModal from '../../Modal/InsufficientBalanceModal'
-const Step2Main = ({ onRegister, state, onRetry, hasSufficientBalance }) => {
+const Step2Main = ({
+  onRegister,
+  state,
+  onRetry,
+  hasSufficientBalance,
+  disable,
+}) => {
   const history = useHistory()
   const [showModal, setShowModal] = useState(false)
   const handleRegister = () => {
@@ -50,7 +56,13 @@ const Step2Main = ({ onRegister, state, onRetry, hasSufficientBalance }) => {
         {state === RegisterState.confirm && (
           <>
             <button
-              className="w-[160px] h-[42px] rounded-[16px] bg-[#30DB9E] text-[#071A2F] text-[18px] leading-[26px] font-semibold mx-auto"
+              disabled={disable}
+              className={cn(
+                'w-[160px] h-[42px] rounded-[16px] text-[18px] leading-[26px] font-semibold mx-auto',
+                disable
+                  ? 'bg-gray-800 text-white cursor-not-allowed'
+                  : 'bg-[#30DB9E] text-[#071A2F]'
+              )}
               onClick={handleRegister}
             >
               Register

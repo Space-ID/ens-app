@@ -1,5 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMutation, useQuery } from '@apollo/client'
 import moment from 'moment'
@@ -16,11 +15,11 @@ import {
   GET_BALANCE,
   GET_ETH_PRICE,
   GET_PRICE_CURVE,
+  GET_IS_CLAIMABLE,
 } from 'graphql/queries'
 import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
-import { registerMachine, registerReducer } from './registerReducer'
-import { successRegistering, startRegistering } from 'app/slices/registerSlice'
+import { successRegistering } from 'app/slices/registerSlice'
 import { calculateDuration, yearInSeconds } from 'utils/dates'
 import { GET_TRANSACTION_HISTORY } from 'graphql/queries'
 
@@ -44,6 +43,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [secret, setSecret] = useState(false)
   const { networkId } = useNetworkInfo()
   const dispatchSlice = useDispatch()
+  const account = useAccount()
 
   const [registerState, setRegisterState] = useState(RegisterState.request)
   let now, currentPremium, underPremium
@@ -69,6 +69,12 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       setYears(n)
     }
   }, [])
+
+  // hunger phase isClaimable
+  const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
+    variables: { address: account },
+    fetchPolicy: 'no-cache',
+  })
 
   // get eth price
   const {
@@ -142,8 +148,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       setRegisterState(RegisterState.registerError)
     }
   }, [transactionHistory])
-
-  const account = useAccount()
 
   // get balance
   const { data: { getBalance } = {} } = useQuery(GET_BALANCE, {
@@ -351,6 +355,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
         <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-[16px] md:px-[50px] px-[24px] py-[24px]">
           {registerState.startsWith(RegisterState.request) && (
             <Step1Main
+              disable={!isClaimable?.getIsClaimable}
               state={registerState}
               duration={duration}
               years={years}
@@ -374,6 +379,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           {(registerState === RegisterState.confirm ||
             registerState.startsWith(RegisterState.register)) && (
             <Step2Main
+              disable={!isClaimable?.getIsClaimable}
               state={registerState}
               onRegister={handleRegister}
               onRetry={handleRetry}

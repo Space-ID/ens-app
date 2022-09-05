@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import EthVal from 'ethval'
+import cn from 'classnames'
 import Years from './Years'
 import Price from './Price'
 import { useQuery } from '@apollo/client'
@@ -26,6 +27,7 @@ const Step1Main = ({
   registrationFee,
   registrationFeeInUsd,
   registerGasFast,
+  disable,
 }) => {
   const account = useAccount()
 
@@ -110,8 +112,13 @@ const Step1Main = ({
         )}
         {!isReadOnly && state === RegisterState.request && (
           <button
-            className="w-[160px] h-[42px] rounded-[16px] bg-[#30DB9E] text-[#071A2F] text-[18px] leading-[26px] font-semibold mx-auto mt-[24px]"
-            disabled={isReadOnly || parseFloat(years) < 0.1}
+            className={cn(
+              'w-[160px] h-[42px] rounded-[16px] text-[18px] leading-[26px] font-semibold mx-auto mt-[24px]',
+              disable
+                ? 'bg-gray-800 text-white cursor-not-allowed'
+                : 'bg-[#30DB9E] text-[#071A2F]'
+            )}
+            disabled={disable || isReadOnly || parseFloat(years) < 0.1}
             onClick={handleRequest}
           >
             Request

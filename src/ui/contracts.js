@@ -3,14 +3,13 @@ import {
   BaseRegistrarImplementation as permanentRegistrarContract,
   BulkRenewal as bulkRenewalContract,
   SID as ensContract,
-  // BNBRegistrarControllerHungerPhase as permanentRegistrarControllerContract,
+  BNBRegistrarControllerHungerPhase as permanentRegistrarControllerContract,
   DNSRegistrar as dnsRegistrarContract,
   Resolver as resolverContract,
   ReverseRegistrar as reverseRegistrarContract,
   TestRegistrar as testRegistrarContract,
   AggregatorInterface as oracleContract,
 } from '@siddomains/sid-contracts'
-import permanentRegistrarControllerContract from '@siddomains/sid-contracts/build/contracts/BNBRegistrarControllerHungerPhase.json'
 
 import { abi as oldResolverContract } from '@ensdomains/contracts/abis/ens-022/PublicResolver.json'
 import { abi as dnsRegistrarContractOld } from '@ensdomains/contracts/abis/dnsregistrar/DNSRegistrar.json'
