@@ -17,16 +17,16 @@ jobs:
         with:
           node-version: '16'
       - run: yarn install
-      - run: yarn run build:prd && cp -a build/. dist/ && cp -a build/. dist/app/
+      - run: yarn run build:prd
 
       - name: Deploy
         uses: reggionick/s3-deploy@v3
         with:
-          folder: 'dist'
-          bucket: 'alpha-app-space-id'
+          folder: 'build'
+          bucket: 'alpha-prd-space-id'
           bucket-region: 'us-west-2'
           dist-id: 'E3SU0ENOLNWBR6'
-          invalidation: /app/
+          invalidation: /
           delete-removed: true
           no-cache: false
           private: true

@@ -35,9 +35,9 @@ const App = () => {
   useReactiveVarListeners()
 
   return (
-    <BrowserRouter basename="app">
+    <BrowserRouter basename="/">
       <Switch>
-        {/* <Route exact path="/" component={Home} layout={HomePageLayout} /> */}
+        <Route exact path="/" component={Home} layout={HomePageLayout} />
         <Route
           exact
           path="/redemption"

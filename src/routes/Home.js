@@ -24,10 +24,15 @@ export default () => {
         <div className="flex justify-center mb-7">
           <SpaceIDTextIcon />
         </div>
-        <Search
-          className="px-7 md:px-0 md:w-[600px] mx-auto"
-          searchingDomainName={searchingDomainName}
-        />
+        {/*<Search*/}
+        {/*  className="px-7 md:px-0 md:w-[600px] mx-auto"*/}
+        {/*  searchingDomainName={searchingDomainName}*/}
+        {/*/>*/}
+        <div>
+          <p className="text-[18px] md:text-[24px] leading-[34px] mt-[40px] md:mt-[95px] text-[#BDCED1] px-5">
+            Thank you for joining SPACE ID Pre-registration Event!
+          </p>
+        </div>
       </div>
     </div>
   )
