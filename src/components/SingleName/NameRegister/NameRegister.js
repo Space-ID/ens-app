@@ -334,20 +334,20 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }
 
   return (
-    <div className="max-w-[448px] mx-auto">
-      <div className="flex justify-center">
-        <p className="min-w-full max-w-full block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center max-w-max px-6">
+    <div className="flex flex-col items-center mx-auto">
+      <div className="flex justify-center mb-8">
+        <p className="md:max-w-[928px] max-w-[360px] md:min-w-[320px] w-auto block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center max-w-max px-6">
           {domain.name}
         </p>
       </div>
       <div className="flex flex-col md:flex-row md:w-[928px] w-[360px]">
         {(registerState === RegisterState.confirm ||
           registerState.startsWith(RegisterState.register)) && (
-            <Step1Sidebar
-              price={registrationFee}
-              totalUsd={registrationFeeInUsd}
-            />
-          )}
+          <Step1Sidebar
+            price={registrationFee}
+            totalUsd={registrationFeeInUsd}
+          />
+        )}
         <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-[16px] md:px-[50px] px-[24px] py-[24px]">
           {registerState.startsWith(RegisterState.request) && (
             <Step1Main
@@ -373,13 +373,13 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           )}
           {(registerState === RegisterState.confirm ||
             registerState.startsWith(RegisterState.register)) && (
-              <Step2Main
-                state={registerState}
-                onRegister={handleRegister}
-                onRetry={handleRetry}
-                hasSufficientBalance={hasSufficientBalance}
-              />
-            )}
+            <Step2Main
+              state={registerState}
+              onRegister={handleRegister}
+              onRetry={handleRetry}
+              hasSufficientBalance={hasSufficientBalance}
+            />
+          )}
         </div>
         {registerState.startsWith(RegisterState.request) && <Step2Sidebar />}
       </div>
