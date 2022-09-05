@@ -6,6 +6,7 @@ import { Formik } from 'formik'
 import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { useQuery } from '@apollo/client'
+import ClickAwayListener from 'react-click-away-listener'
 import { useAccount } from 'components/QueryAccount'
 import SearchIcon from 'components/Icons/SearchIcon'
 import FaceCryIcon from 'components/Icons/FaceCryIcon'
@@ -184,52 +185,54 @@ function Search({
         )}
       </Formik>
       {showPopup && (
-        <div
-          className={cn(
-            'shadow-popup flex md:w-full bg-dark-300 px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
-            suggestionClassName,
-            isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
-          )}
-        >
-          <div className="flex items-center max-w-[calc(100%-170px)]">
-            {result.Owner ? (
-              <FaceCryIcon className="text-green-200" />
-            ) : (
-              <FaceHappyIcon className="text-green-200" />
+        <ClickAwayListener onClickAway={() => setShowPopup(false)}>
+          <div
+            className={cn(
+              'shadow-popup flex md:w-full bg-dark-300 px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
+              suggestionClassName,
+              isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
             )}
-            <span
-              className={cn(
-                'ml-2 text-[16px] font-semibold text-green-200 truncate'
+          >
+            <div className="flex items-center max-w-[calc(100%-170px)]">
+              {result.Owner ? (
+                <FaceCryIcon className="text-green-200" />
+              ) : (
+                <FaceHappyIcon className="text-green-200" />
               )}
-            >
-              {result.name}.bnb
-            </span>
-          </div>
-          <div className="flex items-center">
-            <div
-              className={cn(
-                'text-sm font-semibold leading-[22px] font-urbanist',
-                result.Owner ? 'text-red-100' : 'text-blue-200'
-              )}
-            >
-              {result.Owner ? 'Unavailable' : 'available'}
+              <span
+                className={cn(
+                  'ml-2 text-[16px] font-semibold text-green-200 truncate'
+                )}
+              >
+                {result.name}.bnb
+              </span>
             </div>
-            <button
-              disabled={!isClaimable?.getIsClaimable}
-              onClick={gotoDetailPage}
-              className={cn(
-                'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
-                result.Owner
-                  ? 'bg-red-100'
-                  : isClaimable?.getIsClaimable
-                  ? 'bg-blue-100'
-                  : 'bg-gray-800 text-white cursor-not-allowed'
-              )}
-            >
-              {result.Owner ? <span>View</span> : <span>Register</span>}
-            </button>
+            <div className="flex items-center">
+              <div
+                className={cn(
+                  'text-sm font-semibold leading-[22px] font-urbanist',
+                  result.Owner ? 'text-red-100' : 'text-blue-200'
+                )}
+              >
+                {result.Owner ? 'Unavailable' : 'available'}
+              </div>
+              <button
+                disabled={!isClaimable?.getIsClaimable}
+                onClick={gotoDetailPage}
+                className={cn(
+                  'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
+                  result.Owner
+                    ? 'bg-red-100'
+                    : isClaimable?.getIsClaimable
+                    ? 'bg-blue-100'
+                    : 'bg-gray-800 text-white cursor-not-allowed'
+                )}
+              >
+                {result.Owner ? <span>View</span> : <span>Register</span>}
+              </button>
+            </div>
           </div>
-        </div>
+        </ClickAwayListener>
       )}
     </div>
   )
