@@ -2,7 +2,7 @@ name: Space ID App S3 Deploy - Staging
 
 on:
   push:
-    branches: [feature/hunger-phase-dev]
+    branches: [feature/hunger-phase]
 
 jobs:
   build-and-deploy:
