@@ -362,9 +362,7 @@ export default class Registrar {
     console.log('debug; endTime:', endTime)
     const dailyQuota = await permanentRegistrarController.dailyQuota()
     console.log('debug; dailyQuota:', dailyQuota)
-    const dailyUsed = await permanentRegistrarController.dailyUsed(
-      new Date().getTime()
-    )
+    const dailyUsed = await permanentRegistrarController.getCurrentDayUsage()
     console.log('debug; dailyUsed:', dailyUsed)
     return {
       startTime,
