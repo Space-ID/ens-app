@@ -360,6 +360,27 @@ export default class Registrar {
     return permanentRegistrarController.minCommitmentAge()
   }
 
+  async getHungerPhaseInfo() {
+    console.log('debug: hunger phase calling')
+    const permanentRegistrarController = this.permanentRegistrarController
+    const startTime = await permanentRegistrarController.startTime()
+    console.log('debug; startTime:', startTime)
+    const endTime = await permanentRegistrarController.endTime()
+    console.log('debug; endTime:', endTime)
+    const dailyQuota = await permanentRegistrarController.dailyQuota()
+    console.log('debug; dailyQuota:', dailyQuota)
+    const dailyUsed = await permanentRegistrarController.dailyUsed(
+      new Date().getTime()
+    )
+    console.log('debug; dailyUsed:', dailyUsed)
+    return {
+      startTime,
+      endTime,
+      dailyQuota,
+      dailyUsed,
+    }
+  }
+
   async getMaximumCommitmentAge() {
     const permanentRegistrarController = this.permanentRegistrarController
     return permanentRegistrarController.maxCommitmentAge()

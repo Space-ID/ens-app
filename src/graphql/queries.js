@@ -319,6 +319,12 @@ export const GET_MINIMUM_COMMITMENT_AGE = gql`
   }
 `
 
+export const GET_HUNGER_PHASE_INFO = gql`
+  query getHungerPhaseInfo {
+    getHungerPhaseInfo
+  }
+`
+
 export const GET_MAXIMUM_COMMITMENT_AGE = gql`
   query getMaximumCommitmentAge {
     getMaximumCommitmentAge

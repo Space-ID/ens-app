@@ -57,6 +57,18 @@ const resolvers = {
         console.log(e)
       }
     },
+
+    async getHungerPhaseInfo() {
+      try {
+        console.log('debug; calling getHungerPhaseInfo:')
+        const registrar = getRegistrar()
+        const info = await registrar.getHungerPhaseInfo()
+        return info
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
     async getMaximumCommitmentAge() {
       try {
         const registrar = getRegistrar()
