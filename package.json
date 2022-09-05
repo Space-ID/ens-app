@@ -2,7 +2,7 @@
   "name": "sid-app",
   "version": "1.0.1",
   "private": true,
-  "homepage": "./app",
+  "homepage": "/",
   "dependencies": {
     "@0xproject/utils": "^2.0.2",
     "@apollo/client": "^3.4.4",
