@@ -13,7 +13,7 @@ const RegisterProgress = ({ state }) => {
     window.clearInterval(timer.current)
     timer.current = window.setInterval(() => {
       if (progressRef.current < max) {
-        setProgress(progressRef.current + 0.05)
+        setProgress(progressRef.current + 0.04)
       } else if (timer) {
         window.clearInterval(timer.current)
       }
@@ -37,7 +37,7 @@ const RegisterProgress = ({ state }) => {
         setWith('calc(35%)')
         if (progressRef.current < 50) {
           setProgress(35)
-          increase(49)
+          increase(47)
         }
         break
       }
