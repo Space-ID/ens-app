@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import cn from 'classnames'
 import { useHistory } from 'react-router'
 import { RegisterState } from './constant'
+import AnimationSpin from '../../AnimationSpin'
 const Step2Main = ({ onRegister, state, onRetry, disable }) => {
   const history = useHistory()
   const handleRegister = () => {
@@ -66,8 +67,9 @@ const Step2Main = ({ onRegister, state, onRetry, disable }) => {
               Registration completed!
             </div>
           ) : (
-            <div className="text-[20px] leading-[28px] text-center mb-[30px]">
-              Registration in progress...
+            <div className="flex items-center text-[20px] text-[#1EEFA4] font-semibold leading-[28px] text-center mb-[30px]">
+              <span>TX Pending</span>
+              <AnimationSpin className="ml-[10px]" size={20} />
             </div>
           )}
           <button
