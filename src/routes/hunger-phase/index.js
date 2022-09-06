@@ -115,6 +115,12 @@ export default () => {
             className="px-7 md:px-0 md:w-[600px] mx-auto"
             searchingDomainName={searchingDomainName}
           />
+          {claimable && dailyUsed >= dailyLimit && (
+            <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
+              Staging launch for today has ended. Please come back for the next
+              round on tomorrow.
+            </p>
+          )}
           {!claimable && (
             <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
               You have used up the quota for registration. Please wait for the

@@ -6,6 +6,7 @@ import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { validate } from '@ensdomains/ens-validation'
 import { useLazyQuery, useQuery } from '@apollo/client'
+import { ethers } from '@siddomains/ui'
 import ClickAwayListener from 'react-click-away-listener'
 import { useAccount } from 'components/QueryAccount'
 import SearchIcon from 'components/Icons/SearchIcon'
@@ -54,7 +55,13 @@ function Search({
         hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
       )
       const timeNow = new Date().getTime()
-      if (timeNow > startTime && timeNow < endTime) {
+      const dailyQuota = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+      )
+      const dailyUsed = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+      )
+      if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
         setIsInHungerPhase(true)
       }
     }

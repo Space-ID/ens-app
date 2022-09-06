@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
 import { useMutation, useQuery } from '@apollo/client'
 import moment from 'moment'
 import { toArray, last } from 'lodash'
 
 import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
+import { ethers } from '@siddomains/ui'
 
 import {
   CHECK_COMMITMENT,
@@ -77,7 +77,13 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
         hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
       )
       const timeNow = new Date().getTime()
-      if (timeNow > startTime && timeNow < endTime) {
+      const dailyQuota = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+      )
+      const dailyUsed = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+      )
+      if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
         setIsInHungerPhase(true)
       }
     }
