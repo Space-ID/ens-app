@@ -15,14 +15,11 @@ export default function InsufficientBalanceModal({ closeModal }) {
           </div>
         </div>
         <div className="mt-[36px] flex justify-center">
-          <button className="w-[160px] bg-[#30DB9E] text-[#134757] rounded-[16px] h-[38px] flex justify-center items-center font-semibold mr-4">
-            Top Up Wallet
-          </button>
           <button
+            className="w-[160px] bg-[#30DB9E] text-[#134757] rounded-[16px] h-[38px] flex justify-center items-center font-semibold mr-4"
             onClick={() => {
               closeModal()
             }}
-            className="border-[#30DB9E] border rounded-[16px] text-[#30DB9E] h-[38px] flex justify-center w-[160px] items-center font-semibold"
           >
             Go Back
           </button>

@@ -5,8 +5,9 @@ import axios from 'axios'
 import { Formik } from 'formik'
 import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { validate } from '@ensdomains/ens-validation'
-
+import { useQuery } from '@apollo/client'
+import ClickAwayListener from 'react-click-away-listener'
+import { useAccount } from 'components/QueryAccount'
 import SearchIcon from 'components/Icons/SearchIcon'
 import FaceCryIcon from 'components/Icons/FaceCryIcon'
 import FaceHappyIcon from 'components/Icons/FaceHappyIcon'
@@ -18,6 +19,8 @@ import {
   validateName,
   validateDomain,
 } from '../../utils/utils'
+import { GET_HUNGER_PHASE_INFO, GET_IS_CLAIMABLE } from '../../graphql/queries'
+import { ethers } from '@siddomains/ui'
 
 function Search({
   history,
@@ -32,7 +35,37 @@ function Search({
 }) {
   const [showPopup, setShowPopup] = useState(false)
   const [result, setResult] = useState(null)
+  const [isInHungerPhase, setIsInHungerPhase] = useState(false)
+  const account = useAccount()
   const dispatch = useDispatch()
+
+  const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
+    variables: { address: account },
+    fetchPolicy: 'no-cache',
+  })
+
+  const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
+
+  useEffect(() => {
+    if (hungerPhaseInfo?.getHungerPhaseInfo) {
+      const startTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
+      )
+      const endTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
+      )
+      const timeNow = new Date().getTime()
+      const dailyQuota = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+      )
+      const dailyUsed = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+      )
+      if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
+        setIsInHungerPhase(true)
+      }
+    }
+  }, [hungerPhaseInfo])
 
   const gotoDetailPage = () => {
     setShowPopup(false)
@@ -177,47 +210,54 @@ function Search({
         )}
       </Formik>
       {showPopup && (
-        <div
-          className={cn(
-            'shadow-popup flex md:w-full bg-dark-300 px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
-            suggestionClassName,
-            isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
-          )}
-        >
-          <div className="flex items-center max-w-[calc(100%-170px)]">
-            {result.Owner ? (
-              <FaceCryIcon className="text-green-200" />
-            ) : (
-              <FaceHappyIcon className="text-green-200" />
+        <ClickAwayListener onClickAway={() => setShowPopup(false)}>
+          <div
+            className={cn(
+              'shadow-popup flex md:w-full bg-dark-300 px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
+              suggestionClassName,
+              isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
             )}
-            <span
-              className={cn(
-                'ml-2 text-[16px] font-semibold text-green-200 truncate'
+          >
+            <div className="flex items-center max-w-[calc(100%-170px)]">
+              {result.Owner ? (
+                <FaceCryIcon className="text-green-200" />
+              ) : (
+                <FaceHappyIcon className="text-green-200" />
               )}
-            >
-              {result.name}.bnb
-            </span>
-          </div>
-          <div className="flex items-center">
-            <div
-              className={cn(
-                'text-sm font-semibold leading-[22px] font-urbanist',
-                result.Owner ? 'text-red-100' : 'text-blue-200'
-              )}
-            >
-              {result.Owner ? 'Unavailable' : 'available'}
+              <span
+                className={cn(
+                  'ml-2 text-[16px] font-semibold text-green-200 truncate'
+                )}
+              >
+                {result.name}.bnb
+              </span>
             </div>
-            <div
-              onClick={gotoDetailPage}
-              className={cn(
-                'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
-                result.Owner ? 'bg-red-100' : 'bg-blue-100'
-              )}
-            >
-              {result.Owner ? <span>View</span> : <span>Register</span>}
+            <div className="flex items-center">
+              <div
+                className={cn(
+                  'text-sm font-semibold leading-[22px] font-urbanist',
+                  result.Owner ? 'text-red-100' : 'text-blue-200'
+                )}
+              >
+                {result.Owner ? 'Unavailable' : 'available'}
+              </div>
+              <button
+                disabled={!isClaimable?.getIsClaimable}
+                onClick={gotoDetailPage}
+                className={cn(
+                  'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
+                  result.Owner
+                    ? 'bg-red-100'
+                    : isInHungerPhase && isClaimable?.getIsClaimable
+                    ? 'bg-blue-100'
+                    : 'bg-gray-800 text-white cursor-not-allowed'
+                )}
+              >
+                {result.Owner ? <span>View</span> : <span>Register</span>}
+              </button>
             </div>
           </div>
-        </div>
+        </ClickAwayListener>
       )}
     </div>
   )

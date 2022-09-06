@@ -19,7 +19,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@siddomains/address-encoder": "^0.0.3",
     "@siddomains/react-ens-address": "^0.0.4",
-    "@siddomains/sid-contracts": "^0.1.7",
+    "@siddomains/sid-contracts": "^0.1.9",
     "@siddomains/sidjs": "^0.1.8",
     "@siddomains/ui": "1.4.14",
     "@toruslabs/torus-embed": "^1.8.6",

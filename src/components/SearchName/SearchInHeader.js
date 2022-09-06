@@ -5,12 +5,15 @@ import { Formik } from 'formik'
 import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { validate } from '@ensdomains/ens-validation'
-
+import { useLazyQuery, useQuery } from '@apollo/client'
+import { ethers } from '@siddomains/ui'
+import ClickAwayListener from 'react-click-away-listener'
+import { useAccount } from 'components/QueryAccount'
 import SearchIcon from 'components/Icons/SearchIcon'
 import FaceCryIcon from 'components/Icons/FaceCryIcon'
 import FaceHappyIcon from 'components/Icons/FaceHappyIcon'
 import { setSearchDomainName, setSelectedDomain } from 'app/slices/domainSlice'
-
+import { GET_HUNGER_PHASE_INFO, GET_IS_CLAIMABLE } from 'graphql/queries'
 import '../../api/subDomainRegistrar'
 import { parseSearchTerm, validateName } from '../../utils/utils'
 
@@ -29,7 +32,40 @@ function Search({
   const [showPopup, setShowPopup] = useState(false)
   const [result, setResult] = useState(null)
   const [active, setActive] = useState(false)
+  const [isInHungerPhase, setIsInHungerPhase] = useState(false)
+  const account = useAccount()
   const dispatch = useDispatch()
+
+  const [getIsClaimable, { data: isClaimable }] = useLazyQuery(
+    GET_IS_CLAIMABLE,
+    {
+      variables: { address: account },
+      fetchPolicy: 'no-cache',
+    }
+  )
+
+  const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
+
+  useEffect(() => {
+    if (hungerPhaseInfo?.getHungerPhaseInfo) {
+      const startTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
+      )
+      const endTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
+      )
+      const timeNow = new Date().getTime()
+      const dailyQuota = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+      )
+      const dailyUsed = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+      )
+      if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
+        setIsInHungerPhase(true)
+      }
+    }
+  }, [hungerPhaseInfo])
 
   const gotoDetailPage = () => {
     setShowPopup(false)
@@ -45,6 +81,7 @@ function Search({
 
   useEffect(() => {
     if (searchingDomainName) {
+      // check claimable
       dispatch(setSearchDomainName(''))
       const params = {
         ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
@@ -108,6 +145,7 @@ function Search({
         }}
         onSubmit={(values, { setSubmitting }) => {
           setActive(true)
+          getIsClaimable()
           const params = {
             ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
             name: values.searchKey,
@@ -142,16 +180,16 @@ function Search({
             >
               <SearchIcon
                 className={cn(
-                  active ? 'text-[#1EEFA4]' : 'text-[rgba(204,252,255,0.6)]'
+                  active ? 'text-green-100' : 'text-[rgba(204,252,255,0.6)]'
                 )}
               />
             </button>
             <div>
               <input
                 className={cn(
-                  'w-full bg-[#104151]/[0.25] py-[10px] pl-[40px] text-[#BDCED1] text-[16px] border rounded-[18px] focus:bg-transparent text-[#30DB9E] active:bg-transparent focus:outline-none',
+                  'w-full bg-[#104151]/[0.25] py-[10px] pl-[40px] text-[16px] border rounded-[18px] focus:bg-transparent text-green-100 active:bg-transparent focus:outline-none',
                   isShowSearchBtn ? 'pr-[150px]' : 'pr-[50px]',
-                  active ? 'border-[#1EEFA4]' : 'border-[rgba(204,252,255,0.6)]'
+                  active ? 'border-green-100' : 'border-[rgba(204,252,255,0.6)]'
                 )}
                 placeholder="Explore the space"
                 onChange={(e) => {
@@ -183,7 +221,7 @@ function Search({
               className={cn(
                 'font-urbanist font-semibold text-[16px] absolute top-[10px] transition-all',
                 active
-                  ? 'right-[110px] text-[#1EEFA4]'
+                  ? 'right-[110px] text-green-100'
                   : 'right-[20px] text-[rgba(204,252,255,0.6)]'
               )}
             >
@@ -192,7 +230,7 @@ function Search({
             {active && (
               <button
                 type="submit"
-                className="text-primary w-[92px] bg-[#1EEFA4] text-semibold text-[14px] font-semibold font-urbanist py-1 px-6 rounded-[10px] absolute top-[8px] right-2"
+                className="w-[92px] text-dark-common bg-green-100 text-semibold text-[14px] font-semibold font-urbanist py-1 px-6 rounded-[10px] absolute top-2 right-2"
               >
                 Search
               </button>
@@ -201,48 +239,55 @@ function Search({
         )}
       </Formik>
       {showPopup && (
-        <div
-          className={cn(
-            'shadow-popup flex md:w-full bg-[#205561] px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
-            suggestionClassName,
-            isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
-          )}
-        >
-          <div className="flex items-center max-w-[calc(100%-170px)]">
-            {result.Owner ? (
-              <FaceCryIcon className="text-[#30DB9E]" />
-            ) : (
-              <FaceHappyIcon className="text-[#30DB9E]" />
+        <ClickAwayListener onClickAway={() => setShowPopup(false)}>
+          <div
+            className={cn(
+              'shadow-popup flex md:w-full bg-[#205561] px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
+              suggestionClassName,
+              isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
             )}
+          >
+            <div className="flex items-center max-w-[calc(100%-170px)]">
+              {result.Owner ? (
+                <FaceCryIcon className="text-[#30DB9E]" />
+              ) : (
+                <FaceHappyIcon className="text-[#30DB9E]" />
+              )}
 
-            <span
-              className={cn(
-                'ml-2 text-[16px] font-semibold text-[#30DB9E] truncate'
-              )}
-            >
-              {result.name}.bnb
-            </span>
-          </div>
-          <div className="flex items-center">
-            <div
-              className={cn(
-                'text-[14px]',
-                result.Owner ? 'text-[#ED7E17]' : 'text-[#2980E8]'
-              )}
-            >
-              {result.Owner ? 'Unavailable' : 'available'}
+              <span
+                className={cn(
+                  'ml-2 text-[16px] font-semibold text-[#30DB9E] truncate'
+                )}
+              >
+                {result.name}.bnb
+              </span>
             </div>
-            <div
-              onClick={gotoDetailPage}
-              className={cn(
-                'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
-                result.Owner ? 'bg-[#ED7E17]' : 'bg-[#2980E8]'
-              )}
-            >
-              {result.Owner ? <span>View</span> : <span>Register</span>}
+            <div className="flex items-center">
+              <div
+                className={cn(
+                  'text-[14px]',
+                  result.Owner ? 'text-[#ED7E17]' : 'text-[#2980E8]'
+                )}
+              >
+                {result.Owner ? 'Unavailable' : 'available'}
+              </div>
+              <button
+                disabled={!isClaimable?.getIsClaimable}
+                onClick={gotoDetailPage}
+                className={cn(
+                  'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
+                  result.Owner
+                    ? 'bg-[#ED7E17]'
+                    : isInHungerPhase && isClaimable?.getIsClaimable
+                    ? 'bg-[#2980E8]'
+                    : 'bg-gray-800 text-white cursor-not-allowed'
+                )}
+              >
+                {result.Owner ? <span>View</span> : <span>Register</span>}
+              </button>
             </div>
           </div>
-        </div>
+        </ClickAwayListener>
       )}
     </div>
   )

@@ -1,15 +1,11 @@
-import React, { useState, useReducer, useEffect, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { useQuery } from '@apollo/client'
-import cn from 'classnames'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
 import moment from 'moment'
-import { useHistory } from 'react-router'
-import axios from 'axios'
-import last from 'lodash/last'
+import { toArray, last } from 'lodash'
+
 import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
-import { Button } from 'react-daisyui'
+import { ethers } from '@siddomains/ui'
 
 import {
   CHECK_COMMITMENT,
@@ -20,42 +16,37 @@ import {
   GET_BALANCE,
   GET_ETH_PRICE,
   GET_PRICE_CURVE,
-  GET_ELIGIBLE_COUNT,
+  GET_IS_CLAIMABLE,
+  GET_HUNGER_PHASE_INFO,
 } from 'graphql/queries'
-
 import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
-import { registerMachine, registerReducer } from './registerReducer'
-import { successRegistering } from 'app/slices/registerSlice'
 import { calculateDuration, yearInSeconds } from 'utils/dates'
 import { GET_TRANSACTION_HISTORY } from 'graphql/queries'
 
 import Loader from 'components/Loader'
-import CTA from './CTA'
 import NotAvailable from './NotAvailable'
-import Pricer from '../Pricer'
 import ProgressRecorder from './ProgressRecorder'
 import useNetworkInfo from '../../NetworkInformation/useNetworkInfo'
-import { sendNotification } from './notification'
 import PremiumPriceOracle from './PremiumPriceOracle'
 
-import EditIcon from 'components/Icons/EditIcon'
-import SuccessfulTickIcon from 'components/Icons/SuccessfulTickIcon'
-import FailedIcon from 'components/Icons/FailedIcon'
 import AnimationSpin from 'components/AnimationSpin'
-
-import { setRedeemableQuota } from 'app/slices/accountSlice'
+import Step2Sidebar from './step2Sidebar'
+import Step1Sidebar from './step1Sidebar'
+import Step1Main from './step1Main'
+import Step2Main from './step2Main'
+import RegisterProgress from './registerProgress'
+import { REGISTER, COMMIT } from '../../../graphql/mutations'
+import { TOGAL_GAS_WEI } from '../../../constants/gas'
+import { minYear, RegisterState } from './constant'
+import InsufficientBalanceModal from '../../Modal/InsufficientBalanceModal'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
-  const { t } = useTranslation()
   const [secret, setSecret] = useState(false)
   const { networkId } = useNetworkInfo()
-  const dispatchSlice = useDispatch()
-  const [step, dispatch] = useReducer(
-    registerReducer,
-    registerMachine.initialState
-  )
-  const [customStep, setCustomStep] = useState('START')
+  const account = useAccount()
+
+  const [registerState, setRegisterState] = useState(RegisterState.request)
   let now, currentPremium, underPremium
   const [years, setYears] = useState(false)
   const [secondsPassed, setSecondsPassed] = useState(0)
@@ -66,82 +57,141 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [targetDate, setTargetDate] = useState(false)
   const [commitmentExpirationDate, setCommitmentExpirationDate] =
     useState(false)
-  const [index, setIndex] = useState(0)
-  const [registering, setRegistering] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
+  const [showInsufficientModal, setShowInsufficientModal] = useState(false)
   const [signature, setSignature] = useState([])
-  const [isAuctionWinner, setIsAuctionWinner] = useState(false)
-  const [discountAmount, setDiscountAmount] = useState({
-    percent: 0,
-    amount: 0,
-  })
 
-  const freeDuration = 0
+  const [nameArr, setNameArr] = useState([])
+
+  const [canRegister, setCanRegister] = useState(false)
+
+  const [isInHungerPhase, setIsInHungerPhase] = useState(false)
+
+  const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
+  useEffect(() => {
+    if (hungerPhaseInfo?.getHungerPhaseInfo) {
+      const startTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
+      )
+      const endTime = new Date(
+        hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
+      )
+      const timeNow = new Date().getTime()
+      const dailyQuota = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+      )
+      const dailyUsed = ethers.BigNumber.from(
+        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+      )
+      if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
+        setIsInHungerPhase(true)
+      }
+    }
+  }, [hungerPhaseInfo])
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
-    if (Number.isNaN(n) || n < 1) {
-      setYears(1)
+    if (Number.isNaN(n) || n < minYear) {
+      setYears(minYear)
     } else {
       setYears(n)
     }
   }, [])
 
+  // hunger phase isClaimable
+  const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
+    variables: { address: account },
+    fetchPolicy: 'no-cache',
+  })
+
+  // get eth price
   const {
     data: { getEthPrice: ethUsdPrice } = {},
     loading: ethUsdPriceLoading,
   } = useQuery(GET_ETH_PRICE)
+
+  // get price curve
   const { data: { getPriceCurve } = {} } = useQuery(GET_PRICE_CURVE)
+  // get gas price
   const { loading: gasPriceLoading, price: gasPrice } = useGasPrice()
+  // latest block
   const { block } = useBlock()
+  // wait block timestamp
   const { data: { waitBlockTimestamp } = {} } = useQuery(WAIT_BLOCK_TIMESTAMP, {
     variables: {
       waitUntil,
     },
     fetchPolicy: 'no-cache',
   })
-
+  // get transaction history
   const { data: { transactionHistory } = {} } = useQuery(
     GET_TRANSACTION_HISTORY
   )
-
+  // last transaction
   const lastTransaction = last(transactionHistory)
 
+  // commit domain
+  const [mutationCommit] = useMutation(COMMIT, {
+    onCompleted: (data) => {
+      if (data?.commit) {
+        setCommitmentTimerRunning(true)
+      } else {
+        setRegisterState(RegisterState.request)
+      }
+    },
+    onError: (error) => {
+      console.error(error)
+      setRegisterState(RegisterState.request)
+    },
+  })
+  // register domain
+  const [mutationRegister] = useMutation(REGISTER, {
+    onCompleted: (data) => {
+      if (data?.register) {
+        setTransactionHash(data.register)
+      } else {
+        setRegisterState(RegisterState.registerError)
+      }
+    },
+    onError: (error) => {
+      console.error(error)
+      setRegisterState(RegisterState.registerError)
+    },
+  })
+  useEffect(() => {
+    const temp = toArray(domain?.name ?? '')
+    if (window.innerWidth >= 768 && temp.length > 33) {
+      temp.splice(15, temp.length - 33, ['...'])
+    } else if (temp.length > 16) {
+      temp.splice(7, temp.length - 16, ['..'])
+    }
+    setNameArr(temp)
+  }, [])
+
+  // check transaction
   useEffect(() => {
     if (
       lastTransaction &&
       lastTransaction.txHash === transactionHash &&
       lastTransaction.txState === 'Confirmed'
     ) {
-      successRegister()
-      setRegistering(false)
+      setRegisterState(RegisterState.registerSuccess)
     }
     if (
       lastTransaction &&
       lastTransaction.txHash === transactionHash &&
       lastTransaction.txState === 'Error'
     ) {
-      setCustomStep('ERROR')
-      setRegistering(false)
+      setRegisterState(RegisterState.registerError)
     }
   }, [transactionHistory])
 
-  const history = useHistory()
-
-  const account = useAccount()
-
-  const { data: eligibleObject, loading } = useQuery(GET_ELIGIBLE_COUNT, {
-    variables: {
-      account,
-    },
-    fetchPolicy: 'no-cache',
-  })
-
+  // get balance
   const { data: { getBalance } = {} } = useQuery(GET_BALANCE, {
     variables: { address: account },
     fetchPolicy: 'no-cache',
   })
-
+  // get max commitment age
   const { data: { getMaximumCommitmentAge } = {} } = useQuery(
     GET_MAXIMUM_COMMITMENT_AGE,
     {
@@ -150,15 +200,17 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   )
 
   if (block) {
+    // latest bock time
     now = moment(block.timestamp * 1000)
   }
 
+  // commit expiration date
   if (!commitmentExpirationDate && getMaximumCommitmentAge && blockCreatedAt) {
     setCommitmentExpirationDate(
       moment(blockCreatedAt).add(getMaximumCommitmentAge, 'second')
     )
   }
-
+  // check commit
   const { data: { checkCommitment = false } = {} } = useQuery(
     CHECK_COMMITMENT,
     {
@@ -175,9 +227,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     checkCommitment,
     domain,
     networkId,
-    states: registerMachine.states,
-    dispatch,
-    step,
+    states: RegisterState,
+    dispatch: setRegisterState,
+    step: registerState,
     secret,
     setSecret,
     years,
@@ -202,19 +254,31 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
         setSecondsPassed((s) => s + 1)
       } else {
         if (waitBlockTimestamp && timerRunning) {
-          sendNotification(
-            `${domain.name} ${t('register.notifications.ready')}`
-          )
+          // confirm
+          setRegisterState(RegisterState.confirm)
         }
         setTimerRunning(false)
       }
     },
     timerRunning ? 1000 : null
   )
+  useInterval(
+    () => {
+      if (checkCommitment > 0) {
+        // incrementStep() todo: confirm?
+        setRegisterState(RegisterState.requestSuccess)
+        setTimerRunning(true) // start confirm timer
+        setCommitmentTimerRunning(false)
+      } else {
+        setCommitmentTimerRunning(new Date()) // force refresh?
+      }
+    },
+    commitmentTimerRunning ? 1000 : null
+  )
 
-  const parsedYears = parseFloat(isAuctionWinner ? years - 1 : years)
-  const duration = calculateDuration(isAuctionWinner ? years - 1 : years)
+  const duration = calculateDuration(years)
 
+  // rent price
   const { data: { getRentPrice } = {}, loading: rentPriceLoading } = useQuery(
     GET_RENT_PRICE,
     {
@@ -225,7 +289,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       },
     }
   )
-
+  // rent price duration 0
   const {
     data: { getRentPrice: getPremiumPrice } = {},
     loading: getPremiumPriceLoading,
@@ -237,29 +301,11 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     },
   })
 
-  useEffect(() => {
-    //Set the 40% discount if the domain length is consist of 3 characters
-    if (getRentPrice) {
-      const ethVal = new EthVal(`${getRentPrice || 0}`).toEth()
-      if (domain.label.length === 3) {
-        const tPrice = {
-          amount: ethVal * 0.4,
-          percent: 40,
-        }
-        setDiscountAmount({ ...tPrice })
-      } else if (domain.label.length === 4) {
-        setDiscountAmount({
-          amount: ethVal * 0.2,
-          percent: 20,
-        })
-      } else {
-        setDiscountAmount({
-          amount: 0,
-          percent: 0,
-        })
-      }
-    }
-  }, [getRentPrice])
+  const ethVal = new EthVal(`${getRentPrice || 0}`).toEth()
+  // todo: canregister
+  const registerGasFast = new EthVal(`${TOGAL_GAS_WEI * gasPrice.fast}`).toEth()
+  const registrationFee = ethVal.add(registerGasFast)
+  const registrationFeeInUsd = registrationFee.mul(ethUsdPrice ?? 0)
 
   let hasSufficientBalance
   if (!blockCreatedAt && checkCommitment > 0) {
@@ -281,8 +327,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   if (!registrationOpen) return <NotAvailable domain={domain} />
 
-  if (ethUsdPriceLoading || gasPriceLoading)
+  if (ethUsdPriceLoading || gasPriceLoading) {
     return <Loader withWrap={true} large />
+  }
 
   if (!targetDate) {
     setTargetDate(zeroPremiumDate)
@@ -293,198 +340,100 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     underPremium = now.isBetween(releasedDate, zeroPremiumDate)
   }
 
-  const successRegister = () => {
-    dispatchSlice(successRegistering())
-    setCustomStep('SUCCESS')
-  }
-
   const connectHandler = () => {
     connectProvider()
   }
 
-  const backToHome = () => {
-    window.location.href = process.env.REACT_APP_BACK_TO_HOME
+  const handleRequest = () => {
+    if (!hasSufficientBalance) {
+      setShowInsufficientModal(true)
+      return
+    }
+    const variables = {
+      label: domain.label,
+      secret,
+    }
+    setRegisterState(RegisterState.requesting)
+    mutationCommit({ variables })
+  }
+  const handleRetry = () => {
+    setRegisterState(RegisterState.confirm)
+  }
+  const handleRegister = () => {
+    if (!hasSufficientBalance) {
+      setShowInsufficientModal(true)
+      return
+    }
+    setRegisterState(RegisterState.registering)
+    // dispatch(startRegistering())
+    const variables = {
+      label: domain.label,
+      duration,
+      secret,
+    }
+    mutationRegister({ variables })
   }
 
   return (
-    <div className="w-full mx-auto md:w-auto">
-      <div className="flex justify-center">
-        <p className="min-w-full max-w-[200px] block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-green-100 py-2 border-[4px] border-green-100 rounded-[22px] text-center px-6">
-          {domain.name}
-        </p>
-      </div>
-      {customStep === 'START' && (
-        <div>
-          <div className="bg-[#488F8B]/25 backdrop-blur-[5px] rounded-[16px] p-6 mt-8">
-            <Pricer
-              name={domain.label}
-              duration={duration}
-              years={years}
-              setYears={handleYearChange}
-              ethUsdPriceLoading={ethUsdPriceLoading}
-              ethUsdPremiumPrice={currentPremium}
-              ethUsdPrice={ethUsdPrice}
-              gasPrice={gasPrice}
-              loading={rentPriceLoading}
-              price={getRentPrice}
-              premiumOnlyPrice={getPremiumPrice}
-              underPremium={underPremium}
-              displayGas={true}
-              discount={discountAmount}
-              signature={signature}
-              isAuctionWinner={isAuctionWinner}
+    <>
+      {showInsufficientModal && (
+        <InsufficientBalanceModal
+          closeModal={() => setShowInsufficientModal(false)}
+        />
+      )}
+      <div className="flex flex-col items-center mx-auto">
+        <div className="flex justify-center mb-8">
+          <p className="md:max-w-[928px] max-w-[360px] md:min-w-[320px] w-auto whitespace-nowrap overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center px-6">
+            {nameArr.join('')}
+          </p>
+        </div>
+        <div className="flex flex-col md:flex-row md:w-[928px] w-[360px]">
+          {(registerState === RegisterState.confirm ||
+            registerState.startsWith(RegisterState.register)) && (
+            <Step1Sidebar
+              price={registrationFee}
+              totalUsd={registrationFeeInUsd}
             />
-          </div>
-          <CTA
-            setTransactionHash={setTransactionHash}
-            setCustomStep={setCustomStep}
-            signature={signature}
-            hasSufficientBalance={hasSufficientBalance}
-            step={step}
-            label={domain.label}
-            duration={duration}
-            years={years}
-            successRegister={successRegister}
-            connectHandler={connectHandler}
-            setRegistering={setRegistering}
-            registering={registering}
-            paymentSuccess={() => setCustomStep('PAYMENT')}
-            freeDuration={freeDuration}
-            index={index}
-            canRegister={
-              parseInt(eligibleObject?.getEligibleCount?.toString()) > 0
-            }
-          />
-        </div>
-      )}
-      {(customStep === 'SUCCESS' ||
-        customStep === 'PENDING' ||
-        customStep === 'PAYMENT' ||
-        customStep === 'ERROR') && (
-        <div className="max-w-[436px]">
-          <div className="bg-[#488F8B]/25 backdrop-blur-[5px] rounded-[16px] p-6 mt-8">
-            <div className="flex justify-center">
-              <EditIcon />
-            </div>
-            {customStep === 'PENDING' ? (
-              <div className="font-semibold text-[24px] text-white text-center mt-2">
-                Registration in progress...
-              </div>
-            ) : (
-              <div className="font-semibold text-[24px] text-white text-center mt-2">
-                {customStep === 'ERROR' ? (
-                  <span>Registration incompleted :(</span>
-                ) : (
-                  <span>Registration completed!</span>
-                )}
-              </div>
+          )}
+          <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-[16px] md:px-[50px] px-[24px] py-[24px]">
+            {registerState.startsWith(RegisterState.request) && (
+              <Step1Main
+                disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                state={registerState}
+                duration={duration}
+                years={years}
+                setYears={handleYearChange}
+                ethUsdPriceLoading={ethUsdPriceLoading}
+                ethUsdPremiumPrice={currentPremium}
+                ethUsdPrice={ethUsdPrice}
+                loading={rentPriceLoading}
+                price={getRentPrice}
+                premiumOnlyPrice={getPremiumPrice}
+                underPremium={underPremium}
+                connectHandler={connectHandler}
+                signature={signature}
+                canRegister={canRegister}
+                registerGasFast={registerGasFast}
+                registrationFee={registrationFee}
+                registrationFeeInUsd={registrationFeeInUsd}
+                onRequest={handleRequest}
+              />
             )}
-            {customStep === 'PENDING' ||
-              (customStep === 'PAYMENT' && (
-                <div className="text-[14px] text-gray-700 leading-[22px] text-center">
-                  Please be patient as the process might take a while.
-                </div>
-              ))}
-
-            <div className="mt-8">
-              <div className="text-center">
-                <div
-                  className={cn(
-                    customStep === 'ERROR'
-                      ? 'text-[#ED7E17]'
-                      : 'text-[#30DB9E]',
-                    'font-semibold text-[16px]'
-                  )}
-                >
-                  Confirm Payment
-                </div>
-                {customStep === 'PENDING' ? (
-                  <AnimationSpin className="flex justify-center mt-1" />
-                ) : (
-                  <div>
-                    {customStep === 'ERROR' ? (
-                      <FailedIcon className="text-[#ED7E17] flex justify-center my-2" />
-                    ) : (
-                      <SuccessfulTickIcon className="text-[#30DB9E] flex justify-center my-2" />
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="mt-1 text-center">
-                <div
-                  className={cn(
-                    'font-semibold text-[16px]',
-                    customStep === 'PENDING'
-                      ? 'text-[#7E9195]'
-                      : customStep === 'ERROR'
-                      ? 'text-[#ED7E17]'
-                      : 'text-[#30DB9E]'
-                  )}
-                >
-                  Successful registration. Name published
-                </div>
-                {customStep === 'PENDING' ? (
-                  <div className="w-2 h-2 bg-[#7E9195] rounded-full flex justify-center mt-[14px] m-auto" />
-                ) : customStep === 'PAYMENT' ? (
-                  <AnimationSpin className="flex justify-center mt-1" />
-                ) : (
-                  <div>
-                    {customStep === 'ERROR' ? (
-                      <FailedIcon className="text-[#ED7E17] flex justify-center my-2" />
-                    ) : (
-                      <SuccessfulTickIcon className="text-[#30DB9E] flex justify-center my-2" />
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-            {customStep === 'ERROR' && (
-              <div className="text-[#BDCED1] text-[16px] text-center mt-8">
-                Something went wrong in the registration process. You may choose
-                to retry and be redirected back to the payment review page.
-              </div>
-            )}
-
-            {customStep === 'ERROR' ? (
-              <div className="flex justify-center mt-10">
-                <Button
-                  color="primary"
-                  className={cn(
-                    'py-2 rounded-2xl text-[#071A2F] font-semibold border-0 px-[30px] normal-case'
-                  )}
-                  onClick={() => setCustomStep('START')}
-                >
-                  Retry
-                </Button>
-              </div>
-            ) : (
-              <div className="flex justify-between px-8 mt-10 space-x-4">
-                <Button
-                  className="text-lg font-semibold leading-6 normal-case rounded-2xl btn-outline font-urbanist"
-                  color="primary"
-                  onClick={() => backToHome()}
-                >
-                  Back To Home
-                </Button>
-                <Button
-                  color="primary"
-                  className={cn(
-                    'py-2 rounded-2xl font-semibold border-0 px-[19px] normal-case text-lg leading-6 font-urbanist',
-                    customStep === 'SUCCESS'
-                      ? 'text-[#071A2F] bg-[#30DB9E]'
-                      : 'bg-[#7E9195] text-white'
-                  )}
-                  disabled={customStep !== 'SUCCESS'}
-                  onClick={() => history.push('/profile')}
-                >
-                  Manage Profile
-                </Button>
-              </div>
+            {(registerState === RegisterState.confirm ||
+              registerState.startsWith(RegisterState.register)) && (
+              <Step2Main
+                disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                state={registerState}
+                onRegister={handleRegister}
+                onRetry={handleRetry}
+              />
             )}
           </div>
+          {registerState.startsWith(RegisterState.request) && <Step2Sidebar />}
         </div>
-      )}
-    </div>
+        <RegisterProgress state={registerState} />
+      </div>
+    </>
   )
 }
 
@@ -492,7 +441,7 @@ const NameRegisterDataWrapper = (props) => {
   const { data, loading, error } = useQuery(GET_MINIMUM_COMMITMENT_AGE)
   if (loading) return <AnimationSpin size={40} />
   if (error) {
-    console.log(error)
+    console.error(error)
   }
   return <NameRegister waitTime={data?.getMinimumCommitmentAge} {...props} />
 }

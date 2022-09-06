@@ -3414,10 +3414,10 @@
     "@openzeppelin/contracts" "^4.1.0"
     dns-packet "^5.3.0"
 
-"@siddomains/sid-contracts@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.7.tgz#98751158db32ea9612cd9dc25ce82d9051870735"
-  integrity sha512-RqRJdQZ0j2IWsNxDcDXbhM80KxSALITmPLaozNACDB7DF60y/KrSWkx0kZZOoiglLatZeEqHFvIHYmgCIq1K9Q==
+"@siddomains/sid-contracts@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.9.tgz#219fba158b9da99ff04733d43926de5b50224cec"
+  integrity sha512-2XweYH0Ub429XCwaVPrsv0O4U9+c8HXWHYoD0aXpebP++006ZS57H80GW/pQWVtMBbi+1rU6nFdg+BXyX2miaA==
   dependencies:
     "@ensdomains/buffer" "^0.0.13"
     "@ensdomains/solsha1" "0.0.3"
@@ -4017,6 +4017,16 @@
   integrity sha512-p7ienRMiS41Nu2/igbJxxLDWrSZ0WxM8UQgCeO9KhoVF7cOVFkrKsiDr1EsJIla8vV3oEEjGcz11jc5yimhzZw==
   dependencies:
     "@types/node" "*"
+
+"@types/cacheable-request@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@types/cacheable-request/-/cacheable-request-6.0.2.tgz#c324da0197de0a98a2312156536ae262429ff6b9"
+  integrity sha512-B3xVo+dlKM6nnKTcmm5ZtY/OL8bOAOd2Olee9M1zft65ox50OzjEHW91sDiU9j6cvW8Ejg1/Qkf4xd2kugApUA==
+  dependencies:
+    "@types/http-cache-semantics" "*"
+    "@types/keyv" "*"
+    "@types/node" "*"
+    "@types/responselike" "*"
 
 "@types/cacheable-request@^6.0.2":
   version "6.0.2"
@@ -19584,6 +19594,13 @@ resolve@^2.0.0-next.3:
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
 
+responselike@*:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/responselike/-/responselike-3.0.0.tgz#20decb6c298aff0dbee1c355ca95461d42823626"
+  integrity sha512-40yHxbNcl2+rzXvZuVkrYohathsSJlMTXKryG5y8uciHv1+xDLHQpgjG64JUO9nrEq2jGLH6IZ8BcZyw3wrweg==
+  dependencies:
+    lowercase-keys "^3.0.0"
+
 responselike@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/responselike/-/responselike-1.0.2.tgz"
@@ -23674,6 +23691,18 @@ web3@^1.7.3:
     web3-net "1.7.5"
     web3-shh "1.7.5"
     web3-utils "1.7.5"
+
+web3modal@^1.9.9:
+  version "1.9.9"
+  resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.9.tgz#1a09771e1b9264842ab98d42c620568f470ff96b"
+  integrity sha512-ML1C4xH+JTSHHkKbjxuF+f5B3cDUOCnrdQZ8Mlzippq7zRKHf3NBeuIvDdNjtVclJ2S4zYYVmVqRWrgB11ej8A==
+  dependencies:
+    detect-browser "^5.1.0"
+    prop-types "^15.7.2"
+    react "^16.8.6"
+    react-dom "^16.8.6"
+    styled-components "^5.3.3"
+    tslib "^1.10.0"
 
 web3modal@^1.9.9:
   version "1.9.9"
