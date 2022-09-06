@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function SearchIcon({
-  className = 'text-[#1EEFA4]',
-  size = 16
+  className = 'text-green-100',
+  size = 16,
 }) {
   return (
     <div className={className}>

@@ -14,7 +14,7 @@ export default function Increase({
   return (
     <div
       className={cn(
-        'w-[120px] md:w-[160px] h-[40px] bg-[#C4C4C4]/20 flex rounded-[8px] items-center justify-between px-2',
+        'w-[120px] md:w-[160px] h-[40px] bg-[#C4C4C4]/20 flex rounded-lg items-center justify-between px-2',
         className
       )}
     >
@@ -22,8 +22,8 @@ export default function Increase({
         disabled={years < 1}
         onClick={decrementYears}
         className={cn(
-          'w-[24px] h-[24px] flex justify-center items-center text-white rounded-[4px] cursor-pointer',
-          years > 1 ? 'bg-[#0EA59C]/50' : 'bg-[#7E9195]',
+          'w-[24px] h-[24px] flex justify-center items-center text-white rounded-md cursor-pointer',
+          years > 1 ? 'bg-green-300/50' : 'bg-gray-800',
           disable ? 'opacity-0' : ''
         )}
       >
@@ -42,7 +42,7 @@ export default function Increase({
       <button
         onClick={incrementYears}
         className={cn(
-          'w-[24px] h-[24px] bg-[#0EA59C]/50 flex justify-center items-center text-white rounded-[4px] cursor-pointer',
+          'w-[24px] h-[24px] bg-green-300/50 flex justify-center items-center text-white rounded-md cursor-pointer',
           disable ? 'opacity-0' : ''
         )}
       >

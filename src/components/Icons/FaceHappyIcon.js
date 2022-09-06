@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FaceHappyIcon({
   size = 20,
-  className = 'text-[#30DB9E]'
+  className = 'text-green-200',
 }) {
   return (
     <div className={className}>

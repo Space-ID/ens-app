@@ -13,7 +13,7 @@ const Years = ({ years, setYears, disable }) => {
         incrementYears={incrementYears}
         setYears={setYears}
       />
-      <div className="text-center text-white font-semibold mt-1 text-[12px] leading-[20px]">
+      <div className="mt-1 text-xs font-semibold leading-5 text-center text-white">
         {' '}
         Registration Year{' '}
       </div>

@@ -107,18 +107,18 @@ export default function DomainList({
         <Searchbar className="mr-[14px]" onChangeHandler={onChangeHandler} />
         <div className="relative h-full group">
           <BarIcon className="text-[rgba(204,252,255,0.6)] cursor-pointer h-full flex items-center" />
-          <div className="absolute z-[10] bg-[rgba(204,252,255,0.6)] rounded-[12px] p-3 hidden group-hover:block cursor-pointer top-[30px] right-[-20px] backdrop-blur-md">
+          <div className="absolute z-[10] bg-[rgba(204,252,255,0.6)] rounded-xl p-3 hidden group-hover:block cursor-pointer top-[30px] right-[-20px] backdrop-blur-md">
             <div onClick={() => setSortBy('AToZ')}>
-              <SortAscendingIcon className="text-[#134757] border-b border-b-[rgba(67,140,136,0.25)] p-1" />
+              <SortAscendingIcon className="text-dark-100 border-b border-b-[rgba(67,140,136,0.25)] p-1" />
             </div>
             <div onClick={() => setSortBy('ZToA')}>
-              <SortDescendingIcon className="text-[#134757] border-b border-b-[rgba(67,140,136,0.25)] p-1" />
+              <SortDescendingIcon className="text-dark-100 border-b border-b-[rgba(67,140,136,0.25)] p-1" />
             </div>
             <div onClick={() => setSortBy('TimeAscending')}>
-              <TimeAscendingIcon className="text-[#134757] border-b border-b-[rgba(67,140,136,0.25)] p-1" />
+              <TimeAscendingIcon className="text-dark-100 border-b border-b-[rgba(67,140,136,0.25)] p-1" />
             </div>
             <div onClick={() => setSortBy('TimeDescending')}>
-              <TimeDecendingIcon className="text-[#134757] p-1" />
+              <TimeDecendingIcon className="p-1 text-dark-100" />
             </div>
           </div>
         </div>
@@ -133,16 +133,16 @@ export default function DomainList({
               className={cn(
                 'mb-5 w-full py-2 px-4 relative cursor-pointer overflow-hidden break-all',
                 item.name === selectedDomain?.name
-                  ? 'bg-[#1EEFA4] rounded-[16px]'
+                  ? 'bg-green-100 rounded-2xl'
                   : ''
               )}
             >
               <div
                 className={cn(
                   item.name === selectedDomain?.name
-                    ? 'text-[#071A2F] text-[20px] pr-[20px]'
-                    : 'text-[#30DB9E]',
-                  'font-semibold text-[16px]'
+                    ? 'text-dark-common text-xl pr-5'
+                    : 'text-green-200',
+                  'font-semibold text-base'
                 )}
               >
                 {item.name}
@@ -153,7 +153,7 @@ export default function DomainList({
                   cn(
                     item.name === selectedDomain?.name
                       ? 'text-[#2A9971]'
-                      : 'text-[#BDCED1]'
+                      : 'text-gray-700'
                   ))
                 }
               >
@@ -168,7 +168,7 @@ export default function DomainList({
           ))}
         </div>
       ) : (
-        <div className="text-[#BDCED1] text-[16px] text-center mt-[40px]">
+        <div className="text-gray-700 text-base text-center mt-[40px]">
           This address doesn't own any domain
         </div>
       )}

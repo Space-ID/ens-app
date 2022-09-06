@@ -52,7 +52,7 @@ export default function TransferAddressModal({
               {title === 'Registrant' ? 'Transfer Registrant' : `Set ${title}`}
             </div>
             {title === 'Resolver' && (
-              <div className="text-[#ED7E17] text-[12px] mt-4">
+              <div className="mt-4 text-xs text-red-100">
                 Use the Public Resolver or enter the address of your custom
                 resolver contract
               </div>
@@ -70,7 +70,7 @@ export default function TransferAddressModal({
             {/* <div>
               <div className="font-semibold text-white">Chain</div>
               <input
-                className="w-full bg-[rgba(72,143,139,0.25)] rounded-[12px] text-[#7E9195] text-[14px] py-[7px] px-4"
+                className="w-full bg-[rgba(72,143,139,0.25)] rounded-xl text-gray-800 text-[14px] py-[7px] px-4"
                 id="chain"
                 name="chain"
                 type="text"
@@ -84,7 +84,7 @@ export default function TransferAddressModal({
                 Address<span className="text-red-800">*</span>
               </div>
               <input
-                className="w-full bg-[rgba(72,143,139,0.25)] rounded-[12px] text-[#7E9195] text-[14px] py-[7px] px-4 focus:outline-0"
+                className="w-full bg-[rgba(72,143,139,0.25)] rounded-xl text-gray-800 text-[14px] py-[7px] px-4 focus:outline-0"
                 placeholder="Enter the address"
                 id="address"
                 name="address"
@@ -93,13 +93,13 @@ export default function TransferAddressModal({
                 value={formik.values.address}
               />
               {formik.errors.address ? (
-                <div className="text-[#ED7E17] text-[12px] m-1">
+                <div className="m-1 text-xs text-red-100">
                   {formik.errors.address}
                 </div>
               ) : null}
             </div>
             {title === 'Resolver' && (
-              <div className="text-center text-[#1EEFA4] text-[12px] mt-4">
+              <div className="mt-4 text-xs text-center text-green-100">
                 Use Public Resolver
               </div>
             )}
@@ -111,7 +111,7 @@ export default function TransferAddressModal({
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className="w-[160px] bg-[#30DB9E] text-[#134757] rounded-[16px] h-[38px] flex justify-center items-center font-semibold"
+                className="w-[160px] bg-green-200 text-dark-100 rounded-2xl h-[38px] flex justify-center items-center font-semibold"
               >
                 Save
               </button>

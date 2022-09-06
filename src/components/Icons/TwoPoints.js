@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TwoPoints({ className = 'text-[#1EEFA4]', size = 8 }) {
+export default function TwoPoints({ className = 'text-green-100', size = 8 }) {
   return (
     <div className={className}>
       <svg

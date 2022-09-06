@@ -12,11 +12,11 @@ import AnimationSpin from './AnimationSpin'
 const Pending = ({
   className,
   children = 'Tx pending',
-  labelClassName = 'text-[18px]'
+  labelClassName = 'text-[18px]',
 }) => (
   <div className={cn('flex items-center', className)}>
     <span
-      className={cn('uppercase mr-[10px] text-[#B1D6D3] mt-1', labelClassName)}
+      className={cn('uppercase mr-[10px] text-gray-600 mt-1', labelClassName)}
     >
       {children}
     </span>
@@ -30,10 +30,10 @@ function MultiplePendingTx(props) {
   const { data: { transactionHistory } = {} } = useQuery(
     GET_TRANSACTION_HISTORY
   )
-  txHashesStatus.forEach(txHash => {
-    transactionHistory.forEach(tx => {
+  txHashesStatus.forEach((txHash) => {
+    transactionHistory.forEach((tx) => {
       if (tx && tx.txHash === txHash && tx.txState === 'Confirmed') {
-        const index = txHashesStatus.findIndex(tx => tx === txHash)
+        const index = txHashesStatus.findIndex((tx) => tx === txHash)
         const newTxHashesStatus = [...txHashesStatus]
         newTxHashesStatus[index] = 1
         setTxHashesStatus(newTxHashesStatus)
@@ -64,7 +64,7 @@ function PendingTx(props) {
       lastTransaction.txState === 'Confirmed'
     ) {
       onConfirmed({
-        blockCreatedAt: lastTransaction.createdAt
+        blockCreatedAt: lastTransaction.createdAt,
       })
     }
   }, [transactionHistory])
@@ -77,7 +77,7 @@ function PendingTx(props) {
 PendingTx.propTypes = {
   txHash: PropTypes.string,
   txHashes: PropTypes.array,
-  onConfirmed: PropTypes.func
+  onConfirmed: PropTypes.func,
 }
 
 export default PendingTx

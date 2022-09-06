@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function TimeAscendingIcon({
   size = 28,
-  className = 'text-[#134757]'
+  className = 'text-dark-100',
 }) {
   return (
     <div className={className}>

@@ -64,14 +64,14 @@ const RegisterProgress = ({ state }) => {
 
   return (
     <div className="md:w-[928px] w-full mt-[32px]">
-      <div className="relative w-full h-[20px] rounded-[10px] overflow-hidden">
+      <div className="relative w-full h-5 rounded-[10px] overflow-hidden">
         <div className="absolute w-full h-full bg-[#CCFCFF]/20" />
         <div
           className={cn(
             'absolute h-full rounded-[10px]',
             state === RegisterState.registerError
-              ? 'bg-[#ED7E17]'
-              : 'bg-[#1EEFA4]'
+              ? 'bg-red-100'
+              : 'bg-green-100'
           )}
           style={{ width: width }}
         />
@@ -79,16 +79,16 @@ const RegisterProgress = ({ state }) => {
           <CheckCircle className="absolute top-0 right-0" />
         )}
       </div>
-      <div className="w-full flex justify-between mt-[16px]">
-        <div className="w-[80px] h-[54px] flex flex-col items-center">
-          <div className="w-[1px] h-[8px] bg-[#B1D6D3]" />
-          <div className="font-semibold text-center text-[14px] text-[#B1D6D3] leading-[22px]">
+      <div className="flex justify-between w-full mt-4">
+        <div className="w-20 h-[54px] flex flex-col items-center">
+          <div className="w-[1px] h-2 bg-gray-600" />
+          <div className="font-semibold text-center text-[14px] text-gray-600 leading-[22px]">
             Request to Register
           </div>
         </div>
-        <div className="w-[80px] h-[54px] flex flex-col items-center">
-          <div className="w-[1px] h-[8px] bg-[#B1D6D3]" />
-          <div className="font-semibold text-center text-[14px] text-[#B1D6D3] leading-[22px]">
+        <div className="w-20 h-[54px] flex flex-col items-center">
+          <div className="w-[1px] h-2 bg-gray-600" />
+          <div className="font-semibold text-center text-[14px] text-gray-600 leading-[22px]">
             Confirm Registration
           </div>
         </div>
@@ -103,18 +103,18 @@ const RegisterProgress = ({ state }) => {
         >
           <div
             className={cn(
-              'w-[1px] h-[8px]',
+              'w-[1px] h-2',
               state === RegisterState.registerSuccess
-                ? 'bg-[#1EEFA4]'
-                : 'bg-[#B1D6D3]'
+                ? 'bg-green-100'
+                : 'bg-gray-600'
             )}
           />
           <div
             className={cn(
               'font-semibold text-center text-[14px] leading-[22px]',
               state === RegisterState.registerSuccess
-                ? 'text-[#1EEFA4]'
-                : 'text-[#B1D6D3]'
+                ? 'text-green-100'
+                : 'text-gray-600'
             )}
           >
             Registration Completed

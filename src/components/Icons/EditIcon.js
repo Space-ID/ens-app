@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function EditIcon({ size = 64, className = 'text-[#30DB9E]' }) {
+export default function EditIcon({ size = 64, className = 'text-green-200' }) {
   return (
     <div className={className}>
       <svg

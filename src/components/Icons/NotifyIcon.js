@@ -1,9 +1,6 @@
 import React from 'react'
 
-export default function NotifyIcon({
-  size = 22,
-  className = 'text-[#B1D6D3]'
-}) {
+export default function NotifyIcon({ size = 22, className = 'text-gray-600' }) {
   return (
     <div className={className}>
       <svg

@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function RoundedIcon({
-  className = 'text-[#30DB9E]',
-  size = 24
+  className = 'text-green-200',
+  size = 24,
 }) {
   return (
     <div className={className}>

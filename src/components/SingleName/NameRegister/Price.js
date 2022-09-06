@@ -27,7 +27,7 @@ const Price = ({
   const priceInUsd = c?.priceInUsd
   return (
     <div>
-      <div className="w-[120px] md:w-[160px] h-[40px] flex justify-center items-center bg-[#C4C4C4]/20 text-white font-bold font-urbanist text-[18px] leading-[26px] rounded-[8px]">
+      <div className="w-[120px] md:w-[160px] h-[40px] flex justify-center items-center bg-[#C4C4C4]/20 text-white font-bold font-urbanist text-[18px] leading-[26px] rounded-lg">
         {registrationFee.toFixed(3)} <span>BNB</span>
         {withPremium && (
           <span>
@@ -35,7 +35,7 @@ const Price = ({
           </span>
         )}
       </div>
-      <div className="text-center text-white font-semibold mt-1 text-[12px] leading-[20px]">
+      <div className="mt-1 text-xs font-semibold leading-5 text-center text-white">
         Registration Fee
       </div>
     </div>
