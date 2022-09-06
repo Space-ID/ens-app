@@ -37,7 +37,7 @@ import Step2Main from './step2Main'
 import RegisterProgress from './registerProgress'
 import { REGISTER, COMMIT } from '../../../graphql/mutations'
 import { TOGAL_GAS_WEI } from '../../../constants/gas'
-import { RegisterState } from './constant'
+import { minYear, RegisterState } from './constant'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [secret, setSecret] = useState(false)
@@ -63,8 +63,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
-    if (Number.isNaN(n) || n < 1) {
-      setYears(1)
+    if (Number.isNaN(n) || n < minYear) {
+      setYears(minYear)
     } else {
       setYears(n)
     }

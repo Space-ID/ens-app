@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/client'
 import { HOME_DATA } from './CTA'
 import { useAccount } from '../../QueryAccount'
 import AnimationSpin from '../../AnimationSpin'
-import { RegisterState } from './constant'
+import { minYear, RegisterState } from './constant'
 import CheckCircle from '../../Icons/CheckCircle'
 
 const Step1Main = ({
@@ -118,7 +118,7 @@ const Step1Main = ({
                 ? 'bg-gray-800 text-white cursor-not-allowed'
                 : 'bg-[#30DB9E] text-[#071A2F]'
             )}
-            disabled={disable || isReadOnly || parseFloat(years) < 0.1}
+            disabled={disable || isReadOnly || parseFloat(years) < minYear}
             onClick={handleRequest}
           >
             Request

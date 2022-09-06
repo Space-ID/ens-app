@@ -31,7 +31,7 @@ export default function Increase({
       </button>
       <input
         disabled={disable}
-        min="0.1"
+        min="0.077"
         onChange={(event) => {
           setYears(event.target.value)
         }}
