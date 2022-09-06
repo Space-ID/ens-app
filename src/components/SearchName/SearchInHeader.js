@@ -57,7 +57,6 @@ function Search({
   useEffect(() => {
     if (searchingDomainName) {
       // check claimable
-      getIsClaimable()
       dispatch(setSearchDomainName(''))
       const params = {
         ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
@@ -121,6 +120,7 @@ function Search({
         }}
         onSubmit={(values, { setSubmitting }) => {
           setActive(true)
+          getIsClaimable()
           const params = {
             ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
             name: values.searchKey,
