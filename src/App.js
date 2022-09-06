@@ -1,14 +1,16 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect, useRef } from 'react'
 import { BrowserRouter, Route as DefaultRoute, Switch } from 'react-router-dom'
 
 const Home = lazy(() => import('./routes/Home'))
-const Redemption = lazy(() => import('./routes/redemption'))
+const HungerPhase = lazy(() => import('./routes/hunger-phase'))
 const SingleName = lazy(() => import('./routes/SingleName'))
 const Profile = lazy(() => import('./routes/Profile'))
 const HomePageLayout = lazy(() => import('components/Layout/HomePageLayout'))
 const Error404 = lazy(() => import('components/Error/Errors'))
 
 import useReactiveVarListeners from './hooks/useReactiveVarListeners'
+import { useAccount } from './components/QueryAccount'
+import { emptyAddress } from './ui'
 
 const Route = ({
   component: Component,
@@ -33,21 +35,30 @@ const Route = ({
 
 const App = () => {
   useReactiveVarListeners()
+  const account = useAccount()
+  const accountRef = useRef(account)
+  useEffect(() => {
+    if (
+      accountRef.current !== emptyAddress &&
+      account !== emptyAddress &&
+      accountRef !== account
+    ) {
+      window.location.reload()
+    } else {
+      accountRef.current = account
+    }
+  }, [account])
 
   return (
     <BrowserRouter basename="/">
       <Switch>
-        <Route exact path="/" component={Home} layout={HomePageLayout} />
-        <Route
-          exact
-          path="/redemption"
-          component={Redemption}
-          layout={HomePageLayout}
-        />
+        {/* <Route exact path="/" component={Home} layout={HomePageLayout} /> */}
+        <Route exact path="/" component={HungerPhase} layout={HomePageLayout} />
         <Route
           exact
           path="/profile"
           component={Profile}
+          f
           layout={HomePageLayout}
         />
         <Route
