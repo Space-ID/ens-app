@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMutation, useQuery } from '@apollo/client'
 import moment from 'moment'
-import last from 'lodash/last'
+import { toArray, last } from 'lodash'
+
 import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
 
@@ -20,7 +21,6 @@ import {
 } from 'graphql/queries'
 import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
-import { successRegistering } from 'app/slices/registerSlice'
 import { calculateDuration, yearInSeconds } from 'utils/dates'
 import { GET_TRANSACTION_HISTORY } from 'graphql/queries'
 
@@ -39,11 +39,11 @@ import RegisterProgress from './registerProgress'
 import { REGISTER, COMMIT } from '../../../graphql/mutations'
 import { TOGAL_GAS_WEI } from '../../../constants/gas'
 import { minYear, RegisterState } from './constant'
+import InsufficientBalanceModal from '../../Modal/InsufficientBalanceModal'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [secret, setSecret] = useState(false)
   const { networkId } = useNetworkInfo()
-  const dispatchSlice = useDispatch()
   const account = useAccount()
 
   const [registerState, setRegisterState] = useState(RegisterState.request)
@@ -58,7 +58,10 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [commitmentExpirationDate, setCommitmentExpirationDate] =
     useState(false)
   const [transactionHash, setTransactionHash] = useState('')
+  const [showInsufficientModal, setShowInsufficientModal] = useState(false)
   const [signature, setSignature] = useState([])
+
+  const [nameArr, setNameArr] = useState([])
 
   const [canRegister, setCanRegister] = useState(false)
 
@@ -149,6 +152,15 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       setRegisterState(RegisterState.registerError)
     },
   })
+  useEffect(() => {
+    const temp = toArray(domain?.name ?? '')
+    if (window.innerWidth >= 768 && temp.length > 33) {
+      temp.splice(15, temp.length - 33, ['...'])
+    } else if (temp.length > 16) {
+      temp.splice(7, temp.length - 16, ['..'])
+    }
+    setNameArr(temp)
+  }, [])
 
   // check transaction
   useEffect(() => {
@@ -322,16 +334,15 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     underPremium = now.isBetween(releasedDate, zeroPremiumDate)
   }
 
-  const successRegister = () => {
-    dispatchSlice(successRegistering())
-    setCustomStep('SUCCESS')
-  }
-
   const connectHandler = () => {
     connectProvider()
   }
 
   const handleRequest = () => {
+    if (!hasSufficientBalance) {
+      setShowInsufficientModal(true)
+      return
+    }
     const variables = {
       label: domain.label,
       secret,
@@ -344,6 +355,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }
   const handleRegister = () => {
     if (!hasSufficientBalance) {
+      setShowInsufficientModal(true)
       return
     }
     setRegisterState(RegisterState.registering)
@@ -357,59 +369,65 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }
 
   return (
-    <div className="flex flex-col items-center mx-auto">
-      <div className="flex justify-center mb-8">
-        <p className="md:max-w-[928px] max-w-[360px] md:min-w-[320px] w-auto block text-ellipsis overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center max-w-max px-6">
-          {domain.name}
-        </p>
-      </div>
-      <div className="flex flex-col md:flex-row md:w-[928px] w-[360px]">
-        {(registerState === RegisterState.confirm ||
-          registerState.startsWith(RegisterState.register)) && (
-          <Step1Sidebar
-            price={registrationFee}
-            totalUsd={registrationFeeInUsd}
-          />
-        )}
-        <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-[16px] md:px-[50px] px-[24px] py-[24px]">
-          {registerState.startsWith(RegisterState.request) && (
-            <Step1Main
-              disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
-              state={registerState}
-              duration={duration}
-              years={years}
-              setYears={handleYearChange}
-              ethUsdPriceLoading={ethUsdPriceLoading}
-              ethUsdPremiumPrice={currentPremium}
-              ethUsdPrice={ethUsdPrice}
-              loading={rentPriceLoading}
-              price={getRentPrice}
-              premiumOnlyPrice={getPremiumPrice}
-              underPremium={underPremium}
-              connectHandler={connectHandler}
-              signature={signature}
-              canRegister={canRegister}
-              registerGasFast={registerGasFast}
-              registrationFee={registrationFee}
-              registrationFeeInUsd={registrationFeeInUsd}
-              onRequest={handleRequest}
-            />
-          )}
+    <>
+      {showInsufficientModal && (
+        <InsufficientBalanceModal
+          closeModal={() => setShowInsufficientModal(false)}
+        />
+      )}
+      <div className="flex flex-col items-center mx-auto">
+        <div className="flex justify-center mb-8">
+          <p className="md:max-w-[928px] max-w-[360px] md:min-w-[320px] w-auto whitespace-nowrap overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center px-6">
+            {nameArr.join('')}
+          </p>
+        </div>
+        <div className="flex flex-col md:flex-row md:w-[928px] w-[360px]">
           {(registerState === RegisterState.confirm ||
             registerState.startsWith(RegisterState.register)) && (
-            <Step2Main
-              disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
-              state={registerState}
-              onRegister={handleRegister}
-              onRetry={handleRetry}
-              hasSufficientBalance={hasSufficientBalance}
+            <Step1Sidebar
+              price={registrationFee}
+              totalUsd={registrationFeeInUsd}
             />
           )}
+          <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-[16px] md:px-[50px] px-[24px] py-[24px]">
+            {registerState.startsWith(RegisterState.request) && (
+              <Step1Main
+                disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                state={registerState}
+                duration={duration}
+                years={years}
+                setYears={handleYearChange}
+                ethUsdPriceLoading={ethUsdPriceLoading}
+                ethUsdPremiumPrice={currentPremium}
+                ethUsdPrice={ethUsdPrice}
+                loading={rentPriceLoading}
+                price={getRentPrice}
+                premiumOnlyPrice={getPremiumPrice}
+                underPremium={underPremium}
+                connectHandler={connectHandler}
+                signature={signature}
+                canRegister={canRegister}
+                registerGasFast={registerGasFast}
+                registrationFee={registrationFee}
+                registrationFeeInUsd={registrationFeeInUsd}
+                onRequest={handleRequest}
+              />
+            )}
+            {(registerState === RegisterState.confirm ||
+              registerState.startsWith(RegisterState.register)) && (
+              <Step2Main
+                disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                state={registerState}
+                onRegister={handleRegister}
+                onRetry={handleRetry}
+              />
+            )}
+          </div>
+          {registerState.startsWith(RegisterState.request) && <Step2Sidebar />}
         </div>
-        {registerState.startsWith(RegisterState.request) && <Step2Sidebar />}
+        <RegisterProgress state={registerState} />
       </div>
-      <RegisterProgress state={registerState} />
-    </div>
+    </>
   )
 }
 
