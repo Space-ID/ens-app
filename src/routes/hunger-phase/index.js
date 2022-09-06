@@ -132,9 +132,6 @@ export default () => {
     } else {
       return (
         <div className="mt-5 space-y-7">
-          <p className="text-lg font-semibold leading-6 text-center text-gray-700 font-urbanist">
-            Registration Limit: {dailyUsed}/{dailyLimit}
-          </p>
           <Search
             className="px-7 md:px-0 md:w-[600px] mx-auto"
             searchingDomainName={searchingDomainName}

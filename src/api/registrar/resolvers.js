@@ -64,7 +64,7 @@ const resolvers = {
         const info = await registrar.getHungerPhaseInfo()
         return info
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     },
 
