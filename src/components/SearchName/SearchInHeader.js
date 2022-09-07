@@ -4,9 +4,9 @@ import axios from 'axios'
 import { Formik } from 'formik'
 import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { validate } from '@ensdomains/ens-validation'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { ethers } from '@siddomains/ui'
+import { toArray } from 'lodash'
 import ClickAwayListener from 'react-click-away-listener'
 import { useAccount } from 'components/QueryAccount'
 import SearchIcon from 'components/Icons/SearchIcon'
@@ -15,7 +15,7 @@ import FaceHappyIcon from 'components/Icons/FaceHappyIcon'
 import { setSearchDomainName, setSelectedDomain } from 'app/slices/domainSlice'
 import { GET_HUNGER_PHASE_INFO, GET_IS_CLAIMABLE } from 'graphql/queries'
 import '../../api/subDomainRegistrar'
-import { parseSearchTerm, validateName } from '../../utils/utils'
+import { validateDomain, validateName } from '../../utils/utils'
 
 function Search({
   history,
@@ -112,34 +112,25 @@ function Search({
       <Formik
         initialValues={{ searchKey: searchingDomainName ?? '' }}
         validate={async (values) => {
-          let searchTerm, _parsed
-          if (values.searchKey.split('.').length === 1) {
-            searchTerm = values.searchKey + '.eth'
-          } else {
-            searchTerm = values.searchKey
-          }
-          const errors = {}
-          const type = await parseSearchTerm(searchTerm)
-          if (type === 'short') {
-            errors.searchKey = 'Name length must be at least 3 characters'
-          } else if (
-            type === 'unsupported' ||
-            type === 'invalid' ||
-            !validate(searchTerm)
-          ) {
-            errors.searchKey = 'Name contains unsupported characters'
-          }
-          if (!['unsupported', 'invalid', 'short'].includes(type)) {
-            _parsed = validateName(searchTerm)
-            let type = await parseSearchTerm(_parsed)
-            if (
-              type === 'unsupported' ||
-              type === 'invalid' ||
-              !validate(searchTerm) ||
-              _parsed.replace('.eth', '').indexOf('.') !== -1
-            ) {
+          let errors = {}
+          try {
+            let searchTerm
+            if (values.searchKey.split('.').length === 1) {
+              searchTerm = values.searchKey + '.eth'
+            } else {
+              searchTerm = values.searchKey
+            }
+            const parsed = await validateName(searchTerm)
+            const filterParsed = parsed.replace('.eth', '')
+            values.searchKey = filterParsed
+
+            if (toArray(values.searchKey).length < 3) {
+              errors.searchKey = 'Name length must be at least 3 characters'
+            } else if (!validateDomain(values.searchKey)) {
               errors.searchKey = 'Name contains unsupported characters'
             }
+          } catch (err) {
+            errors.searchKey = 'Name contains unsupported characters'
           }
           return errors
         }}
