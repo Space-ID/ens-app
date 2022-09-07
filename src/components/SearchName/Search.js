@@ -36,36 +36,36 @@ function Search({
   const [showPopup, setShowPopup] = useState(false)
   const [result, setResult] = useState(null)
   const [isInHungerPhase, setIsInHungerPhase] = useState(false)
-  const account = useAccount()
+  // const account = useAccount()
   const dispatch = useDispatch()
 
-  const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
-    variables: { address: account },
-    fetchPolicy: 'no-cache',
-  })
+  // const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
+  //   variables: { address: account },
+  //   fetchPolicy: 'no-cache',
+  // })
 
-  const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
+  // const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
 
-  useEffect(() => {
-    if (hungerPhaseInfo?.getHungerPhaseInfo) {
-      const startTime = new Date(
-        hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
-      )
-      const endTime = new Date(
-        hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
-      )
-      const timeNow = new Date().getTime()
-      const dailyQuota = ethers.BigNumber.from(
-        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
-      )
-      const dailyUsed = ethers.BigNumber.from(
-        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
-      )
-      if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
-        setIsInHungerPhase(true)
-      }
-    }
-  }, [hungerPhaseInfo])
+  // useEffect(() => {
+  //   if (hungerPhaseInfo?.getHungerPhaseInfo) {
+  //     const startTime = new Date(
+  //       hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
+  //     )
+  //     const endTime = new Date(
+  //       hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
+  //     )
+  //     const timeNow = new Date().getTime()
+  //     const dailyQuota = ethers.BigNumber.from(
+  //       hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+  //     )
+  //     const dailyUsed = ethers.BigNumber.from(
+  //       hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+  //     )
+  //     if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
+  //       setIsInHungerPhase(true)
+  //     }
+  //   }
+  // }, [hungerPhaseInfo])
 
   const gotoDetailPage = () => {
     setShowPopup(false)
@@ -244,14 +244,16 @@ function Search({
               <button
                 disabled={
                   !result.Owner &&
-                  (!isInHungerPhase || !isClaimable?.getIsClaimable)
+                  // (!isInHungerPhase || !isClaimable?.getIsClaimable)
+                  !isInHungerPhase
                 }
                 onClick={gotoDetailPage}
                 className={cn(
                   'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
                   result.Owner
                     ? 'bg-red-100'
-                    : isInHungerPhase && isClaimable?.getIsClaimable
+                    : // : isInHungerPhase && isClaimable?.getIsClaimable
+                    isInHungerPhase
                     ? 'bg-blue-100'
                     : 'bg-gray-800 text-white cursor-not-allowed'
                 )}
