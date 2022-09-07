@@ -19,7 +19,7 @@ export const HOME_DATA = gql`
 `
 
 export default () => {
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [dailyUsed, setDailyUsed] = useState(null)
   const [dailyLimit, setDailyLimit] = useState(null)
   const [isInHungerPhase, setIsInHungerPhase] = useState(0)
@@ -38,55 +38,53 @@ export default () => {
 
   const { isReadOnly } = data
 
-  const isTestEnded = false
+  // const [getHungerInfo, { loading, error, data: hungerPhaseInfo }] =
+  //   useLazyQuery(GET_HUNGER_PHASE_INFO)
+  //
+  // const [getIsClaimable, { error: claimError, data: isClaimable }] =
+  //   useLazyQuery(GET_IS_CLAIMABLE, {
+  //     variables: { address: account },
+  //   })
 
-  const [getHungerInfo, { loading, error, data: hungerPhaseInfo }] =
-    useLazyQuery(GET_HUNGER_PHASE_INFO)
+  // useEffect(() => {
+  //   if (account) {
+  //     getIsClaimable()
+  //     getHungerInfo()
+  //   }
+  // }, [account])
 
-  const [getIsClaimable, { error: claimError, data: isClaimable }] =
-    useLazyQuery(GET_IS_CLAIMABLE, {
-      variables: { address: account },
-    })
+  // useEffect(() => {
+  //   if (hungerPhaseInfo?.getHungerPhaseInfo) {
+  //     const startTime = new Date(
+  //       hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
+  //     )
+  //     const endTime = new Date(
+  //       hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
+  //     )
+  //     const dailyQuota = ethers.BigNumber.from(
+  //       hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+  //     )
+  //     const dailyUsed = ethers.BigNumber.from(
+  //       hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+  //     )
+  //     const timeNow = new Date().getTime()
+  //     if (timeNow < startTime) {
+  //       setIsInHungerPhase(0)
+  //     } else if (timeNow > endTime) {
+  //       setIsInHungerPhase(2)
+  //     } else {
+  //       setIsInHungerPhase(1)
+  //     }
+  //     setDailyUsed(dailyUsed.toNumber())
+  //     setDailyLimit(dailyQuota.toNumber())
+  //   }
+  // }, [hungerPhaseInfo])
 
-  useEffect(() => {
-    if (account) {
-      getIsClaimable()
-      getHungerInfo()
-    }
-  }, [account])
-
-  useEffect(() => {
-    if (hungerPhaseInfo?.getHungerPhaseInfo) {
-      const startTime = new Date(
-        hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
-      )
-      const endTime = new Date(
-        hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
-      )
-      const dailyQuota = ethers.BigNumber.from(
-        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
-      )
-      const dailyUsed = ethers.BigNumber.from(
-        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
-      )
-      const timeNow = new Date().getTime()
-      if (timeNow < startTime) {
-        setIsInHungerPhase(0)
-      } else if (timeNow > endTime) {
-        setIsInHungerPhase(2)
-      } else {
-        setIsInHungerPhase(1)
-      }
-      setDailyUsed(dailyUsed.toNumber())
-      setDailyLimit(dailyQuota.toNumber())
-    }
-  }, [hungerPhaseInfo])
-
-  useEffect(() => {
-    if (isClaimable?.getIsClaimable) {
-      setClaimable(true)
-    } else setClaimable(false)
-  }, [isClaimable])
+  // useEffect(() => {
+  //   if (isClaimable?.getIsClaimable) {
+  //     setClaimable(true)
+  //   } else setClaimable(false)
+  // }, [isClaimable])
 
   const getMainContent = () => {
     if (isEmptyAddress(account) || isReadOnly) return null
@@ -100,8 +98,12 @@ export default () => {
     if (isInHungerPhase === 0)
       return (
         <div className="mt-[55px]">
-          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl">
-            Please wait for the staging launch to begin on Sep 7th.
+          <Search
+            className="px-7 md:px-0 md:w-[600px] mx-auto"
+            searchingDomainName={searchingDomainName}
+          />
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
+            Please wait for the staging launch to begin on next week.
           </p>
         </div>
       )

@@ -67,27 +67,27 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const [isInHungerPhase, setIsInHungerPhase] = useState(false)
 
-  const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
-  useEffect(() => {
-    if (hungerPhaseInfo?.getHungerPhaseInfo) {
-      const startTime = new Date(
-        hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
-      )
-      const endTime = new Date(
-        hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
-      )
-      const timeNow = new Date().getTime()
-      const dailyQuota = ethers.BigNumber.from(
-        hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
-      )
-      const dailyUsed = ethers.BigNumber.from(
-        hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
-      )
-      if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
-        setIsInHungerPhase(true)
-      }
-    }
-  }, [hungerPhaseInfo])
+  // const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
+  // useEffect(() => {
+  //   if (hungerPhaseInfo?.getHungerPhaseInfo) {
+  //     const startTime = new Date(
+  //       hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
+  //     )
+  //     const endTime = new Date(
+  //       hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
+  //     )
+  //     const timeNow = new Date().getTime()
+  //     const dailyQuota = ethers.BigNumber.from(
+  //       hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
+  //     )
+  //     const dailyUsed = ethers.BigNumber.from(
+  //       hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
+  //     )
+  //     if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
+  //       setIsInHungerPhase(true)
+  //     }
+  //   }
+  // }, [hungerPhaseInfo])
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
@@ -99,10 +99,10 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }, [])
 
   // hunger phase isClaimable
-  const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
-    variables: { address: account },
-    fetchPolicy: 'no-cache',
-  })
+  // const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
+  //   variables: { address: account },
+  //   fetchPolicy: 'no-cache',
+  // })
 
   // get eth price
   const {
@@ -398,7 +398,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-[16px] md:px-[50px] px-[24px] py-[24px]">
             {registerState.startsWith(RegisterState.request) && (
               <Step1Main
-                disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                // disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                disable={!isInHungerPhase}
                 state={registerState}
                 duration={duration}
                 years={years}
@@ -422,7 +423,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             {(registerState === RegisterState.confirm ||
               registerState.startsWith(RegisterState.register)) && (
               <Step2Main
-                disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                // disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                disable={!isInHungerPhase}
                 state={registerState}
                 onRegister={handleRegister}
                 onRetry={handleRetry}
