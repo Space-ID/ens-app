@@ -263,7 +263,10 @@ function Search({
                 {result.Owner ? 'Unavailable' : 'available'}
               </div>
               <button
-                disabled={!isInHungerPhase || !isClaimable?.getIsClaimable}
+                disabled={
+                  !result.Owner &&
+                  (!isInHungerPhase || !isClaimable?.getIsClaimable)
+                }
                 onClick={gotoDetailPage}
                 className={cn(
                   'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
