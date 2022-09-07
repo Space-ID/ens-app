@@ -115,17 +115,17 @@ export default () => {
             className="px-7 md:px-0 md:w-[600px] mx-auto"
             searchingDomainName={searchingDomainName}
           />
-          {claimable && dailyUsed >= dailyLimit && (
-            <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-              Please wait for the staging launch to begin on next week.
-            </p>
-          )}
-          {!claimable && (
-            <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-              You have used up the quota for registration. Please wait for the
-              public registration.
-            </p>
-          )}
+          {/*{claimable && dailyUsed >= dailyLimit && (*/}
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
+            Please wait for the staging launch to begin on next week.
+          </p>
+          {/*)}*/}
+          {/*{!claimable && (*/}
+          {/*  <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">*/}
+          {/*    You have used up the quota for registration. Please wait for the*/}
+          {/*    public registration.*/}
+          {/*  </p>*/}
+          {/*)}*/}
         </div>
       )
     } else {
