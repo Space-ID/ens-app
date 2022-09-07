@@ -185,10 +185,10 @@ export default function TopAddress({
           </div>
           <div className="flex items-center justify-center mt-4 md:justify-start md:mt-0">
             <button
-              disabled={pendingExp}
+              disabled={pendingExp || loadingRegistration || !isRegsitrant}
               className={cn(
                 'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
-                pendingExp
+                pendingExp || loadingRegistration || !isRegsitrant
                   ? 'bg-[#7E9195] text-white'
                   : 'bg-[#30DB9E] text-[#134757]'
               )}
