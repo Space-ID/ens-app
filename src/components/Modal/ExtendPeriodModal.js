@@ -24,38 +24,9 @@ export default function ExtendPeriodModal({
   gasPrice,
   extendHandler,
 }) {
-  const [discountAmount, setDiscountAmount] = useState({
-    amount: 0,
-    percent: 0,
-  })
-
-  useEffect(() => {
-    if (price && selectedDomain) {
-      const ethVal = new EthVal(`${price || 0}`).toEth()
-      const domain = selectedDomain.name
-      if (domain.length === 3) {
-        const tPrice = {
-          amount: ethVal * 0.4,
-          percent: 40,
-        }
-        setDiscountAmount({ ...tPrice })
-      } else if (domain.length === 4) {
-        setDiscountAmount({
-          amount: ethVal * 0.2,
-          percent: 20,
-        })
-      } else {
-        setDiscountAmount({
-          amount: 0,
-          percent: 0,
-        })
-      }
-    }
-  }, [price, selectedDomain])
-
   const ethVal = new EthVal(`${price || 0}`).toEth()
 
-  const registrationFee = ethVal / (1 - discountAmount.percent / 100)
+  const registrationFee = ethVal
 
   return (
     <div>
@@ -84,14 +55,12 @@ export default function ExtendPeriodModal({
                   ethUsdPrice={ethUsdPrice}
                   loading={rentPriceLoading}
                   price={price}
-                  discount={discountAmount}
                 />
               </div>
               <EthRegistrationGasPrice
                 price={price}
                 gasPrice={gasPrice}
                 ethUsdPrice={ethUsdPrice}
-                discount={discountAmount}
                 registrationFee={registrationFee}
                 domain={selectedDomain.name}
               />
