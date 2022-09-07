@@ -10,7 +10,6 @@ const EthRegistrationGasPrice = ({
   ethUsdPrice,
   gasPrice,
   name,
-  discount,
   years,
   isAuctionWinner,
   registrationFee,
@@ -39,12 +38,12 @@ const EthRegistrationGasPrice = ({
           </div>
         </div>
 
-        {discount.amount !== 0 && (
-          <div className="flex justify-between mt-[14px] text-[#1EEFA4]">
-            <div className="font-semibold text-[14px]">Discount</div>
-            <div className="font-bold text-[16px]">-{discount.percent}%</div>
-          </div>
-        )}
+        {/*{discount.amount !== 0 && (*/}
+        {/*  <div className="flex justify-between mt-[14px] text-[#1EEFA4]">*/}
+        {/*    <div className="font-semibold text-[14px]">Discount</div>*/}
+        {/*    <div className="font-bold text-[16px]">-{discount.percent}%</div>*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </div>
       <div className="text-white py-[25px] border-b border-white border-dashed px-6">
         <div className="flex justify-between mt-[14px]">
@@ -58,12 +57,12 @@ const EthRegistrationGasPrice = ({
         <div className="text-[14px] leading-[22px] font-urbanist">
           Total Cost
         </div>
-        {!(isAuctionWinner && years === 1) && domain?.length < 5 && (
-          <div className="font-bold text-[36px] text-white line-through heading-[34px]">
-            {registerGasFast.add(registrationFee).toFixed(3).toString()}
-            BNB
-          </div>
-        )}
+        {/*{!(isAuctionWinner && years === 1) && domain?.length < 5 && (*/}
+        {/*  <div className="font-bold text-[36px] text-white line-through heading-[34px]">*/}
+        {/*    {registerGasFast.add(registrationFee).toFixed(3).toString()}*/}
+        {/*    BNB*/}
+        {/*  </div>*/}
+        {/*)}*/}
         <div className="font-bold text-[36px] text-[#1EEFA4] italic">
           {totalFast.toFixed(3).toString()} BNB
         </div>
