@@ -189,8 +189,8 @@ export default function TopAddress({
               className={cn(
                 'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
                 pendingExp || loadingRegistration || !isRegsitrant
-                  ? 'bg-[#7E9195] text-white'
-                  : 'bg-[#30DB9E] text-[#134757]'
+                  ? 'bg-gray-800 text-white'
+                  : 'bg-green-200 text-dark-100'
               )}
               onClick={extendHandler}
             >
