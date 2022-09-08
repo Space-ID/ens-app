@@ -97,14 +97,14 @@ export default function ChangePrimaryDomain({
           </div>
           {/* Body */}
           <div id="domain-modal-body" className="mt-5">
-            <div className="text-white text-[16px] font-urbanist">
+            <div className="text-base text-white font-urbanist">
               This will designate one of your SPACE ID names to represent your
               account and act as your cross-platform Web3 username and profile.
               You can only have one Primary SPACE ID Name per SPACE ID account
               and can change it at any time.
             </div>
             <div className="mt-5">
-              <div className="text-white font-semibold text-[16px] font-urbanist">
+              <div className="text-base font-semibold text-white font-urbanist">
                 Select one Space ID Name
               </div>
               <div>
@@ -121,7 +121,7 @@ export default function ChangePrimaryDomain({
                 />
               </div>
             </div>
-            <div className="text-[#BDCED1] mt-5">
+            <div className="mt-5 text-gray-700">
               * Only SPACE ID names that point to your SPACE ID acount can be
               set as you Primary SPACE ID Name.
             </div>
@@ -132,10 +132,10 @@ export default function ChangePrimaryDomain({
             <button
               disabled={!selected}
               className={cn(
-                'rounded-[16px] py-2 px-[60px] text-[18px] mx-auto font-semibold',
+                'rounded-2xl py-2 px-[60px] text-[18px] mx-auto font-semibold',
                 selected
-                  ? 'bg-[#30DB9E] text-[#071A2F] cursor-pointer'
-                  : 'bg-[#7E9195] text-white cursor-not-allowed'
+                  ? 'bg-green-200 text-dark-common cursor-pointer'
+                  : 'bg-gray-800 text-white cursor-not-allowed'
               )}
               onClick={() => saveHandler(selected)}
             >

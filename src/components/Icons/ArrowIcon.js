@@ -1,9 +1,9 @@
 import React from 'react'
 
 export default function ArrowIcon({
-  className = 'text-[#071A2F]',
+  className = 'text-dark-common',
   size = 9,
-  direction = 'right'
+  direction = 'right',
 }) {
   let deg = 0
   switch (direction) {

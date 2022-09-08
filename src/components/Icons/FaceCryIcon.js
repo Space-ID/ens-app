@@ -1,9 +1,6 @@
 import React from 'react'
 
-export default function FaceCryIcon({
-  size = 20,
-  className = 'text-[#ED7E17]'
-}) {
+export default function FaceCryIcon({ size = 20, className = 'text-red-100' }) {
   return (
     <div className={className}>
       <svg

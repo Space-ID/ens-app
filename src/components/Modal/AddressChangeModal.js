@@ -10,18 +10,18 @@ import Modal from './Modal'
 export default function AddressChangeModal({ show, closeModal, saveHandler }) {
   const formik = useFormik({
     initialValues: {
-      address: ''
+      address: '',
     },
-    validate: async values => {
+    validate: async (values) => {
       const errors = {}
       if (!ethers.utils.isAddress(values.address)) {
         errors.address = 'Address is not valid.'
       }
       return errors
     },
-    onSubmit: values => {
+    onSubmit: (values) => {
       saveHandler(values)
-    }
+    },
   })
 
   useEffect(() => {
@@ -44,11 +44,11 @@ export default function AddressChangeModal({ show, closeModal, saveHandler }) {
           <div className="mt-4">
             <form onSubmit={formik.handleSubmit}>
               <div>
-                <div className="text-white font-semibold">
+                <div className="font-semibold text-white">
                   Address<span className="text-red-800">*</span>
                 </div>
                 <input
-                  className="w-full bg-[rgba(72,143,139,0.25)] rounded-[12px] text-[#7E9195] text-[14px] py-[7px] px-4 focus:outline-0"
+                  className="w-full bg-[rgba(72,143,139,0.25)] rounded-xl text-gray-800 text-[14px] py-[7px] px-4 focus:outline-0"
                   placeholder="Enter the address"
                   id="address"
                   name="address"
@@ -57,7 +57,7 @@ export default function AddressChangeModal({ show, closeModal, saveHandler }) {
                   value={formik.values.address}
                 />
                 {formik.errors.address ? (
-                  <div className="text-[#ED7E17] text-[12px] m-1">
+                  <div className="m-1 text-xs text-red-100">
                     {formik.errors.address}
                   </div>
                 ) : null}
@@ -70,10 +70,10 @@ export default function AddressChangeModal({ show, closeModal, saveHandler }) {
                 <button
                   type="submit"
                   className={cn(
-                    'w-[160px] rounded-[16px] h-[38px] flex justify-center items-center font-semibold',
+                    'w-[160px] rounded-2xl h-[38px] flex justify-center items-center font-semibold',
                     formik.isValid
-                      ? 'bg-[#30DB9E] text-[#134757]'
-                      : 'bg-[#7E9195] text-white'
+                      ? 'bg-green-200 text-dark-100'
+                      : 'bg-gray-800 text-white'
                   )}
                 >
                   Save

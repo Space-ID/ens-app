@@ -103,7 +103,7 @@ const CTA = ({
       <div className="md:flex justify-between md:px-[48px] w-full">
         {isReadOnly ? (
           <button
-            className="order-2 font-semibold mx-auto px-[37px] py-[9px] rounded-[16px] w-[160px] flex justify-center items-center bg-[#30DB9E]"
+            className="order-2 font-semibold mx-auto px-[37px] py-[9px] rounded-2xl w-[160px] flex justify-center items-center bg-green-200"
             onClick={connectHandler}
           >
             Connect
@@ -118,7 +118,7 @@ const CTA = ({
               } else setShowSufficientBalanceModal(true)
             }}
             className={cn(
-              'order-2 font-semibold mx-auto px-[37px] py-[9px] rounded-[16px] w-[160px] flex justify-center items-center',
+              'order-2 font-semibold mx-auto px-[37px] py-[9px] rounded-2xl w-[160px] flex justify-center items-center',
               'bg-gray-800 text-white cursor-not-allowed'
             )}
           >
@@ -133,7 +133,7 @@ const CTA = ({
 
         <button
           onClick={goBack}
-          className="order-1 mt-4 md:mt-0 mx-auto border-primary border text-primary font-semibold px-[37px] py-[9px] rounded-[16px] w-40 flex justify-center items-center"
+          className="order-1 mt-4 md:mt-0 mx-auto border-primary border text-primary font-semibold px-[37px] py-[9px] rounded-2xl w-40 flex justify-center items-center"
         >
           Go Back
         </button>

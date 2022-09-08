@@ -11,56 +11,56 @@ import LanguageEarthIcon from 'components/Icons/LanguageEarthIcon'
 const LANGUAGES = [
   {
     value: 'en',
-    label: 'English (EN)'
+    label: 'English (EN)',
   },
   {
     value: 'cn',
-    label: '简体中文 (CN)'
+    label: '简体中文 (CN)',
   },
   {
     value: 'ja',
-    label: '日本語 (JA)'
+    label: '日本語 (JA)',
   },
   {
     value: 'de',
-    label: 'Deutsch (DE)'
+    label: 'Deutsch (DE)',
   },
   {
     value: 'es',
-    label: 'Español (ES)'
+    label: 'Español (ES)',
   },
   {
     value: 'fr',
-    label: 'Français (FR)'
+    label: 'Français (FR)',
   },
   {
     value: 'ko',
-    label: '한국어 (KO)'
+    label: '한국어 (KO)',
   },
   {
     value: 'it',
-    label: 'Italiano (IT)'
+    label: 'Italiano (IT)',
   },
   {
     value: 'pl',
-    label: 'Polski (PL)'
+    label: 'Polski (PL)',
   },
   {
     value: 'pt-BR',
-    label: 'Português (BR)'
+    label: 'Português (BR)',
   },
   {
     value: 'ru',
-    label: 'Pусский (RU)'
+    label: 'Pусский (RU)',
   },
   {
     value: 'vi',
-    label: 'Tiếng Việt (VI)'
-  }
+    label: 'Tiếng Việt (VI)',
+  },
 ]
 
 function getLang(lang) {
-  return LANGUAGES.find(l => l.value === lang)
+  return LANGUAGES.find((l) => l.value === lang)
 }
 
 function saveLanguageToLocalStorage(value) {
@@ -94,9 +94,9 @@ export default function LanguageSwitcher() {
       <div
         className="text-[#adbbcd] uppercase flex justify-enter h-full py-0 px-[6px] items-center hover:cursor-pointer"
         ref={togglerRef}
-        onClick={() => setShowDropdown(show => !show)}
+        onClick={() => setShowDropdown((show) => !show)}
       >
-        <span className="mr-0 text-[#30DB9E] font-semibold font-urbanist text-[16px] mr-1">
+        <span className="mr-1 text-base font-semibold text-green-200 font-urbanist">
           {languageSelected.value}
         </span>
         <LanguageEarthIcon />
@@ -109,16 +109,16 @@ export default function LanguageSwitcher() {
       {showDropdown && (
         <AnimatePresence>
           <motion.ul
-            className="w-[140px] list-none absolute bg-[#071A2F] bottom-[35px] right-0 mt-[10px] rounded-[12px] shadow-dropdown z-[2] max-h-[120px] overflow-y-auto dropdown-container border border-[#1EEFA4]"
+            className="w-[140px] list-none absolute bg-dark-common bottom-[35px] right-0 mt-[10px] rounded-xl shadow-dropdown z-[2] max-h-[120px] overflow-y-auto dropdown-container border border-green-100"
             ref={dropdownRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            {LANGUAGES.map(language => {
+            {LANGUAGES.map((language) => {
               return (
                 <li
-                  className="text-[#30DB9E] text-[16px] font-urbanist px-4 py-3"
+                  className="px-4 py-3 text-base text-green-200 font-urbanist"
                   key={language.value}
                   onClick={() => changeLanguage(language)}
                 >

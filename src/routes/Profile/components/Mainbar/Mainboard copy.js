@@ -9,7 +9,7 @@ import { Address } from 'components/Addresses'
 import {
   GET_RESOLVER_FROM_SUBGRAPH,
   GET_ADDRESSES,
-  GET_TEXT_RECORDS
+  GET_TEXT_RECORDS,
 } from 'graphql/queries'
 
 import EmailImg from 'assets/images/profile/email.png'
@@ -44,57 +44,57 @@ const profileData = [
     title: 'Email',
     description: 'example@email.com',
     imageUrl: EmailImg,
-    bgColorClass: 'bg-[rgba(50,126,164,0.6)]'
+    bgColorClass: 'bg-[rgba(50,126,164,0.6)]',
   },
   {
     id: 2,
     title: 'Website',
     description: 'example.example',
     imageUrl: WebsiteImg,
-    bgColorClass: 'bg-[rgba(49,133,114,0.6)]'
+    bgColorClass: 'bg-[rgba(49,133,114,0.6)]',
   },
   {
     id: 3,
     title: 'Avatar',
     description: 'example.example',
     imageUrl: AvatarImg,
-    bgColorClass: 'bg-[rgba(19,124,120,0.6)]'
+    bgColorClass: 'bg-[rgba(19,124,120,0.6)]',
   },
   {
     id: 4,
     title: 'Description',
     description: 'pepe is legendary',
     imageUrl: DescriptionImg,
-    bgColorClass: 'bg-[rgba(204,252,255,0.2)]'
+    bgColorClass: 'bg-[rgba(204,252,255,0.2)]',
   },
   {
     id: 5,
     title: 'Twitter',
     description: 'pepefrog',
     imageUrl: TwitterImg,
-    bgColorClass: 'bg-[rgba(65,152,208,0.6)]'
+    bgColorClass: 'bg-[rgba(65,152,208,0.6)]',
   },
   {
     id: 6,
     title: 'Discord',
     description: 'pepefrog#1234',
     imageUrl: DiscordImg,
-    bgColorClass: 'bg-[rgba(88,98,192,0.6)]'
+    bgColorClass: 'bg-[rgba(88,98,192,0.6)]',
   },
   {
     id: 7,
     title: 'Github',
     description: 'example.example',
     imageUrl: GithubImg,
-    bgColorClass: 'bg-[rgba(93,111,126,0.6)]'
+    bgColorClass: 'bg-[rgba(93,111,126,0.6)]',
   },
   {
     id: 8,
     title: 'Telegram',
     description: 'pepefrog',
     imageUrl: TelegramImg,
-    bgColorClass: 'bg-[rgba(62,137,173,0.6)]'
-  }
+    bgColorClass: 'bg-[rgba(62,137,173,0.6)]',
+  },
 ]
 
 const addressesData = [
@@ -103,33 +103,33 @@ const addressesData = [
     title: 'EVM',
     description: '0x0000......000000',
     imageUrl: EVMImg,
-    bgColorClass: 'bg-[rgba(89,128,201,0.6)]'
+    bgColorClass: 'bg-[rgba(89,128,201,0.6)]',
   },
   {
     id: 1,
     title: 'BTC',
     description: '3FZbgi......tktZc5',
     imageUrl: BTCImg,
-    bgColorClass: 'bg-[rgba(167,129,80,0.6)]'
+    bgColorClass: 'bg-[rgba(167,129,80,0.6)]',
   },
   {
     id: 1,
     title: 'LTC',
     description: 'MGxNPP......2465zN',
     imageUrl: BTCImg,
-    bgColorClass: 'bg-[rgba(99,124,165,0.6)]'
-  }
+    bgColorClass: 'bg-[rgba(99,124,165,0.6)]',
+  },
 ]
 
 function isContentHashEmpty(hash) {
   return hash?.startsWith('undefined') || parseInt(hash, 16) === 0
 }
 
-const useGetRecords = domain => {
+const useGetRecords = (domain) => {
   const { data: dataResolver } = useQuery(GET_RESOLVER_FROM_SUBGRAPH, {
     variables: {
-      id: getNamehash(domain.name + '.bnb')
-    }
+      id: getNamehash(domain.name + '.bnb'),
+    },
   })
 
   const resolver =
@@ -139,19 +139,19 @@ const useGetRecords = domain => {
     resolver &&
     resolver.coinTypes &&
     resolver.coinTypes
-      .map(c => {
+      .map((c) => {
         return formatsByCoinType[c] && formatsByCoinType[c].name
       })
-      .filter(c => c)
+      .filter((c) => c)
 
   const { loading: addressesLoading, data: dataAddresses } = useQuery(
     GET_ADDRESSES,
     {
       variables: {
         name: domain.name + '.bnb',
-        keys: union(coinList, COIN_PLACEHOLDER_RECORDS)
+        keys: union(coinList, COIN_PLACEHOLDER_RECORDS),
       },
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     }
   )
 
@@ -160,24 +160,24 @@ const useGetRecords = domain => {
     {
       variables: {
         name: domain.name + 'bnb',
-        keys: union(resolver && resolver.texts, TEXT_PLACEHOLDER_RECORDS)
+        keys: union(resolver && resolver.texts, TEXT_PLACEHOLDER_RECORDS),
       },
-      fetchPolicy: 'network-only'
+      fetchPolicy: 'network-only',
     }
   )
   return {
     dataAddresses,
     dataTextRecords,
-    recordsLoading: addressesLoading || textRecordsLoading
+    recordsLoading: addressesLoading || textRecordsLoading,
   }
 }
 
 const processRecords = (records, placeholder) => {
   const nonDuplicatePlaceholderRecords = placeholder.filter(
-    record => !records.find(r => record === r.key)
+    (record) => !records.find((r) => record === r.key)
   )
 
-  const recordsSansEmpty = records.map(record => {
+  const recordsSansEmpty = records.map((record) => {
     if (record.value === emptyAddress) {
       return { ...record, value: '' }
     }
@@ -186,10 +186,10 @@ const processRecords = (records, placeholder) => {
 
   return [
     ...recordsSansEmpty,
-    ...nonDuplicatePlaceholderRecords.map(record => ({
+    ...nonDuplicatePlaceholderRecords.map((record) => ({
       key: record,
-      value: ''
-    }))
+      value: '',
+    })),
   ]
 }
 
@@ -199,29 +199,29 @@ const getInitialTextRecords = (dataTextRecords, domain) => {
       ? processRecords(dataTextRecords.getTextRecords, TEXT_PLACEHOLDER_RECORDS)
       : processRecords([], TEXT_PLACEHOLDER_RECORDS)
 
-  return textRecords?.map(textRecord => ({
+  return textRecords?.map((textRecord) => ({
     contractFn: 'setText',
-    ...textRecord
+    ...textRecord,
   }))
 }
 
-const getInitialCoins = dataAddresses => {
+const getInitialCoins = (dataAddresses) => {
   const addresses =
     dataAddresses && dataAddresses.getAddresses
       ? processRecords(dataAddresses.getAddresses, COIN_PLACEHOLDER_RECORDS)
       : processRecords([], COIN_PLACEHOLDER_RECORDS)
 
-  return addresses?.map(address => ({
+  return addresses?.map((address) => ({
     contractFn: 'setAddr(bytes32,uint256,bytes)',
-    ...address
+    ...address,
   }))
 }
 
-const getInitialContent = domain => {
+const getInitialContent = (domain) => {
   return {
     contractFn: 'setContenthash',
     key: 'CONTENT',
-    value: isContentHashEmpty(domain.content) ? '' : domain.content
+    value: isContentHashEmpty(domain.content) ? '' : domain.content,
   }
 }
 
@@ -247,11 +247,10 @@ const useInitRecords = (
 }
 
 export default function Mainboard({ selectedDomain }) {
-  const editOn = useSelector(state => state.account.profileEditMode)
+  const editOn = useSelector((state) => state.account.profileEditMode)
 
-  const { dataAddresses, dataTextRecords, recordsLoading } = useGetRecords(
-    selectedDomain
-  )
+  const { dataAddresses, dataTextRecords, recordsLoading } =
+    useGetRecords(selectedDomain)
 
   const [initialRecords, setInitialRecords] = useState([])
 
@@ -282,7 +281,7 @@ export default function Mainboard({ selectedDomain }) {
             ))} */}
             {initialRecords
               .filter(
-                item => item.contractFn === 'setAddr(bytes32,uint256,bytes)'
+                (item) => item.contractFn === 'setAddr(bytes32,uint256,bytes)'
               )
               .map((item, index) => (
                 <Address
@@ -297,7 +296,7 @@ export default function Mainboard({ selectedDomain }) {
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-x-[4]">
-            <div className="bg-[rgba(204,252,255,0.2)] rounded-[28px] w-[300px] h-[56px] justify-center items-center flex text-white font-urbanist font-semibold text-[16px]">
+            <div className="bg-[rgba(204,252,255,0.2)] rounded-[28px] w-[300px] h-[56px] justify-center items-center flex text-white font-urbanist font-semibold text-base">
               Nothing here:(
             </div>
           </div>
@@ -323,7 +322,7 @@ export default function Mainboard({ selectedDomain }) {
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-x-[4]">
-            <div className="bg-[rgba(204,252,255,0.2)] rounded-[28px] w-[300px] h-[56px] justify-center items-center flex text-white font-urbanist font-semibold text-[16px]">
+            <div className="bg-[rgba(204,252,255,0.2)] rounded-[28px] w-[300px] h-[56px] justify-center items-center flex text-white font-urbanist font-semibold text-base">
               Nothing here:(
             </div>
           </div>

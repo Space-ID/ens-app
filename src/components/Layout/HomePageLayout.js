@@ -251,7 +251,7 @@ export default ({ children }) => {
           closeModal={closeModal}
         >
           <div className="text-white">
-            <div className="text-[20px] md:text-[28px] font-cocoSharp text-center font-bold text-white leading-10">
+            <div className="text-xl md:text-[28px] font-cocoSharp text-center font-bold text-white leading-10">
               Unsupported Network
             </div>
             <div className="mt-4 font-semibold text-center text-white text-urbanist">
@@ -287,13 +287,13 @@ export default ({ children }) => {
             : 'h-[80px]'
         )}
       >
-        <div className="flex py-[20px] px-7 md:px-12 justify-between items-center">
+        <div className="flex items-center justify-between py-5 px-7 md:px-12">
           {/* Only showing for the desktop device */}
           <a
             href="/"
             className="items-center hidden w-56 h-10 text-green-100 cursor-pointer lg:flex"
           >
-            {/* <SmallLogoIcon size={40} className="text-[#1EEFA4]" />
+            {/* <SmallLogoIcon size={40} className="text-green-100" />
             <div className="hidden lg:block font-semibold text-[18px] ml-[31px]">
               <img src={LogoText} />
             </div> */}
@@ -309,7 +309,7 @@ export default ({ children }) => {
 
           {/* Only show for the mobile device */}
           <div className="justify-between block w-full cursor-pointer md:hidden">
-            {/* <SmallLogoIcon size={40} className="text-[#1EEFA4]" /> */}
+            {/* <SmallLogoIcon size={40} className="text-green-100" /> */}
             {isMenuOpen ? (
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
@@ -325,7 +325,7 @@ export default ({ children }) => {
                 {(!accounts || !accounts[0]) && (
                   <div className="">
                     <button
-                      className="flex items-center bg-green-100 text-dark-100 text-xl px-5 py-2 rounded-[16px] font-semibold"
+                      className="flex items-center px-5 py-2 text-xl font-semibold bg-green-100 text-dark-100 rounded-2xl"
                       onClick={connectProvider}
                     >
                       Connect{' '}
@@ -354,7 +354,7 @@ export default ({ children }) => {
                   {isReadOnly && (
                     <div className="">
                       <button
-                        className="flex items-center bg-green-100 text-dark-100  text-xl px-5 py-2 rounded-[16px] font-semibold"
+                        className="flex items-center px-5 py-2 text-xl font-semibold bg-green-100 text-dark-100 rounded-2xl"
                         onClick={connectProvider}
                       >
                         Connect{' '}
@@ -446,7 +446,7 @@ export default ({ children }) => {
               >
                 <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
                   <div>
-                    <div className="flex items-center border-b-[2px] border-[#7E9195] pb-4">
+                    <div className="flex items-center border-b-[2px] border-gray-800 pb-4">
                       {!reverseRecordLoading &&
                       getReverseRecord &&
                       getReverseRecord.avatar ? (
@@ -466,7 +466,7 @@ export default ({ children }) => {
                           />
                         </div>
                       )}
-                      <div className="font-semibold text-[20px] font-urbanist text-white ml-4">{`${accounts[0].substring(
+                      <div className="ml-4 text-xl font-semibold text-white font-urbanist">{`${accounts[0].substring(
                         0,
                         6
                       )}....${accounts[0].substring(
@@ -481,18 +481,18 @@ export default ({ children }) => {
                   >
                     {/*<div*/}
                     {/*  onClick={moveToWishList}*/}
-                    {/*  className="flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"*/}
+                    {/*  className="flex items-center justify-center h-10 font-semibold cursor-pointer hover:bg-dark-200 hover:rounded-xl"*/}
                     {/*>*/}
                     {/*  Wishlist*/}
                     {/*</div>*/}
                     <div
-                      className="hidden md:flex font-semibold h-10 items-center justify-center cursor-pointer hover:bg-dark-200 hover:rounded-[12px]"
+                      className="items-center justify-center hidden h-10 font-semibold cursor-pointer md:flex hover:bg-dark-200 hover:rounded-xl"
                       onClick={moveToProfile}
                     >
                       Manage Account
                     </div>
                     <div
-                      className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-[12px] md:bg-transparent hover:bg-dark-200 hover:rounded-[12px]"
+                      className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-xl md:bg-transparent hover:bg-dark-200 hover:rounded-xl"
                       onClick={disconnectProvider}
                     >
                       Disconnect
@@ -543,7 +543,7 @@ export default ({ children }) => {
       </div>
 
       {/* Footer component in the home page */}
-      <div className="h-11 flex py-5 md:px-8 xl:px-12 justify-center md:justify-between absolute left-0 bottom-0 items-center w-full bg-[#071A2F]">
+      <div className="absolute bottom-0 left-0 flex items-center justify-center w-full py-5 h-11 md:px-8 xl:px-12 md:justify-between bg-dark-common">
         <a className="hidden md:block" href="https://space.id">
           <p className="text-base font-semibold leading-7 text-center text-green-100 font-urbanist">
             About SPACE ID

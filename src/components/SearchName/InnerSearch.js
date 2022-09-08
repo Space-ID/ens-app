@@ -60,7 +60,7 @@ function InnerSearch({ history, className, style }) {
             </button>
             <div className="w-full">
               <input
-                className="w-full bg-[#104151]/[0.25] py-2 px-[36px] text-[#BDCED1] text-[18px] border border-[rgba(204,252,255,0.3)] rounded-[18px]"
+                className="w-full bg-[#104151]/[0.25] py-2 px-[36px] text-gray-700 text-[18px] border border-[rgba(204,252,255,0.3)] rounded-[18px]"
                 placeholder=""
                 onChange={(e) => {
                   handleChange(e)
@@ -72,7 +72,7 @@ function InnerSearch({ history, className, style }) {
                 autoCapitalize="off"
               />
             </div>
-            <div className="text-[rgba(204,252,255,0.3)] font-urbanist font-semibold text-[16px] absolute right-[16px] top-[10px]">
+            <div className="text-[rgba(204,252,255,0.3)] font-urbanist font-semibold text-base absolute right-4 top-[10px]">
               .bnb
             </div>
           </form>

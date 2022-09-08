@@ -253,7 +253,7 @@ export default function MainBoard({
   return (
     <div className={cn(className)}>
       <div className="rounded-[24px]">
-        <p className="text-[#B1D6D3] font-bold text-[18px] xl:text-[20px] text-center md:text-left px-3">
+        <p className="text-gray-600 font-bold text-[18px] xl:text-xl text-center md:text-left px-3">
           Records
         </p>
         <div className="bg-[rgba(67,140,136,0.25)] rounded-[24px] block md:flex items-center justify-between py-5 px-6 mt-5">
@@ -268,7 +268,7 @@ export default function MainBoard({
             />
           ) : (
             <div>
-              <p className="text-[#B1D6D3] font-bold text-[18px] xl:text-[20px] text-center md:text-left">
+              <p className="text-gray-600 font-bold text-[18px] xl:text-xl text-center md:text-left">
                 BNB Address
               </p>
               <div className="flex items-center text-gray-600 text-[14px] xl:text-[18px] mt-1 break-all justify-center md:justify-start">
@@ -299,8 +299,8 @@ export default function MainBoard({
               className={cn(
                 'py-2 px-10 rounded-full md:ml-4 font-semibold',
                 pendingBNBAddress || !isRegsitrant
-                  ? 'bg-[#7E9195] text-gray-700'
-                  : 'bg-[#2980E8] text-white'
+                  ? 'bg-gray-800 text-gray-700'
+                  : 'bg-blue-100 text-white'
               )}
               onClick={() =>
                 showAddressChangeModalHandle(getCoins(updatedRecords)[0])
@@ -316,7 +316,7 @@ export default function MainBoard({
           <AnimationSpin />
         ) : (
           <div>
-            <p className="text-[#B1D6D3] font-bold text-[18px] md:text-[20px]">
+            <p className="text-gray-600 font-bold text-[18px] md:text-xl">
               Resolver
             </p>
             {pending ? (
@@ -336,7 +336,7 @@ export default function MainBoard({
               />
             ) : (
               <div>
-                <div className="flex items-center text-[#B1D6D3] text-[14px] xl:text-[18px] mt-1">
+                <div className="flex items-center text-gray-600 text-[14px] xl:text-[18px] mt-1">
                   <p className="mr-2">{resolverAddress}</p>
                   <div
                     className="cursor-pointer"
@@ -358,8 +358,8 @@ export default function MainBoard({
             className={cn(
               'py-2 px-[40px] rounded-full mr-4 font-semibold',
               pending || !isRegsitrant
-                ? 'bg-[#7E9195] text-white'
-                : 'bg-[#30DB9E] text-[#134757]'
+                ? 'bg-gray-800 text-white'
+                : 'bg-green-200 text-dark-100'
             )}
             onClick={setResolver}
           >

@@ -383,7 +383,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       )}
       <div className="flex flex-col items-center mx-auto">
         <div className="flex justify-center mb-8">
-          <p className="md:max-w-[928px] max-w-[360px] md:min-w-[320px] w-auto whitespace-nowrap overflow-hidden break-words font-bold text-[20px] md:text-[28px] text-[#1EEFA4] py-2 border-[4px] border-[#1EEFA4] rounded-[22px] text-center px-6">
+          <p className="md:max-w-[928px] max-w-[360px] md:min-w-[320px] w-auto whitespace-nowrap overflow-hidden break-words font-bold text-xl md:text-[28px] text-green-100 py-2 border-4 border-green-100 rounded-[22px] text-center px-6">
             {nameArr.join('')}
           </p>
         </div>
@@ -395,7 +395,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
               totalUsd={registrationFeeInUsd}
             />
           )}
-          <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-[16px] md:px-[50px] px-[24px] py-[24px]">
+          <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-2xl md:px-[50px] px-[24px] py-[24px]">
             {registerState.startsWith(RegisterState.request) && (
               <Step1Main
                 // disable={!isInHungerPhase || !isClaimable?.getIsClaimable}

@@ -178,7 +178,7 @@ function Search({
             <div>
               <input
                 className={cn(
-                  'w-full bg-[#104151]/[0.25] py-[10px] pl-[40px] text-[16px] border rounded-[18px] focus:bg-transparent text-green-100 active:bg-transparent focus:outline-none',
+                  'w-full bg-[#104151]/[0.25] py-[10px] pl-[40px] text-base border rounded-[18px] focus:bg-transparent text-green-100 active:bg-transparent focus:outline-none',
                   isShowSearchBtn ? 'pr-[150px]' : 'pr-[50px]',
                   active ? 'border-green-100' : 'border-[rgba(204,252,255,0.6)]'
                 )}
@@ -199,9 +199,9 @@ function Search({
               values.searchKey.length > 0 && (
                 <div
                   className={cn(
-                    'text-[#ED7E17] text-[14px] md:text-[16px] font-semibold mt-2 md:mt-1 ml-3',
+                    'text-red-100 text-[14px] md:text-base font-semibold mt-2 md:mt-1 ml-3',
                     errorsStyling
-                      ? 'absolute shadow-popup flex w-[calc(100%-12px)] bg-[#205561] px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]'
+                      ? 'absolute shadow-popup flex w-[calc(100%-12px)] bg-dark-300 px-3 py-3 rounded-xl backdrop-blur-[5px] justify-between z-auto z-[1]'
                       : ''
                   )}
                 >
@@ -210,10 +210,10 @@ function Search({
               )}
             <div
               className={cn(
-                'font-urbanist font-semibold text-[16px] absolute top-[10px] transition-all',
+                'font-urbanist font-semibold text-base absolute top-[10px] transition-all',
                 active
                   ? 'right-[110px] text-green-100'
-                  : 'right-[20px] text-[rgba(204,252,255,0.6)]'
+                  : 'right-5 text-[rgba(204,252,255,0.6)]'
               )}
             >
               .bnb
@@ -233,21 +233,21 @@ function Search({
         <ClickAwayListener onClickAway={() => setShowPopup(false)}>
           <div
             className={cn(
-              'shadow-popup flex md:w-full bg-[#205561] px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
+              'shadow-popup flex md:w-full bg-dark-300 px-3 py-3 rounded-xl backdrop-blur-[5px] justify-between z-auto z-[1]',
               suggestionClassName,
               isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
             )}
           >
             <div className="flex items-center max-w-[calc(100%-170px)]">
               {result.Owner ? (
-                <FaceCryIcon className="text-[#30DB9E]" />
+                <FaceCryIcon className="text-green-200" />
               ) : (
-                <FaceHappyIcon className="text-[#30DB9E]" />
+                <FaceHappyIcon className="text-green-200" />
               )}
 
               <span
                 className={cn(
-                  'ml-2 text-[16px] font-semibold text-[#30DB9E] truncate'
+                  'ml-2 text-base font-semibold text-green-200 truncate'
                 )}
               >
                 {result.name}.bnb
@@ -256,8 +256,8 @@ function Search({
             <div className="flex items-center">
               <div
                 className={cn(
-                  'text-[14px]',
-                  result.Owner ? 'text-[#ED7E17]' : 'text-[#2980E8]'
+                  'text-sm',
+                  result.Owner ? 'text-red-100' : 'text-blue-100'
                 )}
               >
                 {result.Owner ? 'Unavailable' : 'available'}
@@ -270,13 +270,12 @@ function Search({
                 }
                 onClick={gotoDetailPage}
                 className={cn(
-                  'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
+                  'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-lg font-urbanist font-semibold ml-3',
                   result.Owner
                     ? 'bg-[#ED7E17]'
-                    : // : isInHungerPhase && isClaimable?.getIsClaimable
-                    isInHungerPhase
-                    ? 'bg-[#2980E8]'
-                    : 'bg-gray-800 text-white cursor-not-allowed'
+                    : isInHungerPhase && isClaimable?.getIsClaimable
+                      ? 'bg-[#2980E8]'
+                      : 'bg-gray-800 text-white cursor-not-allowed'
                 )}
               >
                 {result.Owner ? <span>View</span> : <span>Register</span>}

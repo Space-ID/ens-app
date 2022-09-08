@@ -9,7 +9,7 @@ export default function NoAccounts({
   active,
   loadingWallet,
   width,
-  isReadOnly
+  isReadOnly,
 }) {
   return (
     <button
@@ -18,7 +18,7 @@ export default function NoAccounts({
       active={active}
       width={width}
       disabled={!isReadOnly}
-      className="bg-[#0ea59c]/[0.85] px-[26px] py-[7px] rounded-[16px] backdrop-blur-[10px] cursor-pointer"
+      className="bg-green-300/[0.85] px-[26px] py-[7px] rounded-2xl backdrop-blur-[10px] cursor-pointer"
     >
       <span className="text-white text-[18px] font-semibold font-urbanist uppercase flex items-center">
         {buttonText}{' '}

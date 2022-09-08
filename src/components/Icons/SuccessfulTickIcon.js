@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function SuccessfulTickIcon({
-  className = 'text-[#30DB9E]',
-  size = 20
+  className = 'text-green-200',
+  size = 20,
 }) {
   return (
     <div className={className}>
