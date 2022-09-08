@@ -120,7 +120,7 @@ export default function ProfileCard({
   return (
     <div
       className={cn(
-        'flex 1400px:min-w-[320px] account-profile-bg rounded-[16px] p-4 items-center',
+        'flex 1400px:min-w-[320px] account-profile-bg rounded-2xl p-4 items-center',
         className
       )}
     >
@@ -158,14 +158,14 @@ export default function ProfileCard({
         )}
 
         <div>
-          <span className="text-white text-[12px]">Primary SPACE ID Name:</span>
+          <span className="text-xs text-white">Primary SPACE ID Name:</span>
         </div>
         {account && !isReadOnly ? (
           <div className="w-full">
             {pending ? (
               <PendingTx
                 txHash={txHash}
-                labelClassName="text-[12px]"
+                labelClassName="text-xs"
                 onConfirmed={async () => {
                   refetchTilUpdatedSingleForPrimaryKey({
                     refetch: refetchPrimaryDomain,
@@ -184,7 +184,7 @@ export default function ProfileCard({
               <div className="flex items-center mt-[5px] justify-between">
                 {primaryDomain && primaryDomain.length === 0 ? (
                   <button
-                    className="bg-[#335264] rounded-full px-[8px] text-white font-semibold text-[12px]"
+                    className="px-2 text-xs font-semibold text-white rounded-full bg-dark-400"
                     onClick={() => {
                       setIsShowChangePrimaryModal(true)
                     }}
@@ -193,11 +193,11 @@ export default function ProfileCard({
                   </button>
                 ) : (
                   <div className="flex justify-between w-full">
-                    <div className="text-[#1EEFA4] text-[14px] truncate max-w-[120px]">
+                    <div className="text-green-100 text-[14px] truncate max-w-[120px]">
                       {primaryDomain[0].name + '.bnb'}
                     </div>
                     <button
-                      className="bg-[#335264] rounded-full px-[8px] text-white font-semibold text-[12px]"
+                      className="px-2 text-xs font-semibold text-white rounded-full bg-dark-400"
                       onClick={() => {
                         setIsShowChangePrimaryModal(true)
                       }}

@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function SpaceIDTextIcon({
-  className = 'text-[#1EEFA4]',
-  size = 299
+  className = 'text-green-100',
+  size = 299,
 }) {
   return (
     <div className={className}>

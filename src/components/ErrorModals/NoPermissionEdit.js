@@ -20,7 +20,7 @@ export default function NoPermissionEdit() {
             <div className="flex justify-center">
               <button
                 onClick={() => close()}
-                className="mt-[36px] bg-[#30DB9E] rounded-full text-[14px] font-[urbanist] py-2 px-[68px] text-[#134757] font-semibold"
+                className="mt-[36px] bg-green-200 rounded-full text-[14px] font-[urbanist] py-2 px-[68px] text-dark-100 font-semibold"
               >
                 OK
               </button>

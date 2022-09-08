@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CopyIcon({ size = 13, className = 'text-[#B1D6D3]' }) {
+export default function CopyIcon({ size = 13, className = 'text-gray-600' }) {
   return (
     <div className={className}>
       <svg

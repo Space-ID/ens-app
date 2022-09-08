@@ -46,11 +46,11 @@ const Step1Main = ({
 
   return (
     <>
-      <div className="text-white font-semibold flex flex-col">
-        <div className="font-bold text-center md:text-[24px] md:leading-[34px] text-[20px] leading-[28px]">
+      <div className="flex flex-col font-semibold text-white">
+        <div className="font-bold text-center md:text-[24px] md:leading-[34px] text-xl leading-[28px]">
           Step 1: Request to Register
         </div>
-        <div className="md:w-[640px] md:h-[130px] w-[312px] rounded-[16px] p-[18px] bg-[#438C88]/25 mt-[16px] mb-[24px] flex flex-col md:flex-row">
+        <div className="md:w-[640px] md:h-[130px] w-[312px] rounded-2xl p-[18px] bg-[#438C88]/25 mt-4 mb-[24px] flex flex-col md:flex-row">
           <div className="flex flex-col justify-between">
             <div className="flex">
               <Years
@@ -58,7 +58,7 @@ const Step1Main = ({
                 setYears={setYears}
                 disable={state !== RegisterState.request}
               />
-              <span className="text-white font-bold font-urbanist text-[18px] flex pt-2 md:mx-[20px] mx-[12px]">
+              <span className="text-white font-bold font-urbanist text-[18px] flex pt-2 md:mx-5 mx-3">
                 =
               </span>
               <Price
@@ -78,7 +78,7 @@ const Step1Main = ({
               {`*Estimated with ${registerGasFast.toFixed(3)} BNB gas fee.`}
             </div>
           </div>
-          <div className="md:w-[1px] md:h-full w-full h-[1px] bg-[#CCFCFF]/20 md:ml-[32px] my-[12px]" />
+          <div className="md:w-[1px] md:h-full w-full h-[1px] bg-[#CCFCFF]/20 md:ml-8 my-3" />
           <div className="flex flex-col justify-between grow text-center md:mr-[9px]">
             <div className="text-[14px] leading-[22px] font-normal">
               Estimated Total
@@ -100,12 +100,12 @@ const Step1Main = ({
         {isReadOnly && state === RegisterState.request && (
           <>
             <button
-              className="w-[160px] h-[42px] rounded-[16px] bg-[#30DB9E] text-[#071A2F] text-[18px] leading-[26px] font-semibold mx-auto mt-[24px]"
+              className="w-[160px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-[18px] leading-[26px] font-semibold mx-auto mt-[24px]"
               onClick={connectHandler}
             >
               Connect
             </button>
-            <div className="mt-[8px] font-semibold text-center text-[14px] leading-[22px] text-[#ED7E17]">
+            <div className="mt-2 font-semibold text-center text-[14px] leading-[22px] text-red-100">
               *Please connect wallet to continue
             </div>
           </>
@@ -113,10 +113,10 @@ const Step1Main = ({
         {!isReadOnly && state === RegisterState.request && (
           <button
             className={cn(
-              'w-[160px] h-[42px] rounded-[16px] text-[18px] leading-[26px] font-semibold mx-auto mt-[24px]',
+              'w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto mt-[24px]',
               disable
                 ? 'bg-gray-800 text-white cursor-not-allowed'
-                : 'bg-[#30DB9E] text-[#071A2F]'
+                : 'bg-green-200 text-dark-common'
             )}
             disabled={disable || isReadOnly || parseFloat(years) < minYear}
             onClick={handleRequest}
@@ -126,7 +126,7 @@ const Step1Main = ({
         )}
         {state === RegisterState.requesting && (
           <div className="flex items-center mx-auto mt-[35px] ">
-            <span className="text-[#1EEFA4] text-[18px] leading-[26px] font-semibold">
+            <span className="text-green-100 text-[18px] leading-[26px] font-semibold">
               TX Pending
             </span>
             <AnimationSpin className="ml-[10px]" size={20} />

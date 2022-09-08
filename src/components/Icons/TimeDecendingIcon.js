@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function TimeDecendingIcon({
-  className = 'text-[#134757]',
-  size = 28
+  className = 'text-dark-100',
+  size = 28,
 }) {
   return (
     <div className={className}>

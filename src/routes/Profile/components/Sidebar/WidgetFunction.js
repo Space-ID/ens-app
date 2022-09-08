@@ -4,8 +4,6 @@ import cn from 'classnames'
 export default function WidgetFunction({ className }) {
   const noAnnouncement = true
   return (
-    <div
-      className={cn('w-full bg-[#7E9195] rounded-[16px] h-[44px]', className)}
-    />
+    <div className={cn('w-full bg-gray-800 rounded-2xl h-[44px]', className)} />
   )
 }

@@ -9,7 +9,7 @@ export default function EditButton({ className, isON, handleClick }) {
         <button
           onClick={() => handleClick(!isON)}
           className={cn(
-            'bg-[#2980E8] rounded-[15px] text-white flex py-[5px] px-[12px] font-semibold cursor-pointer',
+            'bg-blue-100 rounded-[15px] text-white flex py-[5px] px-3 font-semibold cursor-pointer',
             className
           )}
         >
@@ -21,11 +21,11 @@ export default function EditButton({ className, isON, handleClick }) {
             handleClick(!isON)
           }}
           className={cn(
-            'text-[#1EEFA4] flex py-[5px] px-[12px] font-semibold cursor-pointer',
+            'text-green-100 flex py-[5px] px-3 font-semibold cursor-pointer',
             className
           )}
         >
-          Edit off <SettingIcon className="text-[#1EEFA4] ml-[10px]" />
+          Edit off <SettingIcon className="text-green-100 ml-[10px]" />
         </button>
       )}
     </React.Fragment>

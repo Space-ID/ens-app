@@ -9,11 +9,11 @@ const Step2Main = ({ onRegister, state, onRetry, disable }) => {
     onRegister()
   }
   return (
-    <div className="text-white font-semibold flex flex-col items-center">
-      <div className="font-bold text-center md:text-[24px] md:leading-[34px] text-[20px] leading-[28px]">
+    <div className="flex flex-col items-center font-semibold text-white">
+      <div className="font-bold text-center md:text-[24px] md:leading-[34px] text-xl leading-[28px]">
         Step 2: Complete Registration
       </div>
-      <div className="text-center text-[14px] leading-[22px] mt-[12px] md:mt-[16px]">
+      <div className="text-center text-[14px] leading-[22px] mt-3 md:mt-4">
         Confirm the registration, perform payment and complete the registration.
         Please note that if the second transaction is not processed within 7
         days after the first, the registration will be forfeited and has to be
@@ -21,8 +21,8 @@ const Step2Main = ({ onRegister, state, onRetry, disable }) => {
       </div>
       <div
         className={cn(
-          'text-[#30DB9E] w-[64px] mt-[32px] mb-[27px]',
-          state === 'REGISTER_ERROR' ? 'text-[#ED7E17]' : ''
+          'text-green-200 w-[64px] mt-8 mb-[27px]',
+          state === 'REGISTER_ERROR' ? 'text-red-100' : ''
         )}
       >
         <svg
@@ -43,16 +43,16 @@ const Step2Main = ({ onRegister, state, onRetry, disable }) => {
           <button
             disabled={disable}
             className={cn(
-              'w-[160px] h-[42px] rounded-[16px] text-[18px] leading-[26px] font-semibold mx-auto',
+              'w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto',
               disable
                 ? 'bg-gray-800 text-white cursor-not-allowed'
-                : 'bg-[#30DB9E] text-[#071A2F]'
+                : 'bg-green-200 text-dark-common'
             )}
             onClick={handleRegister}
           >
             Register
           </button>
-          <div className="md:w-[512px] mt-[16px] font-normal text-center text-[12px] leading-[20px] text-[#B1D6D3]">
+          <div className="md:w-[512px] mt-4 font-normal text-center text-xs leading-xl text-gray-600">
             *An additional 10% will be charged prior to prevent transaction
             failure due to currency fluctuation. You will be refunded with the
             excess amount from the transaction.
@@ -63,21 +63,21 @@ const Step2Main = ({ onRegister, state, onRetry, disable }) => {
         state === RegisterState.registerSuccess) && (
         <>
           {state === RegisterState.registerSuccess ? (
-            <div className="text-[#1EEFA4] text-[20px] leading-[28px] text-center mb-[30px]">
+            <div className="text-green-100 text-xl leading-[28px] text-center mb-[30px]">
               Registration completed!
             </div>
           ) : (
-            <div className="flex items-center text-[20px] text-[#1EEFA4] font-semibold leading-[28px] text-center mb-[30px]">
+            <div className="flex items-center text-xl text-green-100 font-semibold leading-[28px] text-center mb-[30px]">
               <span>TX Pending</span>
               <AnimationSpin className="ml-[10px]" size={20} />
             </div>
           )}
           <button
             className={cn(
-              'w-[160px] h-[42px] rounded-[16px] text-[18px] leading-[26px] font-semibold mx-auto',
+              'w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto',
               state === RegisterState.registerSuccess
-                ? 'bg-[#30DB9E] text-[#071A2F]'
-                : 'bg-[#7E9195] text-[#FFFFFF]'
+                ? 'bg-green-200 text-dark-common'
+                : 'bg-gray-800 text-white'
             )}
             disabled={state !== RegisterState.registerSuccess}
             onClick={() => {
@@ -90,11 +90,11 @@ const Step2Main = ({ onRegister, state, onRetry, disable }) => {
       )}
       {state === RegisterState.registerError && (
         <>
-          <div className="text-[#ED7E17] text-[20px] leading-[28px] text-center mb-[30px]">
+          <div className="text-red-100 text-xl leading-[28px] text-center mb-[30px]">
             Error in registration :(
           </div>
           <button
-            className="w-[160px] h-[42px] rounded-[16px] text-[18px] leading-[26px] font-semibold mx-auto text-[#30DB9E] bg-[#438C88]/25 backdrop-blur-[5px] border border-solid border-[#30DB9E]"
+            className="w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto text-green-200 bg-[#438C88]/25 backdrop-blur-[5px] border border-solid border-green-200"
             onClick={onRetry}
           >
             Retry

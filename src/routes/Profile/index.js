@@ -15,8 +15,6 @@ import ProfileCard from './components/Sidebar/ProfileCard'
 import Drawer from 'components/Drawer'
 import SmallLogoIcon from '../../components/Icons/SmallLogoIcon'
 import DomainList from './components/Sidebar/DomainList'
-
-// import Hamburger from 'components/Header/Hamburger'
 import { HamburgerIcon } from 'components/Icons'
 
 // Import redux Assets
@@ -116,9 +114,9 @@ export default function Profile() {
         <div className="pr-9 pl-[64px] py-5">
           <div className="flex items-center">
             <div onClick={() => dispatch(toggleDrawer(false))}>
-              <HamburgerIcon size={25} className="text-[#1EEFA4]" />
+              <HamburgerIcon size={25} className="text-green-100" />
             </div>
-            <SmallLogoIcon size={40} className="text-[#1EEFA4] ml-5" />
+            <SmallLogoIcon size={40} className="ml-5 text-green-100" />
             <div className="ml-5">
               <img src={LogoText} alt="logoText" />
             </div>

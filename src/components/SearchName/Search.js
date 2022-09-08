@@ -181,9 +181,9 @@ function Search({
               values.searchKey.length > 0 && (
                 <div
                   className={cn(
-                    'text-[#ED7E17] text-[14px] md:text-[16px] font-semibold mt-2 md:mt-1 ml-3',
+                    'text-red-100 text-sm md:text-base font-semibold mt-2 md:mt-1 ml-3',
                     errorsStyling
-                      ? 'absolute shadow-popup flex w-[calc(100%-12px)] bg-[#205561] px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]'
+                      ? 'absolute shadow-popup flex w-[calc(100%-12px)] bg-dark-300 px-3 py-3 rounded-xl backdrop-blur-[5px] justify-between z-auto z-[1]'
                       : ''
                   )}
                 >
@@ -192,8 +192,8 @@ function Search({
               )}
             <div
               className={cn(
-                'text-primary font-urbanist font-semibold text-[16px] absolute top-[10px]',
-                isShowSearchBtn ? 'right-[110px]' : 'right-[20px]'
+                'text-primary font-urbanist font-semibold text-base absolute top-[10px]',
+                isShowSearchBtn ? 'right-[110px]' : 'right-5'
               )}
             >
               .bnb
@@ -213,7 +213,7 @@ function Search({
         <ClickAwayListener onClickAway={() => setShowPopup(false)}>
           <div
             className={cn(
-              'shadow-popup flex md:w-full bg-dark-300 px-3 py-3 rounded-[12px] backdrop-blur-[5px] justify-between z-auto z-[1]',
+              'shadow-popup flex md:w-full bg-dark-300 px-3 py-3 rounded-xl backdrop-blur-[5px] justify-between z-auto z-[1]',
               suggestionClassName,
               isAbsolutePosition ? 'absolute top-[55px]' : 'relative mt-2'
             )}
@@ -226,7 +226,7 @@ function Search({
               )}
               <span
                 className={cn(
-                  'ml-2 text-[16px] font-semibold text-green-200 truncate'
+                  'ml-2 text-base font-semibold text-green-200 truncate'
                 )}
               >
                 {result.name}.bnb
@@ -249,7 +249,7 @@ function Search({
                 }
                 onClick={gotoDetailPage}
                 className={cn(
-                  'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-[8px] font-urbanist font-semibold ml-3',
+                  'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-lg font-urbanist font-semibold ml-3',
                   result.Owner
                     ? 'bg-red-100'
                     : // : isInHungerPhase && isClaimable?.getIsClaimable

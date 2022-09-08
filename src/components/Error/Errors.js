@@ -13,14 +13,14 @@ export default function Error404() {
         <div className="text-[160px] font-bold left-[calc(50%-135px)] top-[80px] leading-[66px] absolute text-[rgba(204,252,255,0.2)]">
           404
         </div>
-        <p className="font-bold text-[72px] text-[#1EEFA4]">Oops!</p>
-        <p className="text-[#1EEFA4] text-[32px] leading-[46px] font-bold font-urbanist">
+        <p className="font-bold text-[72px] text-green-100">Oops!</p>
+        <p className="text-green-100 text-[32px] leading-[46px] font-bold font-urbanist">
           We can't find the page you're looking for...
         </p>
         <div>
           <Button
             onClick={() => backToHome()}
-            className="text-[#1EEFA4] border-[#1EEFA4] border rounded-full font-bold text-[24px] leading-[24px] py-3 px-8 font-cocoSharp bg-transparent hover:bg-transparent hover:border-[#1EEFA4]"
+            className="text-green-100 border-green-100 border rounded-full font-bold text-[24px] leading-[24px] py-3 px-8 font-cocoSharp bg-transparent hover:bg-transparent hover:border-green-100"
           >
             Back to Home
           </Button>

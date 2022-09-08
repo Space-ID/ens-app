@@ -8,7 +8,7 @@ export default function Tab({ defaultValue, handleChange }) {
   return (
     <div
       className={cn(
-        'w-full bg-[rgba(0,47,57,0.5)] rounded-[16px] py-2 px-[10px] grid gap-x-3',
+        'w-full bg-[rgba(0,47,57,0.5)] rounded-2xl py-2 px-[10px] grid gap-x-3',
         `grid-cols-${tabData.length}`
       )}
     >
@@ -21,8 +21,8 @@ export default function Tab({ defaultValue, handleChange }) {
           className={cn(
             'text-center text-[14px] py-2 cursor-pointer',
             index === inActive
-              ? 'text-[#30DB9E] font-semibold bg-[#34606D] rounded-[12px]'
-              : 'text-[#BDCED1]'
+              ? 'text-green-200 font-semibold bg-[#34606D] rounded-xl'
+              : 'text-gray-700'
           )}
         >
           {item}

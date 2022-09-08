@@ -89,7 +89,7 @@ export default function TopAddress({
       <div className="ml-0 pt-6 md:space-y-[120px] md:w-full">
         <div className="justify-between md:flex">
           <div>
-            <p className="text-center md:text-left font-bold text-[18px] xl:text-[24px] text-[#1EEFA4]">
+            <p className="text-center md:text-left font-bold text-[18px] xl:text-[24px] text-green-100">
               Registrant
             </p>
             {loadingRegistration ? (
@@ -141,8 +141,8 @@ export default function TopAddress({
                 className={cn(
                   'py-2 px-6 rounded-full md:mr-4 font-semibold',
                   pending || !isRegsitrant
-                    ? 'bg-[#7E9195] text-white'
-                    : 'bg-[#30DB9E] text-[#134757]'
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-green-200 text-dark-100'
                 )}
                 onClick={transferRegistrantAddress}
               >
@@ -153,7 +153,7 @@ export default function TopAddress({
         </div>
         <div className="items-center justify-between mt-8 md:flex md:mt-0">
           <div>
-            <p className="font-bold text-[18px] xl:text-[20px] text-[#1EEFA4] text-center md:text-left">
+            <p className="font-bold text-[18px] xl:text-xl text-green-100 text-center md:text-left">
               Expiry Date
             </p>
             {pendingExp ? (
@@ -189,8 +189,8 @@ export default function TopAddress({
               className={cn(
                 'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
                 pendingExp || loadingRegistration || !isRegsitrant
-                  ? 'bg-[#7E9195] text-white'
-                  : 'bg-[#30DB9E] text-[#134757]'
+                  ? 'bg-gray-800 text-white'
+                  : 'bg-green-200 text-dark-100'
               )}
               onClick={extendHandler}
             >

@@ -1,6 +1,9 @@
 import React from 'react'
 
-export default function AnimationSpin({ className, size = 20 }) {
+export default function AnimationSpin({
+  className = 'text-green-200',
+  size = 20,
+}) {
   return (
     <div className={className}>
       <svg
