@@ -37,13 +37,6 @@ const EthRegistrationGasPrice = ({
             {registrationFee.toFixed(3)} BNB
           </div>
         </div>
-
-        {discount.amount !== 0 && (
-          <div className="flex justify-between mt-[14px] text-[#1EEFA4]">
-            <div className="font-semibold text-[14px]">Discount</div>
-            <div className="font-bold text-[16px]">-{discount.percent}%</div>
-          </div>
-        )}
       </div>
       <div className="text-white py-[25px] border-b border-white border-dashed px-6">
         <div className="flex justify-between mt-[14px]">
