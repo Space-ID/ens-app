@@ -52,8 +52,9 @@ export default function TopAddress({
       const domain = selectedDomain.name
       let label = keccak256(Buffer.from(domain)).toString('hex')
       let nftId = Web3.utils.toBN(label).toString()
-      const url = `https://meta.image.space.id/image/${process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
-        }/${nftId}.svg`
+      const url = `https://meta.image.space.id/image/${
+        process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
+      }/${nftId}.svg`
       setImageURL(url)
     }
   }, [selectedDomain])
@@ -115,11 +116,11 @@ export default function TopAddress({
                     <p className="text-center">
                       {registrantAddress
                         ? `${registrantAddress.substring(
-                          0,
-                          10
-                        )}...${registrantAddress.substring(
-                          registrantAddress.length - 11
-                        )}`
+                            0,
+                            10
+                          )}...${registrantAddress.substring(
+                            registrantAddress.length - 11
+                          )}`
                         : ''}
                     </p>
                     <div className="ml-2" onClick={handleCopyRegistrantAddress}>
@@ -187,7 +188,7 @@ export default function TopAddress({
               disabled={pendingExp || loadingRegistration || !isRegsitrant}
               className={cn(
                 'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
-                pendingExp
+                pendingExp || loadingRegistration || !isRegsitrant
                   ? 'bg-[#7E9195] text-white'
                   : 'bg-[#30DB9E] text-[#134757]'
               )}
