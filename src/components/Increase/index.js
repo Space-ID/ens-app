@@ -33,7 +33,7 @@ export default function Increase({
         disabled={disable}
         min="0.077"
         onChange={(event) => {
-          setYears(event.target.value)
+          setYears(event.target.value ? parseFloat(event.target.value) : 0)
         }}
         className="text-white text-center font-bold font-urbanist text-[18px] w-[60%] bg-transparent active:outline-none active:border-0"
         type="number"
