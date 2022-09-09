@@ -52,8 +52,8 @@ const App = () => {
   return (
     <BrowserRouter basename="/">
       <Switch>
-        {/* <Route exact path="/" component={Home} layout={HomePageLayout} /> */}
-        <Route exact path="/" component={HungerPhase} layout={HomePageLayout} />
+        <Route exact path="/" component={Home} layout={HomePageLayout} />
+        {/* <Route exact path="/" component={HungerPhase} layout={HomePageLayout} /> */}
         <Route
           exact
           path="/profile"
