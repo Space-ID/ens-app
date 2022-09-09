@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { toast } from 'material-react-toastify'
 import Modal from './Modal'
 
 import DefaultAvatar from 'assets/images/default-avatar.png'
@@ -6,8 +7,33 @@ import AnimationSpin from 'components/AnimationSpin'
 import { Link } from 'react-router-dom'
 import { CrossIcon } from 'components/Icons'
 
+import Success from 'components/Toast/Success'
+import Failed from '../Toast/Failed'
+
 export default function VerifyModal({ closeModal }) {
   const isVerifying = false
+
+  useEffect(() => {
+    // toast.success((<Success label='Verification completed' />), {
+    //   position: "top-right",
+    //   autoClose: 5000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
+    toast.error(<Failed label="Verification failed" />, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+  }, [])
+
   return (
     <div>
       <Modal width="1056px">

@@ -11,6 +11,7 @@ const Error404 = lazy(() => import('components/Error/Errors'))
 import useReactiveVarListeners from './hooks/useReactiveVarListeners'
 import { useAccount } from './components/QueryAccount'
 import { emptyAddress } from './ui'
+import ToastContainer from 'components/Toast/ToastContainer'
 
 const Route = ({
   component: Component,
@@ -51,6 +52,7 @@ const App = () => {
 
   return (
     <BrowserRouter basename="/">
+      <ToastContainer />
       <Switch>
         <Route exact path="/" component={Home} layout={HomePageLayout} />
         {/* <Route exact path="/" component={HungerPhase} layout={HomePageLayout} /> */}

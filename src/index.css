@@ -134,3 +134,8 @@ input[type='number'] {
     font-size: 20px !important;
   }
 }
+
+.Toastify__toast-container--top-right {
+  top: 91px !important;
+  right: 20px !important;
+}
