@@ -58,11 +58,20 @@ const resolvers = {
       }
     },
 
-    async getHungerPhaseInfo() {
+    async getStagingInfo() {
       try {
         const registrar = getRegistrar()
-        const info = await registrar.getHungerPhaseInfo()
-        return info
+        const res = await registrar.getStagingInfo()
+        return res
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    async getStagingQuota(_, { account }) {
+      try {
+        const registrar = getRegistrar()
+        const res = await registrar.getStagingQuota(account)
+        return res
       } catch (e) {
         console.error(e)
       }
@@ -92,6 +101,14 @@ const resolvers = {
         const registrar = getRegistrar()
         const commitment = await registrar.checkCommitment(label, secret)
         return parseInt(commitment)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async checkSBT(_, { account }) {
+      try {
+        const registrar = getRegistrar()
+        return await registrar.checkSBT(account)
       } catch (e) {
         console.log(e)
       }

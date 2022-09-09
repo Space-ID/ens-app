@@ -5,10 +5,9 @@ import Search from 'components/SearchName/Search'
 import { SpaceIDTextIcon } from 'components/Icons'
 import { useAccount } from 'components/QueryAccount'
 import { isEmptyAddress } from 'utils/records'
-import { ethers } from '@siddomains/ui'
-import { GET_HUNGER_PHASE_INFO, GET_IS_CLAIMABLE } from 'graphql/queries'
 import AnimationSpin from 'components/AnimationSpin'
 import VerifyModal from 'components/Modal/VerifyModal'
+import { useStagingInfo } from '../hooks/stagingHooks'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -21,14 +20,19 @@ export const HOME_DATA = gql`
 
 export default () => {
   const [loading, setLoading] = useState(false)
-  const [openVerifyModal, setOpenVerifyModal] = useState(true)
-  const [isInHungerPhase, setIsInHungerPhase] = useState(0)
+  const [openVerifyModal, setOpenVerifyModal] = useState(false)
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
-
   const account = useAccount()
-
+  const {
+    isStart,
+    verify,
+    totalQuota,
+    usedQuota,
+    individualQuota,
+    individualQuotaUsed,
+  } = useStagingInfo()
   const { data } = useQuery(HOME_DATA, {
     variables: {
       address: account,
@@ -37,8 +41,23 @@ export default () => {
 
   const { isReadOnly } = data
 
+  useEffect(() => {
+    if (!isEmptyAddress(account) && !isReadOnly && !verify) {
+      setOpenVerifyModal(true)
+    }
+  }, [account, isReadOnly, verify])
+
   const getMainContent = () => {
-    if (isEmptyAddress(account) || isReadOnly) return null
+    if (isEmptyAddress(account) || isReadOnly) {
+      if (!isStart) {
+        return (
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
+            Staging launch will begin on Sep 15th.
+          </p>
+        )
+      }
+      return null
+    }
     if (loading)
       return (
         <AnimationSpin
@@ -46,43 +65,32 @@ export default () => {
           size={40}
         />
       )
-    if (isInHungerPhase === 0)
-      return (
-        <div className="mt-[55px]">
-          <Search
-            className="px-7 md:px-0 md:w-[600px] mx-auto"
-            searchingDomainName={searchingDomainName}
-          />
-          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-            Please wait for the staging launch to begin on next week.
-          </p>
+    return (
+      <div className="mt-[55px] flex flex-col items-center">
+        <div className="flex md:justify-center md:flex-row flex-col items-center">
+          <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
+          <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
+          <p className="text-lg text-gray-700 text-center">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
         </div>
-      )
-    else if (isInHungerPhase === 1) {
-      return (
-        <div className="mt-5 space-y-7">
-          <Search
-            className="px-7 md:px-0 md:w-[600px] mx-auto"
-            searchingDomainName={searchingDomainName}
-          />
-          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-            Please wait for the staging launch to begin on next week.
+        {!verify && (
+          <button
+            className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
+            onClick={() => setOpenVerifyModal(true)}
+          >
+            Verify Your SBT
+          </button>
+        )}
+        <Search
+          className="px-7 md:px-0 md:w-[600px] mx-auto"
+          searchingDomainName={searchingDomainName}
+        />
+        {!isStart && (
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
+            Staging launch will begin on Sep 15th.
           </p>
-        </div>
-      )
-    } else {
-      return (
-        <div className="mt-5 space-y-7">
-          <Search
-            className="px-7 md:px-0 md:w-[600px] mx-auto"
-            searchingDomainName={searchingDomainName}
-          />
-          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-            Staging Launch has ended. Please wait for the public registration.
-          </p>
-        </div>
-      )
-    }
+        )}
+      </div>
+    )
   }
 
   return (

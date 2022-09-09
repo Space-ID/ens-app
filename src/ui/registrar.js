@@ -360,22 +360,29 @@ export default class Registrar {
     return permanentRegistrarController.minCommitmentAge()
   }
 
-  async getHungerPhaseInfo() {
+  async getStagingInfo() {
     const permanentRegistrarController = this.permanentRegistrarController
-    const startTime = await permanentRegistrarController.startTime()
-    const endTime = await permanentRegistrarController.endTime()
-    const dailyQuota = await permanentRegistrarController.dailyQuota()
-    let dailyUsed = dailyQuota
-    try {
-      dailyUsed = await permanentRegistrarController.getCurrentDayUsage()
-    } catch (e) {
-      console.log('end:', e)
-    }
+    const [startTime, totalQuota, individualQuota] = await Promise.all([
+      permanentRegistrarController.startTime(),
+      permanentRegistrarController.totalQuota(),
+      permanentRegistrarController.invdividualQuota(),
+    ])
     return {
-      startTime,
-      endTime,
-      dailyQuota,
-      dailyUsed,
+      startTime: startTime.toNumber() * 1000,
+      totalQuota: totalQuota.toNumber(),
+      individualQuota: individualQuota.toNumber(),
+    }
+  }
+
+  async getStagingQuota(account) {
+    const permanentRegistrarController = this.permanentRegistrarController
+    const [usedQuota, individualQuotaUsed] = await Promise.all([
+      permanentRegistrarController.usedQuota(),
+      permanentRegistrarController.individualQuotaUsed(account),
+    ])
+    return {
+      usedQuota: usedQuota.toNumber(),
+      individualQuotaUsed: individualQuotaUsed.toNumber(),
     }
   }
 
@@ -418,6 +425,11 @@ export default class Registrar {
     const account = await getAccount()
     const commitment = await this.makeCommitment(label, account, secret)
     return await permanentRegistrarController.commitments(commitment)
+  }
+
+  async checkSBT(address) {
+    const permanentRegistrarController = this.permanentRegistrarController
+    return await permanentRegistrarController.hasSBT(address)
   }
 
   async commit(label, secret = '') {

@@ -4,8 +4,6 @@ import axios from 'axios'
 import { Formik } from 'formik'
 import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { useLazyQuery, useQuery } from '@apollo/client'
-import { ethers } from '@siddomains/ui'
 import { toArray } from 'lodash'
 import ClickAwayListener from 'react-click-away-listener'
 import { useAccount } from 'components/QueryAccount'
@@ -13,9 +11,9 @@ import SearchIcon from 'components/Icons/SearchIcon'
 import FaceCryIcon from 'components/Icons/FaceCryIcon'
 import FaceHappyIcon from 'components/Icons/FaceHappyIcon'
 import { setSearchDomainName, setSelectedDomain } from 'app/slices/domainSlice'
-import { GET_HUNGER_PHASE_INFO, GET_IS_CLAIMABLE } from 'graphql/queries'
 import '../../api/subDomainRegistrar'
 import { validateDomain, validateName } from '../../utils/utils'
+import { useGetStagingQuota, useStagingInfo } from '../../hooks/stagingHooks'
 
 function Search({
   history,
@@ -32,40 +30,10 @@ function Search({
   const [showPopup, setShowPopup] = useState(false)
   const [result, setResult] = useState(null)
   const [active, setActive] = useState(false)
-  const [isInHungerPhase, setIsInHungerPhase] = useState(false)
-  // const account = useAccount()
+  const account = useAccount()
   const dispatch = useDispatch()
-
-  // const [getIsClaimable, { data: isClaimable }] = useLazyQuery(
-  //   GET_IS_CLAIMABLE,
-  //   {
-  //     variables: { address: account },
-  //     fetchPolicy: 'no-cache',
-  //   }
-  // )
-
-  // const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
-
-  // useEffect(() => {
-  //   if (hungerPhaseInfo?.getHungerPhaseInfo) {
-  //     const startTime = new Date(
-  //       hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
-  //     )
-  //     const endTime = new Date(
-  //       hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
-  //     )
-  //     const timeNow = new Date().getTime()
-  //     const dailyQuota = ethers.BigNumber.from(
-  //       hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
-  //     )
-  //     const dailyUsed = ethers.BigNumber.from(
-  //       hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
-  //     )
-  //     if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
-  //       setIsInHungerPhase(true)
-  //     }
-  //   }
-  // }, [hungerPhaseInfo])
+  const fetchStagingQuota = useGetStagingQuota(account)
+  const { disableRegister } = useStagingInfo()
 
   const gotoDetailPage = () => {
     setShowPopup(false)
@@ -136,7 +104,7 @@ function Search({
         }}
         onSubmit={(values, { setSubmitting }) => {
           setActive(true)
-          // getIsClaimable()
+          fetchStagingQuota()
           const params = {
             ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
             name: values.searchKey,
@@ -263,19 +231,15 @@ function Search({
                 {result.Owner ? 'Unavailable' : 'available'}
               </div>
               <button
-                disabled={
-                  !result.Owner &&
-                  // (!isInHungerPhase || !isClaimable?.getIsClaimable)
-                  !isInHungerPhase
-                }
+                disabled={!result.Owner && disableRegister}
                 onClick={gotoDetailPage}
                 className={cn(
                   'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-lg font-urbanist font-semibold ml-3',
                   result.Owner
                     ? 'bg-[#ED7E17]'
-                    : isInHungerPhase && isClaimable?.getIsClaimable
-                      ? 'bg-[#2980E8]'
-                      : 'bg-gray-800 text-white cursor-not-allowed'
+                    : disableRegister
+                    ? 'bg-gray-800 text-white cursor-not-allowed'
+                    : 'bg-[#2980E8]'
                 )}
               >
                 {result.Owner ? <span>View</span> : <span>Register</span>}

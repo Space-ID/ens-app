@@ -4,6 +4,7 @@ import errorSlice from './slices/errorSlice'
 import uiSlice from './slices/uiSlice'
 import domainSlice from './slices/domainSlice'
 import registerSlice from './slices/registerSlice'
+import stagingSlice from './slices/stagingSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     error: errorSlice,
     ui: uiSlice,
     domain: domainSlice,
-    register: registerSlice
+    register: registerSlice,
+    staging: stagingSlice,
   },
-  devTools: process.env.NODE_ENV !== 'production'
+  devTools: process.env.NODE_ENV !== 'production',
 })

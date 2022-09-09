@@ -2,7 +2,6 @@ import React, { lazy, useEffect, useRef } from 'react'
 import { BrowserRouter, Route as DefaultRoute, Switch } from 'react-router-dom'
 
 const Home = lazy(() => import('./routes/Home'))
-const HungerPhase = lazy(() => import('./routes/hunger-phase'))
 const SingleName = lazy(() => import('./routes/SingleName'))
 const Profile = lazy(() => import('./routes/Profile'))
 const HomePageLayout = lazy(() => import('components/Layout/HomePageLayout'))
@@ -12,6 +11,7 @@ import useReactiveVarListeners from './hooks/useReactiveVarListeners'
 import { useAccount } from './components/QueryAccount'
 import { emptyAddress } from './ui'
 import ToastContainer from 'components/Toast/ToastContainer'
+import { useGetStagingInfo } from './hooks/stagingHooks'
 
 const Route = ({
   component: Component,
@@ -38,6 +38,7 @@ const App = () => {
   useReactiveVarListeners()
   const account = useAccount()
   const accountRef = useRef(account)
+  useGetStagingInfo()
   useEffect(() => {
     if (
       accountRef.current !== emptyAddress &&

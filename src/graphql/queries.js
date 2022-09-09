@@ -319,15 +319,14 @@ export const GET_MINIMUM_COMMITMENT_AGE = gql`
   }
 `
 
-export const GET_HUNGER_PHASE_INFO = gql`
-  query getHungerPhaseInfo {
-    getHungerPhaseInfo
+export const GET_STAGING_INFO = gql`
+  query getStagingInfo {
+    getStagingInfo
   }
 `
-
-export const GET_IS_CLAIMABLE = gql`
-  query getIsClaimable($address: String) {
-    getIsClaimable(address: $address)
+export const GET_STAGING_QUOTA = gql`
+  query getStagingQuota {
+    getStagingQuota
   }
 `
 
@@ -368,5 +367,10 @@ export const IS_MIGRATED = gql`
 export const IS_CONTRACT_CONTROLLER = gql`
   query isContractController($address: String) {
     isContractController(address: $address)
+  }
+`
+export const CHECK_SBT = gql`
+  query checkSBT($account: String) {
+    checkSBT(account: $account)
   }
 `
