@@ -386,6 +386,12 @@ export default class Registrar {
     }
   }
 
+  async checkSBT(address) {
+    const permanentRegistrarController = this.permanentRegistrarController
+    const res = await permanentRegistrarController.hasSBT(address)
+    return res
+  }
+
   async getIsClaimable(address) {
     const permanentRegistrarController = this.permanentRegistrarController
     return permanentRegistrarController.isClaimable(address)
@@ -425,11 +431,6 @@ export default class Registrar {
     const account = await getAccount()
     const commitment = await this.makeCommitment(label, account, secret)
     return await permanentRegistrarController.commitments(commitment)
-  }
-
-  async checkSBT(address) {
-    const permanentRegistrarController = this.permanentRegistrarController
-    return await permanentRegistrarController.hasSBT(address)
   }
 
   async commit(label, secret = '') {

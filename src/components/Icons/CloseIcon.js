@@ -25,7 +25,7 @@ export default function CloseIcon({ className, size = 11 }) {
         y2="-0.5"
         transform="matrix(-0.707107 0.707106 -0.707107 -0.707106 10 0)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -34,7 +34,7 @@ export default function CloseIcon({ className, size = 11 }) {
         y2="-0.5"
         transform="matrix(-0.707107 0.707106 -0.707107 -0.707106 10 0)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -43,7 +43,7 @@ export default function CloseIcon({ className, size = 11 }) {
         y2="-0.5"
         transform="matrix(-0.707107 0.707106 -0.707107 -0.707106 10 0)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -52,7 +52,7 @@ export default function CloseIcon({ className, size = 11 }) {
         y2="-0.5"
         transform="matrix(-0.707107 -0.707106 0.707107 -0.707106 11 10)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -61,7 +61,7 @@ export default function CloseIcon({ className, size = 11 }) {
         y2="-0.5"
         transform="matrix(-0.707107 -0.707106 0.707107 -0.707106 11 10)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -70,7 +70,7 @@ export default function CloseIcon({ className, size = 11 }) {
         y2="-0.5"
         transform="matrix(-0.707107 -0.707106 0.707107 -0.707106 11 10)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -79,7 +79,7 @@ export default function CloseIcon({ className, size = 11 }) {
         y2="-0.5"
         transform="matrix(-0.707107 -0.707106 0.707107 -0.707106 11 10)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
     </svg>
   )

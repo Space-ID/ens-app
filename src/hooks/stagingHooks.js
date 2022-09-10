@@ -66,6 +66,7 @@ export const useStagingInfo = () => {
     disableRegister,
     isStart,
     usedQuota,
+    totalQuota,
     individualQuota,
     individualQuotaUsed,
   }
