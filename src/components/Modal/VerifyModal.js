@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { toast } from 'material-react-toastify'
 import Modal from './Modal'
 
@@ -16,14 +16,56 @@ import { setVerify } from '../../app/slices/stagingSlice'
 import Success from 'components/Toast/Success'
 import Failed from '../Toast/Failed'
 
+const ToastPosition =
+  window.innerWidth >= 768
+    ? toast.POSITION.TOP_RIGHT
+    : toast.POSITION.BOTTOM_CENTER
+
+const showSuccess = () => {
+  toast.dismiss()
+  toast.success(<Success label="Verification completed" />, {
+    position: ToastPosition,
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: false,
+    progress: false,
+  })
+}
+
+const showError = () => {
+  toast.dismiss()
+  toast.error(<Failed label="Verification failed" />, {
+    position: ToastPosition,
+    autoClose: 100,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: false,
+  })
+}
+
 export default function VerifyModal({ closeModal }) {
   const account = useAccount()
   const dispatch = useDispatch()
   const [getCheckSBT, { data: { checkSBT = undefined } = {}, loading = true }] =
     useLazyQuery(CHECK_SBT, { variables: { account }, fetchPolicy: 'no-cache' })
+
+  const handleCheck = useCallback(() => {
+    getCheckSBT({ variables: { account } }).then((res) => {
+      if (res.data?.checkSBT) {
+        showSuccess()
+      } else {
+        showError()
+      }
+    })
+  }, [account])
+
   useEffect(() => {
     if (!isEmptyAddress(account)) {
-      getCheckSBT({ variables: { account } })
+      handleCheck()
     }
   }, [account])
   useEffect(() => {
@@ -33,29 +75,6 @@ export default function VerifyModal({ closeModal }) {
     }
   }, [checkSBT, closeModal])
 
-  useEffect(() => {
-    if (checkSBT) {
-      toast.success(<Success label="Verification completed" />, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-    } else if (checkSBT !== undefined) {
-      toast.error(<Failed label="Verification failed" />, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      })
-    }
-  }, [checkSBT])
   return (
     <div>
       <Modal width="1056px" className="p-6">
@@ -85,10 +104,7 @@ export default function VerifyModal({ closeModal }) {
               ) : (
                 <button
                   className="absolute bg-blue-100 rounded-[20px] font-urbanist font-semibold text-2xl leading-9 flex py-3 items-center bottom-[18px] left-[50%] -translate-x-1/2 md:w-[240px] min-w-[218px] justify-center"
-                  onClick={() => {
-                    console.log('clci')
-                    getCheckSBT({ variables: { account } })
-                  }}
+                  onClick={handleCheck}
                 >
                   Verify
                 </button>
