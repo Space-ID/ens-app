@@ -51,7 +51,7 @@ export default () => {
     if (isEmptyAddress(account) || isReadOnly) {
       if (!isStart) {
         return (
-          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[60px]">
             Staging launch will begin on Sep 15th.
           </p>
         )
@@ -66,20 +66,26 @@ export default () => {
         />
       )
     return (
-      <div className="mt-[55px] flex flex-col items-center">
-        <div className="flex md:justify-center md:flex-row flex-col items-center">
-          <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
-          <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
-          <p className="text-lg text-gray-700 text-center">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
+      <div className="mt-7 flex flex-col items-center">
+        <div className="mb-5">
+          <div className="flex md:justify-center md:flex-row flex-col items-center">
+            <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
+            {verify && (
+              <>
+                <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
+                <p className="text-lg text-gray-700 text-center">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
+              </>
+            )}
+          </div>
+          {!verify && (
+            <button
+              className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
+              onClick={() => setOpenVerifyModal(true)}
+            >
+              Verify Your SBT
+            </button>
+          )}
         </div>
-        {!verify && (
-          <button
-            className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
-            onClick={() => setOpenVerifyModal(true)}
-          >
-            Verify Your SBT
-          </button>
-        )}
         <Search
           className="px-7 md:px-0 md:w-[600px] mx-auto"
           searchingDomainName={searchingDomainName}

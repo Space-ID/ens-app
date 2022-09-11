@@ -56,7 +56,7 @@ export const useStagingInfo = () => {
   const individualQuotaUsed = useSelector(
     (state) => state.staging.individualQuotaUsed
   )
-  const verify = useSelector((state) => state.account.verify)
+  const verify = useSelector((state) => state.staging.verify)
   const isStart = Date.now() > startTime
   const isUsedUp =
     usedQuota >= totalQuota || individualQuotaUsed >= individualQuota
