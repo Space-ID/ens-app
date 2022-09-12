@@ -66,8 +66,10 @@ export default function VerifyModal({ closeModal }) {
         setLoading(false)
         dispatch(setVerify(res.data?.checkSBT ?? false))
         if (res.data?.checkSBT) {
+          window.localStorage.setItem(`sbt-${account}`, '1')
           showSuccess()
         } else {
+          window.localStorage.removeItem(`sbt-${account}`)
           showError()
         }
       }, 2000)

@@ -4,7 +4,11 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isEmptyAddress } from '../utils/records'
 import { isENSReadyReactive } from '../apollo/reactiveVars'
-import { setStagingInfo, setStagingQuota } from 'app/slices/stagingSlice'
+import {
+  setStagingInfo,
+  setStagingQuota,
+  setVerify,
+} from 'app/slices/stagingSlice'
 
 export const useGetStagingInfo = () => {
   const dispatch = useDispatch()
@@ -36,6 +40,8 @@ export const useGetStagingQuota = (account) => {
   })
   useEffect(() => {
     if (ready && !isEmptyAddress(account)) {
+      const verify = window.localStorage.getItem(`sbt-${account}`)
+      dispatch(setVerify(!!verify))
       fetchStagingQuota({ variables: { account } })
     }
   }, [account, ready])

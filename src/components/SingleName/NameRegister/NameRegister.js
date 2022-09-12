@@ -37,7 +37,7 @@ import { REGISTER, COMMIT } from '../../../graphql/mutations'
 import { TOGAL_GAS_WEI } from '../../../constants/gas'
 import { minYear, RegisterState } from './constant'
 import InsufficientBalanceModal from '../../Modal/InsufficientBalanceModal'
-import { useStagingInfo } from '../../../hooks/stagingHooks'
+import { useGetStagingQuota, useStagingInfo } from '../../../hooks/stagingHooks'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [secret, setSecret] = useState(false)
@@ -61,6 +61,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const [nameArr, setNameArr] = useState([])
 
+  useGetStagingQuota(account)
   const { disableRegister } = useStagingInfo()
 
   const handleYearChange = useCallback((v) => {
