@@ -5,7 +5,7 @@ import Modal from './Modal'
 import DefaultAvatar from 'assets/images/default-avatar.png'
 import AnimationSpin from 'components/AnimationSpin'
 import { Link } from 'react-router-dom'
-import { CrossIcon } from 'components/Icons'
+import { CrossIcon, GalaxyIcon, TokenIcon } from 'components/Icons'
 import { useLazyQuery } from '@apollo/client'
 import { CHECK_SBT } from '../../graphql/queries'
 import { useAccount } from '../QueryAccount'
@@ -118,12 +118,13 @@ export default function VerifyModal({ closeModal }) {
                 <br />
                 You can choose either Galxe SBT or BNB SBT for verification
               </p>
-              <div className="flex flex-col items-center justify-center space-y-5 md:flex-row md:space-x-16">
-                <button className="md:w-[301px] w-[275px] md:text-2xl text-xl rounded-[20px] py-3 px-8 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
-                  Get your Galxe SBT
+              <div className="flex flex-col items-center justify-center space-y-5 md:flex-row md:space-x-16 md:space-y-0">
+                <button className="flex items-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
+                  Get your Galxe Passport{' '}
+                  <GalaxyIcon size={33} className="ml-[10px]" />
                 </button>
-                <button className="md:w-[301px] w-[275px] md:text-2xl text-xl rounded-[20px] py-3 px-8 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
-                  Get your BNB SBT
+                <button className="flex items-center w-[307px] md:w-[350px] justify-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
+                  Get your BNB SBT <TokenIcon className="ml-[10px]" />
                 </button>
               </div>
               <div className="mt-8 text-center">
