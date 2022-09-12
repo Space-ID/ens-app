@@ -5,7 +5,6 @@ import { toArray, last } from 'lodash'
 
 import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
-import { ethers } from '@siddomains/ui'
 
 import {
   CHECK_COMMITMENT,
@@ -47,7 +46,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const [registerState, setRegisterState] = useState(RegisterState.request)
   let now, currentPremium, underPremium
-  const [years, setYears] = useState(false)
+  const [years, setYears] = useState(minYear)
   const [secondsPassed, setSecondsPassed] = useState(0)
   const [timerRunning, setTimerRunning] = useState(false)
   const [commitmentTimerRunning, setCommitmentTimerRunning] = useState(false)
