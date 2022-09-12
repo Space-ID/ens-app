@@ -41,6 +41,10 @@ body {
   background: #1eefa4;
 }
 
+.custom-modal::-webkit-scrollbar {
+  display: none;
+}
+
 /* Change the white to any color */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -142,4 +146,12 @@ input[type='number'] {
 
 .Toastify__progress-bar {
   opacity: 0 !important;
+}
+
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container--bottom-center {
+    bottom: 40px !important;
+    left: 28px !important;
+    width: calc(100vw - 56px) !important;
+  }
 }
