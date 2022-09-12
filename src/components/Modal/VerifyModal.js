@@ -87,13 +87,13 @@ export default function VerifyModal({ closeModal }) {
 
   return (
     <div>
-      <Modal width="1056px" className="p-6">
+      <Modal width="1056px" className="p-6 pt-0">
         <div className="text-white">
-          <div onClick={closeModal}>
-            <CrossIcon
-              className="absolute cursor-pointer right-6 top-6"
-              size={11}
-            />
+          <div
+            onClick={closeModal}
+            className="sticky top-0 flex items-center justify-end h-10 bg-dark-500"
+          >
+            <CrossIcon className="sticky cursor-pointer" size={11} />
           </div>
           <p className="font-urbanist font-bold md:text-3xl md:leading-[52px] mt-2.5 text-[32px] leading-[46px] text-center">
             Verify your SBT to participate SPACE ID Staging Launch!
@@ -133,7 +133,7 @@ export default function VerifyModal({ closeModal }) {
                   Get your Galxe Passport{' '}
                   <GalaxyIcon size={33} className="ml-[10px]" />
                 </button>
-                <button className="flex items-center w-[307px] md:w-[350px] justify-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
+                <button className="flex items-center  400px:w-[307px] md:w-[350px] justify-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
                   Get your BNB SBT <TokenIcon className="ml-[10px]" />
                 </button>
               </div>
