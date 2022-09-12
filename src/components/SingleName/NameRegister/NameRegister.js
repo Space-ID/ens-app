@@ -271,7 +271,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   })
 
   const ethVal = new EthVal(`${getRentPrice || 0}`).toEth()
-  // todo: canregister
   const registerGasFast = new EthVal(`${TOGAL_GAS_WEI * gasPrice.fast}`).toEth()
   const registrationFee = ethVal.add(registerGasFast)
   const registrationFeeInUsd = registrationFee.mul(ethUsdPrice ?? 0)
@@ -381,7 +380,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                 underPremium={underPremium}
                 connectHandler={connectHandler}
                 signature={signature}
-                canRegister={canRegister}
                 registerGasFast={registerGasFast}
                 registrationFee={registrationFee}
                 registrationFeeInUsd={registrationFeeInUsd}
