@@ -69,8 +69,10 @@ export default () => {
       <div className="mt-7 flex flex-col items-center">
         <div className="mb-5">
           <div className="flex md:justify-center md:flex-row flex-col items-center">
-            <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
-            {verify && (
+            {!!totalQuota && (
+              <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
+            )}
+            {verify && !!individualQuota && (
               <>
                 <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
                 <p className="text-lg text-gray-700 text-center">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
