@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'material-react-toastify'
 import Modal from './Modal'
 
@@ -10,7 +10,7 @@ import { useLazyQuery } from '@apollo/client'
 import { CHECK_SBT } from '../../graphql/queries'
 import { useAccount } from '../QueryAccount'
 import { isEmptyAddress } from '../../utils/records'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setVerify } from '../../app/slices/stagingSlice'
 
 import Success from 'components/Toast/Success'
@@ -25,7 +25,7 @@ const showSuccess = () => {
   toast.dismiss()
   toast.success(<Success label="Verification completed" />, {
     position: ToastPosition,
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -38,7 +38,7 @@ const showError = () => {
   toast.dismiss()
   toast.error(<Failed label="Verification failed" />, {
     position: ToastPosition,
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -50,16 +50,27 @@ const showError = () => {
 export default function VerifyModal({ closeModal }) {
   const account = useAccount()
   const dispatch = useDispatch()
-  const [getCheckSBT, { data: { checkSBT = undefined } = {}, loading = true }] =
-    useLazyQuery(CHECK_SBT, { variables: { account }, fetchPolicy: 'no-cache' })
+  const checkSBT = useSelector((state) => state.staging.verify)
+  const [loading, setLoading] = useState(true)
+  const timer = useRef()
+  const [getCheckSBT] = useLazyQuery(CHECK_SBT, {
+    variables: { account },
+    fetchPolicy: 'no-cache',
+  })
 
   const handleCheck = useCallback(() => {
+    setLoading(true)
     getCheckSBT({ variables: { account } }).then((res) => {
-      if (res.data?.checkSBT) {
-        showSuccess()
-      } else {
-        showError()
-      }
+      window.clearTimeout(timer.current)
+      timer.current = setTimeout(() => {
+        setLoading(false)
+        dispatch(setVerify(res.data?.checkSBT ?? false))
+        if (res.data?.checkSBT) {
+          showSuccess()
+        } else {
+          showError()
+        }
+      }, 2000)
     })
   }, [account])
 
@@ -69,7 +80,6 @@ export default function VerifyModal({ closeModal }) {
     }
   }, [account])
   useEffect(() => {
-    dispatch(setVerify(checkSBT))
     if (checkSBT) {
       closeModal()
     }
@@ -89,7 +99,7 @@ export default function VerifyModal({ closeModal }) {
             Verify your SBT to participate SPACE ID Staging Launch!
           </p>
           <div className="flex justify-center mt-4 mb-6 md:mt-8">
-            <div className="md:w-[332px] w-[302px] drop-shadow-[0_0_45px_rgba(80,255,192,0.45)] relative">
+            <div className="md:w-[332px] mx-1 drop-shadow-[0_0_45px_rgba(80,255,192,0.45)] relative">
               <img src={DefaultAvatar} className="w-full rounded-3xl" />
               {loading ? (
                 <button className="absolute bg-blue-100 rounded-[20px] font-urbanist font-semibold text-2xl leading-9 flex py-3 items-center bottom-[18px] left-[50%] -translate-x-1/2 min-w-[218px] justify-center">
@@ -113,7 +123,7 @@ export default function VerifyModal({ closeModal }) {
           </div>
           {!loading && !checkSBT && (
             <>
-              <p className="pt-5 mb-5 text-lg font-semibold leading-7 text-center text-gray-700 md:mb-8 md:text-xl font-urbanist">
+              <p className="pt-5 mb-5 text-lg font-semibold md:leading-7 leading-[26px] text-center text-gray-700 md:mb-8 md:text-xl font-urbanist">
                 No SBT yet? We got your back!
                 <br />
                 You can choose either Galxe SBT or BNB SBT for verification
@@ -127,9 +137,9 @@ export default function VerifyModal({ closeModal }) {
                   Get your BNB SBT <TokenIcon className="ml-[10px]" />
                 </button>
               </div>
-              <div className="mt-8 text-center">
+              <div className="md:mt-8 mt-4 text-center">
                 <Link>
-                  <span className="text-sm font-semibold leading-5 text-green-200 font-urbanist">
+                  <span className="text-sm font-semibold md:leading-5 leading-[22px] text-green-200 font-urbanist">
                     Staging Launch Rules ↗{' '}
                   </span>
                 </Link>
