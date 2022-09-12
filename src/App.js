@@ -11,7 +11,7 @@ import useReactiveVarListeners from './hooks/useReactiveVarListeners'
 import { useAccount } from './components/QueryAccount'
 import { emptyAddress } from './ui'
 import ToastContainer from 'components/Toast/ToastContainer'
-import { useGetStagingInfo } from './hooks/stagingHooks'
+import { useGetStagingInfo, useGetStagingQuota } from './hooks/stagingHooks'
 
 const Route = ({
   component: Component,
@@ -39,6 +39,7 @@ const App = () => {
   const account = useAccount()
   const accountRef = useRef(account)
   useGetStagingInfo()
+  useGetStagingQuota(account)
   useEffect(() => {
     if (
       accountRef.current !== emptyAddress &&

@@ -61,7 +61,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const [nameArr, setNameArr] = useState([])
 
-  useGetStagingQuota(account)
   const { disableRegister } = useStagingInfo()
 
   const handleYearChange = useCallback((v) => {
