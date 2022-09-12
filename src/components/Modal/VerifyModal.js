@@ -25,7 +25,7 @@ const showSuccess = () => {
   toast.dismiss()
   toast.success(<Success label="Verification completed" />, {
     position: ToastPosition,
-    autoClose: 1000,
+    autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -38,7 +38,7 @@ const showError = () => {
   toast.dismiss()
   toast.error(<Failed label="Verification failed" />, {
     position: ToastPosition,
-    autoClose: 100,
+    autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: false,
@@ -88,7 +88,7 @@ export default function VerifyModal({ closeModal }) {
           <p className="font-urbanist font-bold md:text-3xl md:leading-[52px] mt-2.5 text-[32px] leading-[46px] text-center">
             Verify your SBT to participate SPACE ID Staging Launch!
           </p>
-          <div className="flex justify-center md:mt-8 mt-4 mb-6">
+          <div className="flex justify-center mt-4 mb-6 md:mt-8">
             <div className="md:w-[332px] w-[302px] drop-shadow-[0_0_45px_rgba(80,255,192,0.45)] relative">
               <img src={DefaultAvatar} className="w-full rounded-3xl" />
               {loading ? (
@@ -113,12 +113,12 @@ export default function VerifyModal({ closeModal }) {
           </div>
           {!loading && !checkSBT && (
             <>
-              <p className="pt-5 md:mb-8 mb-5 md:text-xl text-lg font-semibold leading-7 text-center text-gray-700 font-urbanist">
+              <p className="pt-5 mb-5 text-lg font-semibold leading-7 text-center text-gray-700 md:mb-8 md:text-xl font-urbanist">
                 No SBT yet? We got your back!
                 <br />
                 You can choose either Galxe SBT or BNB SBT for verification
               </p>
-              <div className="flex items-center justify-center md:flex-row flex-col md:space-x-16 space-y-5">
+              <div className="flex flex-col items-center justify-center space-y-5 md:flex-row md:space-x-16">
                 <button className="md:w-[301px] w-[275px] md:text-2xl text-xl rounded-[20px] py-3 px-8 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
                   Get your Galxe SBT
                 </button>
@@ -126,7 +126,7 @@ export default function VerifyModal({ closeModal }) {
                   Get your BNB SBT
                 </button>
               </div>
-              <div className="text-center mt-8">
+              <div className="mt-8 text-center">
                 <Link>
                   <span className="text-sm font-semibold leading-5 text-green-200 font-urbanist">
                     Staging Launch Rules ↗{' '}

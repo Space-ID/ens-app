@@ -139,3 +139,7 @@ input[type='number'] {
   top: 91px !important;
   right: 20px !important;
 }
+
+.Toastify__progress-bar {
+  opacity: 0 !important;
+}

@@ -18,7 +18,6 @@ export default function CustomToastContainer() {
         contextClass[type || 'default'] +
         ' backdrop-blur-md flex px-6 py-4 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer w-[328px]'
       }
-      progressClassName="hidden"
       closeButton={<CloseIcon size={11} />}
       bodyClassName={() => 'text-sm font-white font-med block p-0'}
     />
