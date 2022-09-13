@@ -30,10 +30,13 @@ export const useGetStagingInfo = () => {
 export const useGetStagingQuota = (account) => {
   const dispatch = useDispatch()
   const ready = useReactiveVar(isENSReadyReactive)
-  const [fetchStagingQuota, { data }] = useLazyQuery(GET_STAGING_QUOTA, {
-    variables: { account },
-    fetchPolicy: 'no-cache',
-  })
+  const [fetchStagingQuota, { data, loading }] = useLazyQuery(
+    GET_STAGING_QUOTA,
+    {
+      variables: { account },
+      fetchPolicy: 'no-cache',
+    }
+  )
   useEffect(() => {
     if (ready && !isEmptyAddress(account)) {
       fetchStagingQuota({ variables: { account } })
@@ -45,7 +48,7 @@ export const useGetStagingQuota = (account) => {
     }
   }, [data])
 
-  return fetchStagingQuota
+  return { fetchStagingQuota, loading }
 }
 
 export const useStagingInfo = () => {

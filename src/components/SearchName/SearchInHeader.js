@@ -32,7 +32,7 @@ function Search({
   const [active, setActive] = useState(false)
   const account = useAccount()
   const dispatch = useDispatch()
-  const fetchStagingQuota = useGetStagingQuota(account)
+  const { fetchStagingQuota } = useGetStagingQuota(account)
   const { disableRegister } = useStagingInfo()
 
   const gotoDetailPage = () => {

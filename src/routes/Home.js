@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useQuery, gql, useLazyQuery } from '@apollo/client'
 import Search from 'components/SearchName/Search'
-import { SpaceIDTextIcon } from 'components/Icons'
+import { SpaceIDTextIcon, RefreshIcon } from 'components/Icons'
 import { useAccount } from 'components/QueryAccount'
 import { isEmptyAddress } from 'utils/records'
 import AnimationSpin from 'components/AnimationSpin'
@@ -25,7 +25,8 @@ export default () => {
     (state) => state.domain.searchingDomainName
   )
   const account = useAccount()
-  const fetchStagingQuota = useGetStagingQuota(account)
+  const { fetchStagingQuota, loading: fetchQuotaLoading } =
+    useGetStagingQuota(account)
   const {
     isStart,
     totalQuota,
@@ -42,7 +43,11 @@ export default () => {
   const { isReadOnly } = data
 
   useEffect(() => {
-    if (!isEmptyAddress(account) && !isReadOnly && !individualQuota) {
+    if (
+      !isEmptyAddress(account) &&
+      !isReadOnly &&
+      (!individualQuota || individualQuota <= 2)
+    ) {
       setOpenVerifyModal(true)
     }
   }, [account, isReadOnly, individualQuota])
@@ -67,26 +72,30 @@ export default () => {
       )
     return (
       <div className="mt-7 flex flex-col items-center">
-        <div className="mb-5">
+        <div className="mb-5 flex items-center flex-col">
           <div className="flex md:justify-center md:flex-row flex-col items-center">
             {isStart && !!totalQuota && (
               <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
             )}
             <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
-            <p className="text-lg text-gray-700 text-center">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
+            <div className="text-lg text-gray-700 text-center flex items-center">
+              <p className="mr-2">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
+              {fetchQuotaLoading ? (
+                <AnimationSpin size={16} />
+              ) : (
+                <RefreshIcon
+                  className="cursor-pointer"
+                  onClick={() => fetchStagingQuota()}
+                />
+              )}
+            </div>
           </div>
-          <button
-            className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
+          <a
+            className="text-base font-semibold text-green-200 font-urbanist cursor-pointer mt-5"
             onClick={() => setOpenVerifyModal(true)}
           >
-            modal
-          </button>
-          <button
-            className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
-            onClick={() => fetchStagingQuota()}
-          >
-            refresh
-          </button>
+            Staging Launch Rules ↗{' '}
+          </a>
         </div>
         <Search
           className="px-7 md:px-0 md:w-[600px] mx-auto"
