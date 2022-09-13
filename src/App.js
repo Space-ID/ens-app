@@ -39,7 +39,6 @@ const App = () => {
   const account = useAccount()
   const accountRef = useRef(account)
   useGetStagingInfo()
-  useGetStagingQuota(account)
   useEffect(() => {
     if (
       accountRef.current !== emptyAddress &&

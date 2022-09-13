@@ -362,33 +362,37 @@ export default class Registrar {
 
   async getStagingInfo() {
     const permanentRegistrarController = this.permanentRegistrarController
-    const [startTime, totalQuota, individualQuota] = await Promise.all([
+    const [startTime, totalQuota] = await Promise.all([
       permanentRegistrarController.startTime(),
       permanentRegistrarController.totalQuota(),
-      permanentRegistrarController.invdividualQuota(),
     ])
     return {
       startTime: startTime.toNumber() * 1000,
       totalQuota: totalQuota.toNumber(),
-      individualQuota: individualQuota.toNumber(),
     }
   }
 
   async getStagingQuota(account) {
     const permanentRegistrarController = this.permanentRegistrarController
-    const [usedQuota, individualQuotaUsed] = await Promise.all([
-      permanentRegistrarController.usedQuota(),
-      permanentRegistrarController.individualQuotaUsed(account),
-    ])
+    const [usedQuota, individualQuotaUsed, individualQuota] = await Promise.all(
+      [
+        permanentRegistrarController.usedQuota(),
+        permanentRegistrarController.individualQuotaUsed(account),
+        permanentRegistrarController.individualQuotaAvailable(account),
+      ]
+    )
     return {
       usedQuota: usedQuota.toNumber(),
       individualQuotaUsed: individualQuotaUsed.toNumber(),
+      individualQuota: individualQuota.toNumber(),
     }
   }
 
-  async checkSBT(address) {
+  async getIndividualQuota(address) {
     const permanentRegistrarController = this.permanentRegistrarController
-    const res = await permanentRegistrarController.hasSBT(address)
+    const res = await permanentRegistrarController.individualQuotaAvailable(
+      address
+    )
     return res
   }
 

@@ -105,14 +105,6 @@ const resolvers = {
         console.log(e)
       }
     },
-    async checkSBT(_, { account }) {
-      try {
-        const registrar = getRegistrar()
-        return await registrar.checkSBT(account)
-      } catch (e) {
-        console.log(e)
-      }
-    },
   },
   Mutation: {
     async commit(_, { label, secret }) {

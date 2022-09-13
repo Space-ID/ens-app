@@ -3404,10 +3404,10 @@
   resolved "https://registry.npmjs.org/@siddomains/resolver/-/resolver-0.1.1.tgz"
   integrity sha512-cZYaHJN9iXNXeLvaMPDm3p6ymNklDzQ11reIfLMvLi0zP0UGERM+YXCqwzAZkoKulysVWX0iUbihl64/NrJJew==
 
-"@siddomains/sid-contracts@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.10.tgz#93e8406d3099d44201a1906c7cbe682cf30d79db"
-  integrity sha512-LUc1wzxdTR7ZMURq+uvZk18laAr1m+rDbrS2YmmU+NOFEGT8Xna+rnR4MLidQaTOrjtKyjskOBNP2ecy7hDB/g==
+"@siddomains/sid-contracts@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.11.tgz#de19833378e49ac239698182c5b29f5b92a3abe7"
+  integrity sha512-j2e9poSirFoBL9AlfXuobOVdrcKYsJVy2LiUwPTaLRB7ZwApOjP0wQ9v9WeN8vfhAHJsBob9K+6iRxUhpZ1xgQ==
   dependencies:
     "@ensdomains/buffer" "^0.0.13"
     "@ensdomains/solsha1" "0.0.3"

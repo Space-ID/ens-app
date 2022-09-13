@@ -1,14 +1,10 @@
-import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
+import { useLazyQuery, useReactiveVar } from '@apollo/client'
 import { GET_STAGING_INFO, GET_STAGING_QUOTA } from '../graphql/queries'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isEmptyAddress } from '../utils/records'
 import { isENSReadyReactive } from '../apollo/reactiveVars'
-import {
-  setStagingInfo,
-  setStagingQuota,
-  setVerify,
-} from 'app/slices/stagingSlice'
+import { setStagingInfo, setStagingQuota } from 'app/slices/stagingSlice'
 
 export const useGetStagingInfo = () => {
   const dispatch = useDispatch()
@@ -40,8 +36,6 @@ export const useGetStagingQuota = (account) => {
   })
   useEffect(() => {
     if (ready && !isEmptyAddress(account)) {
-      const verify = window.localStorage.getItem(`sbt-${account}`)
-      dispatch(setVerify(!!verify))
       fetchStagingQuota({ variables: { account } })
     }
   }, [account, ready])
@@ -62,13 +56,11 @@ export const useStagingInfo = () => {
   const individualQuotaUsed = useSelector(
     (state) => state.staging.individualQuotaUsed
   )
-  const verify = useSelector((state) => state.staging.verify)
   const isStart = Date.now() > startTime
   const isUsedUp =
     usedQuota >= totalQuota || individualQuotaUsed >= individualQuota
-  const disableRegister = !verify || isUsedUp || !isStart
+  const disableRegister = isUsedUp || !isStart
   return {
-    verify,
     disableRegister,
     isStart,
     usedQuota,

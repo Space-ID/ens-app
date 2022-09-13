@@ -6,7 +6,6 @@ const initialState = {
   individualQuota: 0,
   usedQuota: 0,
   individualQuotaUsed: 0,
-  verify: false,
 }
 
 export const stagingSlice = createSlice({
@@ -16,19 +15,15 @@ export const stagingSlice = createSlice({
     setStagingInfo: (state, { payload }) => {
       state.startTime = payload.startTime
       state.totalQuota = payload.totalQuota
-      state.individualQuota = payload.individualQuota
     },
     setStagingQuota: (state, { payload }) => {
       state.usedQuota = payload.usedQuota
       state.individualQuotaUsed = payload.individualQuotaUsed
-    },
-    setVerify: (state, { payload }) => {
-      state.verify = payload
+      state.individualQuota = payload.individualQuota
     },
   },
 })
 
-export const { setStagingInfo, setStagingQuota, setVerify } =
-  stagingSlice.actions
+export const { setStagingInfo, setStagingQuota } = stagingSlice.actions
 
 export default stagingSlice.reducer

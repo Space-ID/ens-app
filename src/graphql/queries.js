@@ -369,8 +369,3 @@ export const IS_CONTRACT_CONTROLLER = gql`
     isContractController(address: $address)
   }
 `
-export const CHECK_SBT = gql`
-  query checkSBT($account: String) {
-    checkSBT(account: $account)
-  }
-`

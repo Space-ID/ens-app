@@ -7,7 +7,7 @@ import { useAccount } from 'components/QueryAccount'
 import { isEmptyAddress } from 'utils/records'
 import AnimationSpin from 'components/AnimationSpin'
 import VerifyModal from 'components/Modal/VerifyModal'
-import { useStagingInfo } from '../hooks/stagingHooks'
+import { useGetStagingQuota, useStagingInfo } from '../hooks/stagingHooks'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -25,9 +25,9 @@ export default () => {
     (state) => state.domain.searchingDomainName
   )
   const account = useAccount()
+  const fetchStagingQuota = useGetStagingQuota(account)
   const {
     isStart,
-    verify,
     totalQuota,
     usedQuota,
     individualQuota,
@@ -42,10 +42,10 @@ export default () => {
   const { isReadOnly } = data
 
   useEffect(() => {
-    if (!isEmptyAddress(account) && !isReadOnly && !verify) {
+    if (!isEmptyAddress(account) && !isReadOnly && !individualQuota) {
       setOpenVerifyModal(true)
     }
-  }, [account, isReadOnly, verify])
+  }, [account, isReadOnly, individualQuota])
 
   const getMainContent = () => {
     if (isEmptyAddress(account) || isReadOnly) {
@@ -69,24 +69,24 @@ export default () => {
       <div className="mt-7 flex flex-col items-center">
         <div className="mb-5">
           <div className="flex md:justify-center md:flex-row flex-col items-center">
-            {!!totalQuota && (
+            {isStart && !!totalQuota && (
               <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
             )}
-            {verify && !!individualQuota && (
-              <>
-                <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
-                <p className="text-lg text-gray-700 text-center">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
-              </>
-            )}
+            <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
+            <p className="text-lg text-gray-700 text-center">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
           </div>
-          {!verify && (
-            <button
-              className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
-              onClick={() => setOpenVerifyModal(true)}
-            >
-              Verify Your SBT
-            </button>
-          )}
+          <button
+            className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
+            onClick={() => setOpenVerifyModal(true)}
+          >
+            modal
+          </button>
+          <button
+            className="w-[181px] h-[42px] rounded-2xl bg-green-200 text-dark-common text-lg font-semibold my-5"
+            onClick={() => fetchStagingQuota()}
+          >
+            refresh
+          </button>
         </div>
         <Search
           className="px-7 md:px-0 md:w-[600px] mx-auto"
