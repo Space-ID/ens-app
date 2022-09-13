@@ -103,7 +103,7 @@ export default () => {
             searchingDomainName={searchingDomainName}
           />
           <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-            Please wait for the staging launch to begin on next week.
+            Please wait for the staging launch to begin on this week.
           </p>
         </div>
       )
@@ -119,7 +119,7 @@ export default () => {
           />
           {/*{claimable && dailyUsed >= dailyLimit && (*/}
           <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist text-2xl mt-[42px]">
-            Please wait for the staging launch to begin on next week.
+            Please wait for the staging launch to begin on this week.
           </p>
           {/*)}*/}
           {/*{!claimable && (*/}
