@@ -61,7 +61,6 @@ const App = () => {
           exact
           path="/profile"
           component={Profile}
-          f
           layout={HomePageLayout}
         />
         <Route

@@ -24,6 +24,7 @@ export default () => {
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
+  const initStagingInfo = useSelector((state) => state.staging.init)
   const account = useAccount()
   const { fetchStagingQuota, loading: fetchQuotaLoading } =
     useGetStagingQuota(account)
@@ -41,9 +42,16 @@ export default () => {
   })
 
   const { isReadOnly } = data
-
+  useEffect(() => {
+    if (initStagingInfo) {
+      setLoading(false)
+    } else {
+      setLoading(true)
+    }
+  }, [initStagingInfo])
   useEffect(() => {
     if (
+      isStart &&
       !isEmptyAddress(account) &&
       !isReadOnly &&
       (!individualQuota || individualQuota <= 2)
@@ -52,9 +60,16 @@ export default () => {
       setOpenVerifyModal(!tip)
       window.localStorage.setItem(`tip-${account}`, '1')
     }
-  }, [account, isReadOnly, individualQuota])
+  }, [account, isReadOnly, individualQuota, isStart])
 
   const getMainContent = () => {
+    if (loading)
+      return (
+        <AnimationSpin
+          className="flex justify-center mt-10 text-center"
+          size={40}
+        />
+      )
     if (isEmptyAddress(account) || isReadOnly) {
       if (!isStart) {
         return (
@@ -65,13 +80,6 @@ export default () => {
       }
       return null
     }
-    if (loading)
-      return (
-        <AnimationSpin
-          className="flex justify-center mt-10 text-center"
-          size={40}
-        />
-      )
     return (
       <div className="mt-7 flex flex-col items-center">
         {isStart && !!totalQuota && (
@@ -83,13 +91,17 @@ export default () => {
                   <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
                   <div className="text-lg text-gray-700 text-center flex items-center">
                     <p className="mr-2">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
-                    {fetchQuotaLoading ? (
-                      <AnimationSpin size={16} />
-                    ) : (
-                      <RefreshIcon
-                        className="cursor-pointer"
-                        onClick={() => fetchStagingQuota()}
-                      />
+                    {individualQuota <= 2 && (
+                      <>
+                        {fetchQuotaLoading ? (
+                          <AnimationSpin size={16} />
+                        ) : (
+                          <RefreshIcon
+                            className="cursor-pointer"
+                            onClick={() => fetchStagingQuota()}
+                          />
+                        )}
+                      </>
                     )}
                   </div>
                 </>
