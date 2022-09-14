@@ -27,7 +27,7 @@ const Step1Main = ({
   registrationFee,
   registrationFeeInUsd,
   registerGasFast,
-  disable,
+  disable = false,
 }) => {
   const account = useAccount()
 

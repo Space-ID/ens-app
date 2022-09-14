@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { useHistory } from 'react-router'
 import { RegisterState } from './constant'
 import AnimationSpin from '../../AnimationSpin'
-const Step2Main = ({ onRegister, state, onRetry, disable }) => {
+const Step2Main = ({ onRegister, state, onRetry, disable = false }) => {
   const history = useHistory()
   const handleRegister = () => {
     onRegister()

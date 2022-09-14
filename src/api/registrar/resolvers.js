@@ -58,25 +58,6 @@ const resolvers = {
       }
     },
 
-    async getStagingInfo() {
-      try {
-        const registrar = getRegistrar()
-        const res = await registrar.getStagingInfo()
-        return res
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    async getStagingQuota(_, { account }) {
-      try {
-        const registrar = getRegistrar()
-        const res = await registrar.getStagingQuota(account)
-        return res
-      } catch (e) {
-        console.error(e)
-      }
-    },
-
     async getIsClaimable(_, { address }) {
       try {
         const registrar = getRegistrar()
