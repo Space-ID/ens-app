@@ -1,7 +1,7 @@
 // Import packages
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
-import { useLocation, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { getNetworkId } from 'ui'
@@ -289,8 +289,8 @@ export default ({ children }) => {
       >
         <div className="flex items-center justify-between py-5 px-7 md:px-12">
           {/* Only showing for the desktop device */}
-          <a
-            href="/"
+          <Link
+            to="/"
             className="items-center hidden w-56 h-10 text-green-100 cursor-pointer lg:flex"
           >
             {/* <SmallLogoIcon size={40} className="text-green-100" />
@@ -298,7 +298,7 @@ export default ({ children }) => {
               <img src={LogoText} />
             </div> */}
             <WholeLogoIcon />
-          </a>
+          </Link>
 
           <div className="items-center hidden md:flex lg:hidden">
             <div onClick={showDrawer}>
@@ -316,11 +316,11 @@ export default ({ children }) => {
                   <div onClick={menuOpen}>
                     <HamburgerIcon className="mr-5 text-green-100" />
                   </div>
-                  <a href="/">
+                  <Link to="/">
                     <div className="flex items-center">
                       <SmallLogoIcon size={40} className="text-green-100" />
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 {(!accounts || !accounts[0]) && (
                   <div className="">
@@ -344,11 +344,11 @@ export default ({ children }) => {
                   <div onClick={menuOpen} className="mr-5">
                     <HamburgerIcon className="font-semibold text-green-100" />
                   </div>
-                  <a href="/">
+                  <Link to="/">
                     <div className="flex items-center">
                       <SmallLogoIcon size={40} className="text-green-100" />
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 <div className="block md:hidden">
                   {isReadOnly && (

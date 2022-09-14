@@ -5,7 +5,6 @@ import { toArray, last } from 'lodash'
 
 import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
-import { ethers } from '@siddomains/ui'
 
 import {
   CHECK_COMMITMENT,
@@ -16,8 +15,6 @@ import {
   GET_BALANCE,
   GET_ETH_PRICE,
   GET_PRICE_CURVE,
-  GET_IS_CLAIMABLE,
-  GET_HUNGER_PHASE_INFO,
 } from 'graphql/queries'
 import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
@@ -40,6 +37,7 @@ import { REGISTER, COMMIT } from '../../../graphql/mutations'
 import { TOGAL_GAS_WEI } from '../../../constants/gas'
 import { minYear, RegisterState } from './constant'
 import InsufficientBalanceModal from '../../Modal/InsufficientBalanceModal'
+import { useGetStagingQuota, useStagingInfo } from '../../../hooks/stagingHooks'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [secret, setSecret] = useState(false)
@@ -48,7 +46,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const [registerState, setRegisterState] = useState(RegisterState.request)
   let now, currentPremium, underPremium
-  const [years, setYears] = useState(false)
+  const [years, setYears] = useState(minYear)
   const [secondsPassed, setSecondsPassed] = useState(0)
   const [timerRunning, setTimerRunning] = useState(false)
   const [commitmentTimerRunning, setCommitmentTimerRunning] = useState(false)
@@ -63,31 +61,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
 
   const [nameArr, setNameArr] = useState([])
 
-  const [canRegister, setCanRegister] = useState(false)
-
-  const [isInHungerPhase, setIsInHungerPhase] = useState(false)
-
-  // const { data: hungerPhaseInfo } = useQuery(GET_HUNGER_PHASE_INFO)
-  // useEffect(() => {
-  //   if (hungerPhaseInfo?.getHungerPhaseInfo) {
-  //     const startTime = new Date(
-  //       hungerPhaseInfo.getHungerPhaseInfo.startTime * 1000
-  //     )
-  //     const endTime = new Date(
-  //       hungerPhaseInfo.getHungerPhaseInfo.endTime * 1000
-  //     )
-  //     const timeNow = new Date().getTime()
-  //     const dailyQuota = ethers.BigNumber.from(
-  //       hungerPhaseInfo.getHungerPhaseInfo.dailyQuota
-  //     )
-  //     const dailyUsed = ethers.BigNumber.from(
-  //       hungerPhaseInfo.getHungerPhaseInfo.dailyUsed
-  //     )
-  //     if (timeNow > startTime && timeNow < endTime && dailyUsed < dailyQuota) {
-  //       setIsInHungerPhase(true)
-  //     }
-  //   }
-  // }, [hungerPhaseInfo])
+  const { disableRegister } = useStagingInfo()
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
@@ -97,12 +71,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       setYears(n)
     }
   }, [])
-
-  // hunger phase isClaimable
-  // const { error: claimError, data: isClaimable } = useQuery(GET_IS_CLAIMABLE, {
-  //   variables: { address: account },
-  //   fetchPolicy: 'no-cache',
-  // })
 
   // get eth price
   const {
@@ -302,7 +270,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   })
 
   const ethVal = new EthVal(`${getRentPrice || 0}`).toEth()
-  // todo: canregister
   const registerGasFast = new EthVal(`${TOGAL_GAS_WEI * gasPrice.fast}`).toEth()
   const registrationFee = ethVal.add(registerGasFast)
   const registrationFeeInUsd = registrationFee.mul(ethUsdPrice ?? 0)
@@ -398,8 +365,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-2xl md:px-[50px] px-[24px] py-[24px]">
             {registerState.startsWith(RegisterState.request) && (
               <Step1Main
-                // disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
-                disable={!isInHungerPhase}
+                disable={disableRegister}
                 state={registerState}
                 duration={duration}
                 years={years}
@@ -413,7 +379,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                 underPremium={underPremium}
                 connectHandler={connectHandler}
                 signature={signature}
-                canRegister={canRegister}
                 registerGasFast={registerGasFast}
                 registrationFee={registrationFee}
                 registrationFeeInUsd={registrationFeeInUsd}
@@ -423,8 +388,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             {(registerState === RegisterState.confirm ||
               registerState.startsWith(RegisterState.register)) && (
               <Step2Main
-                // disable={!isInHungerPhase || !isClaimable?.getIsClaimable}
-                disable={!isInHungerPhase}
+                disable={disableRegister}
                 state={registerState}
                 onRegister={handleRegister}
                 onRetry={handleRetry}

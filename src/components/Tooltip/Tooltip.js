@@ -12,3 +12,5 @@ export const Tooltip = ({ message, children, delay }) => {
     </div>
   )
 }
+
+export default Tooltip
