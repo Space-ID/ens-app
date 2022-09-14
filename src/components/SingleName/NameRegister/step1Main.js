@@ -133,7 +133,7 @@ const Step1Main = ({
           </div>
         )}
         {state === RegisterState.requestSuccess && (
-          <CheckCircle className="flex items-center mx-auto mt-[32px] " />
+          <CheckCircle className="flex items-center mx-auto mt-[32px] text-green-200" />
         )}
       </div>
     </>

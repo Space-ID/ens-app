@@ -48,7 +48,9 @@ export default () => {
       !isReadOnly &&
       (!individualQuota || individualQuota <= 2)
     ) {
-      setOpenVerifyModal(true)
+      const tip = window.localStorage.getItem(`tip-${account}`)
+      setOpenVerifyModal(!tip)
+      window.localStorage.setItem(`tip-${account}`, '1')
     }
   }, [account, isReadOnly, individualQuota])
 

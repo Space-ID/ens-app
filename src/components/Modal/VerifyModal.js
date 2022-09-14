@@ -72,11 +72,24 @@ export default function VerifyModal({ closeModal }) {
             </p>
           </div>
           <div className="flex flex-col items-center justify-center space-y-5 md:flex-row md:space-x-16 md:space-y-0 mb-5">
-            <button className="flex items-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
+            <button
+              className="flex items-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common"
+              onClick={() => {
+                window.open('https://galxe.com/passport', '_blank')
+              }}
+            >
               Get your Galxe Passport{' '}
               <GalaxyIcon size={33} className="ml-[10px]" />
             </button>
-            <button className="flex items-center  400px:w-[307px] md:w-[350px] justify-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common">
+            <button
+              className="flex items-center  400px:w-[307px] md:w-[350px] justify-center md:text-2xl text-xl rounded-[20px] py-3 px-6 font-semibold leading-8 bg-green-200 font-urbanist text-dark-common"
+              onClick={() => {
+                window.open(
+                  'https://www.binance.com/en/support/announcement/0fe1e7c8781844e29f56cb674231dfd7',
+                  '_blank'
+                )
+              }}
+            >
               Get your BNB BABT <TokenIcon className="ml-[10px]" />
             </button>
           </div>
