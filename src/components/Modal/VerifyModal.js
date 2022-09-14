@@ -61,14 +61,15 @@ export default function VerifyModal({ closeModal }) {
           </p>
           <div className="my-8 text-center text-xl text-gray-700 font-semibold">
             <p>
-              No SBT yet? We got your back!
-              <br />
-              You can choose either Galxe SBT or BNB SBT for verification
+              .bnb Domain Staging Launch requires users to have the following
+              SBT to participate:
             </p>
             <p className="mt-8 h-[84px]">
-              <span className="mr-4">•</span>Galxe Passport - 2 slots
+              <span className="mr-4">•</span>Each address with Galxe Passport
+              SBT can register for up to 2 .bnb Domains
               <br />
-              <span className="mr-4">•</span>Galxe Passport and BABT - 5 slots
+              <span className="mr-4">•</span>Each address with BOTH Galxe
+              Passport SBT & BNB SBT can register for up to 5 .bnb Domains
             </p>
           </div>
           <div className="flex flex-col items-center justify-center space-y-5 md:flex-row md:space-x-16 md:space-y-0 mb-5">
@@ -90,7 +91,7 @@ export default function VerifyModal({ closeModal }) {
                 )
               }}
             >
-              Get your BNB BABT <TokenIcon className="ml-[10px]" />
+              Get your BAB token <TokenIcon className="ml-[10px]" />
             </button>
           </div>
         </div>
