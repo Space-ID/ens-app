@@ -5,8 +5,6 @@ import Search from 'components/SearchName/Search'
 import { SpaceIDTextIcon } from 'components/Icons'
 import { useAccount } from 'components/QueryAccount'
 import { isEmptyAddress } from 'utils/records'
-import { ethers } from '@siddomains/ui'
-import { GET_HUNGER_PHASE_INFO, GET_IS_CLAIMABLE } from 'graphql/queries'
 import AnimationSpin from 'components/AnimationSpin'
 
 export const HOME_DATA = gql`

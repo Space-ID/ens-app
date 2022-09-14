@@ -1,39 +1,130 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useQuery, gql, useLazyQuery } from '@apollo/client'
 import Search from 'components/SearchName/Search'
-import { SpaceIDTextIcon } from 'components/Icons'
+import { SpaceIDTextIcon, RefreshIcon } from 'components/Icons'
+import { useAccount } from 'components/QueryAccount'
+import { isEmptyAddress } from 'utils/records'
+import AnimationSpin from 'components/AnimationSpin'
+import VerifyModal from 'components/Modal/VerifyModal'
+import { useGetStagingQuota, useStagingInfo } from '../hooks/stagingHooks'
 
-const animation = {
-  initial: {
-    scale: 0,
-    opacity: 0,
-  },
-  animate: {
-    opacity: 1,
-    scale: 1,
-  },
-}
+export const HOME_DATA = gql`
+  query getHomeData($address: string) @client {
+    network
+    displayName(address: $address)
+    isReadOnly
+    isSafeApp
+  }
+`
 
 export default () => {
+  const [loading, setLoading] = useState(false)
+  const [openVerifyModal, setOpenVerifyModal] = useState(false)
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
-  return (
-    <div className="py-[84px] mx-auto min-w-[100%] md:min-w-[60%] min-h-[100vh] flex items-center justify-center">
-      <div className="min-h-[202px]">
-        <div className="flex justify-center mb-7">
-          <SpaceIDTextIcon />
-        </div>
-        {/*<Search*/}
-        {/*  className="px-7 md:px-0 md:w-[600px] mx-auto"*/}
-        {/*  searchingDomainName={searchingDomainName}*/}
-        {/*/>*/}
-        <div>
-          <p className="text-[18px] md:text-[24px] leading-[34px] mt-[40px] md:mt-[95px] text-gray-700 px-5 text-center">
-            Thank you for joining SPACE ID Pre-registration Event!
+  const account = useAccount()
+  const { fetchStagingQuota, loading: fetchQuotaLoading } =
+    useGetStagingQuota(account)
+  const {
+    isStart,
+    totalQuota,
+    usedQuota,
+    individualQuota,
+    individualQuotaUsed,
+  } = useStagingInfo()
+  const { data } = useQuery(HOME_DATA, {
+    variables: {
+      address: account,
+    },
+  })
+
+  const { isReadOnly } = data
+
+  useEffect(() => {
+    if (
+      !isEmptyAddress(account) &&
+      !isReadOnly &&
+      (!individualQuota || individualQuota <= 2)
+    ) {
+      const tip = window.localStorage.getItem(`tip-${account}`)
+      setOpenVerifyModal(!tip)
+      window.localStorage.setItem(`tip-${account}`, '1')
+    }
+  }, [account, isReadOnly, individualQuota])
+
+  const getMainContent = () => {
+    if (isEmptyAddress(account) || isReadOnly) {
+      if (!isStart) {
+        return (
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[60px]">
+            Staging launch will begin on Sep 15th.
           </p>
+        )
+      }
+      return null
+    }
+    if (loading)
+      return (
+        <AnimationSpin
+          className="flex justify-center mt-10 text-center"
+          size={40}
+        />
+      )
+    return (
+      <div className="mt-7 flex flex-col items-center">
+        <div className="mb-5 flex items-center flex-col">
+          <div className="flex md:justify-center md:flex-row flex-col items-center">
+            {isStart && !!totalQuota && (
+              <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
+            )}
+            <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
+            <div className="text-lg text-gray-700 text-center flex items-center">
+              <p className="mr-2">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
+              {fetchQuotaLoading ? (
+                <AnimationSpin size={16} />
+              ) : (
+                <RefreshIcon
+                  className="cursor-pointer"
+                  onClick={() => fetchStagingQuota()}
+                />
+              )}
+            </div>
+          </div>
+          <a
+            className="text-base font-semibold text-green-200 font-urbanist cursor-pointer mt-5"
+            onClick={() => setOpenVerifyModal(true)}
+          >
+            Staging Launch Rules ↗{' '}
+          </a>
         </div>
+        <Search
+          className="px-7 md:px-0 md:w-[600px] mx-auto"
+          searchingDomainName={searchingDomainName}
+        />
+        {!isStart && (
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
+            Staging launch will begin on Sep 15th.
+          </p>
+        )}
       </div>
+    )
+  }
+
+  return (
+    <div className="py-[84px] mx-auto min-w-[100%] md:min-w-[60%] min-h-screen flex items-center justify-center">
+      <div className="min-h-[202px]">
+        <div>
+          <div className="flex justify-center">
+            <SpaceIDTextIcon />
+          </div>
+        </div>
+        {getMainContent()}
+      </div>
+      {openVerifyModal && (
+        <VerifyModal closeModal={() => setOpenVerifyModal(false)} />
+      )}
     </div>
   )
 }

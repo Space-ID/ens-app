@@ -5,12 +5,15 @@ import { store } from 'app/store'
 import { Provider } from 'react-redux'
 
 import App from 'App'
-import 'globalStyles'
-import './index.css'
+
 import setup from './setup'
 import { clientReactive, networkIdReactive } from './apollo/reactiveVars'
 import { setupClient } from './apollo/apolloClient'
 import Loader from './components/Loader'
+
+import './index.css'
+import 'globalStyles'
+import 'material-react-toastify/dist/ReactToastify.css'
 
 setup(false)
 window.addEventListener('load', async () => {

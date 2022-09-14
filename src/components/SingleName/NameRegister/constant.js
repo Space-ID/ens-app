@@ -9,4 +9,4 @@ export const RegisterState = {
   registerError: 'REGISTER_ERROR',
 }
 
-export const minYear = 0.077
+export const minYear = 1

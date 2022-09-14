@@ -76,7 +76,7 @@ const RegisterProgress = ({ state }) => {
           style={{ width: width }}
         />
         {state === RegisterState.registerSuccess && (
-          <CheckCircle className="absolute top-0 right-0" />
+          <CheckCircle className="absolute top-0 right-0 text-green-200" />
         )}
       </div>
       <div className="flex justify-between w-full mt-4">

@@ -360,23 +360,40 @@ export default class Registrar {
     return permanentRegistrarController.minCommitmentAge()
   }
 
-  async getHungerPhaseInfo() {
+  async getStagingInfo() {
     const permanentRegistrarController = this.permanentRegistrarController
-    const startTime = await permanentRegistrarController.startTime()
-    const endTime = await permanentRegistrarController.endTime()
-    const dailyQuota = await permanentRegistrarController.dailyQuota()
-    let dailyUsed = dailyQuota
-    try {
-      dailyUsed = await permanentRegistrarController.getCurrentDayUsage()
-    } catch (e) {
-      console.log('end:', e)
-    }
+    const [startTime, totalQuota] = await Promise.all([
+      permanentRegistrarController.startTime(),
+      permanentRegistrarController.totalQuota(),
+    ])
     return {
-      startTime,
-      endTime,
-      dailyQuota,
-      dailyUsed,
+      startTime: startTime.toNumber() * 1000,
+      totalQuota: totalQuota.toNumber(),
     }
+  }
+
+  async getStagingQuota(account) {
+    const permanentRegistrarController = this.permanentRegistrarController
+    const [usedQuota, individualQuotaUsed, individualQuota] = await Promise.all(
+      [
+        permanentRegistrarController.usedQuota(),
+        permanentRegistrarController.individualQuotaUsed(account),
+        permanentRegistrarController.individualQuotaAvailable(account),
+      ]
+    )
+    return {
+      usedQuota: usedQuota.toNumber(),
+      individualQuotaUsed: individualQuotaUsed.toNumber(),
+      individualQuota: individualQuota.toNumber(),
+    }
+  }
+
+  async getIndividualQuota(address) {
+    const permanentRegistrarController = this.permanentRegistrarController
+    const res = await permanentRegistrarController.individualQuotaAvailable(
+      address
+    )
+    return res
   }
 
   async getIsClaimable(address) {
