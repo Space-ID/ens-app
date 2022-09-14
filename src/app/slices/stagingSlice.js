@@ -6,6 +6,7 @@ const initialState = {
   individualQuota: 0,
   usedQuota: 0,
   individualQuotaUsed: 0,
+  init: false,
 }
 
 export const stagingSlice = createSlice({
@@ -15,6 +16,7 @@ export const stagingSlice = createSlice({
     setStagingInfo: (state, { payload }) => {
       state.startTime = payload?.startTime ?? Number.MAX_VALUE
       state.totalQuota = payload?.totalQuota ?? 0
+      state.init = true
     },
     setStagingQuota: (state, { payload }) => {
       state.usedQuota = payload?.usedQuota ?? 0
