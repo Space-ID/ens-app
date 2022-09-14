@@ -13,13 +13,13 @@ export const stagingSlice = createSlice({
   initialState,
   reducers: {
     setStagingInfo: (state, { payload }) => {
-      state.startTime = payload.startTime
-      state.totalQuota = payload.totalQuota
+      state.startTime = payload?.startTime ?? Number.MAX_VALUE
+      state.totalQuota = payload?.totalQuota ?? 0
     },
     setStagingQuota: (state, { payload }) => {
-      state.usedQuota = payload.usedQuota
-      state.individualQuotaUsed = payload.individualQuotaUsed
-      state.individualQuota = payload.individualQuota
+      state.usedQuota = payload?.usedQuota ?? 0
+      state.individualQuotaUsed = payload?.individualQuotaUsed ?? 0
+      state.individualQuota = payload?.individualQuota ?? 0
     },
   },
 })

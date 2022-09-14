@@ -74,31 +74,37 @@ export default () => {
       )
     return (
       <div className="mt-7 flex flex-col items-center">
-        <div className="mb-5 flex items-center flex-col">
-          <div className="flex md:justify-center md:flex-row flex-col items-center">
-            {isStart && !!totalQuota && (
+        {isStart && !!totalQuota && (
+          <div className="mb-5 flex items-center flex-col">
+            <div className="flex md:justify-center md:flex-row flex-col items-center">
               <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
-            )}
-            <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
-            <div className="text-lg text-gray-700 text-center flex items-center">
-              <p className="mr-2">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
-              {fetchQuotaLoading ? (
-                <AnimationSpin size={16} />
-              ) : (
-                <RefreshIcon
-                  className="cursor-pointer"
-                  onClick={() => fetchStagingQuota()}
-                />
+              {usedQuota < totalQuota && (
+                <>
+                  <div className="md:w-[1px] md:h-[26px] w-full h-[1px] bg-[#CCFCFF]/20 md:mx-6 my-2" />
+                  <div className="text-lg text-gray-700 text-center flex items-center">
+                    <p className="mr-2">{`Your registration limit: ${individualQuotaUsed}/${individualQuota}`}</p>
+                    {fetchQuotaLoading ? (
+                      <AnimationSpin size={16} />
+                    ) : (
+                      <RefreshIcon
+                        className="cursor-pointer"
+                        onClick={() => fetchStagingQuota()}
+                      />
+                    )}
+                  </div>
+                </>
               )}
             </div>
+            {usedQuota < totalQuota && (
+              <a
+                className="text-base font-semibold text-green-200 font-urbanist cursor-pointer mt-5"
+                onClick={() => setOpenVerifyModal(true)}
+              >
+                Staging Launch Rules ↗{' '}
+              </a>
+            )}
           </div>
-          <a
-            className="text-base font-semibold text-green-200 font-urbanist cursor-pointer mt-5"
-            onClick={() => setOpenVerifyModal(true)}
-          >
-            Staging Launch Rules ↗{' '}
-          </a>
-        </div>
+        )}
         <Search
           className="px-7 md:px-0 md:w-[600px] mx-auto"
           searchingDomainName={searchingDomainName}
@@ -107,6 +113,19 @@ export default () => {
           <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
             Staging launch will begin on Sep 15th.
           </p>
+        )}
+        {isStart && usedQuota >= totalQuota ? (
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
+            Staging Launch has ended. Please wait for the public registration.
+          </p>
+        ) : (
+          isStart &&
+          individualQuotaUsed >= 5 && (
+            <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
+              You have used up your quota. Please wait for the public
+              registration.
+            </p>
+          )
         )}
       </div>
     )
