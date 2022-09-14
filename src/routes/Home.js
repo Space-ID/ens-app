@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useQuery, gql, useLazyQuery } from '@apollo/client'
 import Search from 'components/SearchName/Search'
@@ -24,6 +24,7 @@ export default () => {
   const searchingDomainName = useSelector(
     (state) => state.domain.searchingDomainName
   )
+  const modalFlag = useRef(false)
   const initStagingInfo = useSelector((state) => state.staging.init)
   const account = useAccount()
   const { fetchStagingQuota, loading: fetchQuotaLoading } =
@@ -54,8 +55,10 @@ export default () => {
       isStart &&
       !isEmptyAddress(account) &&
       !isReadOnly &&
-      (!individualQuota || individualQuota <= 2)
+      (!individualQuota || individualQuota <= 2) &&
+      !modalFlag.current
     ) {
+      modalFlag.current = true
       const tip = window.localStorage.getItem(`tip-${account}`)
       setOpenVerifyModal(!tip)
       window.localStorage.setItem(`tip-${account}`, '1')
