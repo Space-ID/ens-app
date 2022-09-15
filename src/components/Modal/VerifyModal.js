@@ -69,7 +69,7 @@ export default function VerifyModal({ closeModal }) {
               SBT can register for up to 2 .bnb Domains
               <br />
               <span className="mr-4">•</span>Each address with BOTH Galxe
-              Passport SBT & BNB SBT can register for up to 5 .bnb Domains
+              Passport SBT & BAB token can register for up to 5 .bnb Domains
             </p>
           </div>
           <div className="flex flex-col items-center justify-center space-y-5 md:flex-row md:space-x-16 md:space-y-0 mb-5">
