@@ -1290,10 +1290,10 @@
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@craco/craco@^6.4.3":
-  version "6.4.3"
-  resolved "https://registry.npmjs.org/@craco/craco/-/craco-6.4.3.tgz"
-  integrity sha512-RzkXYmNzRCGUyG7mM+IUMM+nvrpSfA34352sPSGQN76UivAmCAht3sI4v5JKgzO05oUK9Zwi6abCKD7iKXI8hQ==
+"@craco/craco@^6.4.5":
+  version "6.4.5"
+  resolved "https://registry.yarnpkg.com/@craco/craco/-/craco-6.4.5.tgz#471e67082a2ffd3edf73759b215bdc16250d27b3"
+  integrity sha512-8F2rIAao8sEh0FPP52ViEvDM9GjJ7acq0knu1c8UgI+EuZMD5/ZB270ol6jV4iNY7it9Umg/RoGBvNRUNr8U8w==
   dependencies:
     cosmiconfig "^7.0.1"
     cosmiconfig-typescript-loader "^1.0.0"
@@ -3404,10 +3404,10 @@
   resolved "https://registry.npmjs.org/@siddomains/resolver/-/resolver-0.1.1.tgz"
   integrity sha512-cZYaHJN9iXNXeLvaMPDm3p6ymNklDzQ11reIfLMvLi0zP0UGERM+YXCqwzAZkoKulysVWX0iUbihl64/NrJJew==
 
-"@siddomains/sid-contracts@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.12.tgz#1738bd016a4719051953665b78abf448df5f0e06"
-  integrity sha512-HjBKvREu02biPPSozZJU7YOdeGK2tQ64BKeVgEZY8GgaReZ9LzoUgdvxeTJaYAGN3J0MOyXJRiMyek4p0f1wtg==
+"@siddomains/sid-contracts@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.13.tgz#ce00c58b27faa08cacdc9156e10739872c00b870"
+  integrity sha512-cpJT8i9EQUYGbpGwG0BgdxhZxMfARHp0vdtbXuGceoR9KumUaC2vteBxrcCRBtNserXZzGpUKCTHqTbl0jZS4A==
   dependencies:
     "@ensdomains/buffer" "^0.0.13"
     "@ensdomains/solsha1" "0.0.3"
@@ -3449,22 +3449,6 @@
     "@siddomains/resolver" "0.1.1"
     "@siddomains/sid" "0.1.2"
     content-hash "^2.5.2"
-    ethers "^5.0.13"
-    js-sha3 "^0.8.0"
-    lodash "^4.17.21"
-
-"@siddomains/sidjs@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@siddomains/sidjs/-/sidjs-0.1.8.tgz#9cc270a353bfbed82e21faa569433c2cbdf5b097"
-  integrity sha512-vigtr1gdyyci5sm1Gbq/U7clMSHAdeUjVjSEbZllRP22nIsvcXDUaIIHHbGRBs14+3BdR4Xgqrd+NoTDwv0VeQ==
-  dependencies:
-    "@babel/runtime" "^7.4.4"
-    "@ensdomains/ens-validation" "^0.1.0"
-    "@siddomains/address-encoder" "^0.0.3"
-    "@siddomains/resolver" "0.1.1"
-    "@siddomains/sid" "0.1.2"
-    content-hash "^2.5.2"
-    eth-ens-namehash "^2.0.8"
     ethers "^5.0.13"
     js-sha3 "^0.8.0"
     lodash "^4.17.21"

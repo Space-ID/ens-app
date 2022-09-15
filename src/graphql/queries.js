@@ -319,17 +319,6 @@ export const GET_MINIMUM_COMMITMENT_AGE = gql`
   }
 `
 
-export const GET_STAGING_INFO = gql`
-  query getStagingInfo {
-    getStagingInfo
-  }
-`
-export const GET_STAGING_QUOTA = gql`
-  query getStagingQuota {
-    getStagingQuota
-  }
-`
-
 export const GET_MAXIMUM_COMMITMENT_AGE = gql`
   query getMaximumCommitmentAge {
     getMaximumCommitmentAge

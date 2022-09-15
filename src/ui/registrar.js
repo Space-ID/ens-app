@@ -360,42 +360,6 @@ export default class Registrar {
     return permanentRegistrarController.minCommitmentAge()
   }
 
-  async getStagingInfo() {
-    const permanentRegistrarController = this.permanentRegistrarController
-    const [startTime, totalQuota] = await Promise.all([
-      permanentRegistrarController.startTime(),
-      permanentRegistrarController.totalQuota(),
-    ])
-    return {
-      startTime: startTime.toNumber() * 1000,
-      totalQuota: totalQuota.toNumber(),
-    }
-  }
-
-  async getStagingQuota(account) {
-    const permanentRegistrarController = this.permanentRegistrarController
-    const [usedQuota, individualQuotaUsed, individualQuota] = await Promise.all(
-      [
-        permanentRegistrarController.usedQuota(),
-        permanentRegistrarController.individualQuotaUsed(account),
-        permanentRegistrarController.individualQuotaAvailable(account),
-      ]
-    )
-    return {
-      usedQuota: usedQuota.toNumber(),
-      individualQuotaUsed: individualQuotaUsed.toNumber(),
-      individualQuota: individualQuota.toNumber(),
-    }
-  }
-
-  async getIndividualQuota(address) {
-    const permanentRegistrarController = this.permanentRegistrarController
-    const res = await permanentRegistrarController.individualQuotaAvailable(
-      address
-    )
-    return res
-  }
-
   async getIsClaimable(address) {
     const permanentRegistrarController = this.permanentRegistrarController
     return permanentRegistrarController.isClaimable(address)
@@ -479,7 +443,7 @@ export default class Registrar {
       )
     } else {
       const gasLimit = await this.estimateGasLimit(() => {
-        return permanentRegistrarController.estimateGas.registerWithConfigV6(
+        return permanentRegistrarController.estimateGas.registerWithConfig(
           label,
           account,
           duration,
@@ -490,7 +454,7 @@ export default class Registrar {
         )
       })
 
-      return permanentRegistrarController.registerWithConfigV6(
+      return permanentRegistrarController.registerWithConfig(
         label,
         account,
         duration,

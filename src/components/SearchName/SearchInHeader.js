@@ -6,14 +6,12 @@ import { withRouter } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { toArray } from 'lodash'
 import ClickAwayListener from 'react-click-away-listener'
-import { useAccount } from 'components/QueryAccount'
 import SearchIcon from 'components/Icons/SearchIcon'
 import FaceCryIcon from 'components/Icons/FaceCryIcon'
 import FaceHappyIcon from 'components/Icons/FaceHappyIcon'
 import { setSearchDomainName, setSelectedDomain } from 'app/slices/domainSlice'
 import '../../api/subDomainRegistrar'
 import { validateDomain, validateName } from '../../utils/utils'
-import { useGetStagingQuota, useStagingInfo } from '../../hooks/stagingHooks'
 
 function Search({
   history,
@@ -30,10 +28,7 @@ function Search({
   const [showPopup, setShowPopup] = useState(false)
   const [result, setResult] = useState(null)
   const [active, setActive] = useState(false)
-  const account = useAccount()
   const dispatch = useDispatch()
-  const { fetchStagingQuota } = useGetStagingQuota(account)
-  const { disableRegister } = useStagingInfo()
 
   const gotoDetailPage = () => {
     setShowPopup(false)
@@ -104,7 +99,6 @@ function Search({
         }}
         onSubmit={(values, { setSubmitting }) => {
           setActive(true)
-          fetchStagingQuota()
           const params = {
             ChainID: parseInt(process.env.REACT_APP_NETWORK_CHAIN_ID),
             name: values.searchKey,
@@ -231,15 +225,10 @@ function Search({
                 {result.Owner ? 'Unavailable' : 'available'}
               </div>
               <button
-                disabled={!result.Owner && disableRegister}
                 onClick={gotoDetailPage}
                 className={cn(
                   'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-lg font-urbanist font-semibold ml-3',
-                  result.Owner
-                    ? 'bg-[#ED7E17]'
-                    : disableRegister
-                    ? 'bg-gray-800 text-white cursor-not-allowed'
-                    : 'bg-[#2980E8]'
+                  result.Owner ? 'bg-red-100' : 'bg-blue-100'
                 )}
               >
                 {result.Owner ? <span>View</span> : <span>Register</span>}
