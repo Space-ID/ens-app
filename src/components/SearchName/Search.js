@@ -204,9 +204,7 @@ function Search({
                 onClick={gotoDetailPage}
                 className={cn(
                   'cursor-pointer w-[92px] justify-center flex items-center h-7 text-white text-center rounded-lg font-urbanist font-semibold ml-3',
-                  result.Owner
-                    ? 'bg-red-100'
-                    : 'bg-gray-800 text-white cursor-not-allowed'
+                  result.Owner ? 'bg-red-100' : 'bg-blue-100'
                 )}
               >
                 {result.Owner ? <span>View</span> : <span>Register</span>}
