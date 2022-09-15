@@ -3404,15 +3404,16 @@
   resolved "https://registry.npmjs.org/@siddomains/resolver/-/resolver-0.1.1.tgz"
   integrity sha512-cZYaHJN9iXNXeLvaMPDm3p6ymNklDzQ11reIfLMvLi0zP0UGERM+YXCqwzAZkoKulysVWX0iUbihl64/NrJJew==
 
-"@siddomains/sid-contracts@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.11.tgz#de19833378e49ac239698182c5b29f5b92a3abe7"
-  integrity sha512-j2e9poSirFoBL9AlfXuobOVdrcKYsJVy2LiUwPTaLRB7ZwApOjP0wQ9v9WeN8vfhAHJsBob9K+6iRxUhpZ1xgQ==
+"@siddomains/sid-contracts@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.12.tgz#1738bd016a4719051953665b78abf448df5f0e06"
+  integrity sha512-HjBKvREu02biPPSozZJU7YOdeGK2tQ64BKeVgEZY8GgaReZ9LzoUgdvxeTJaYAGN3J0MOyXJRiMyek4p0f1wtg==
   dependencies:
     "@ensdomains/buffer" "^0.0.13"
     "@ensdomains/solsha1" "0.0.3"
     "@openzeppelin/contracts" "^4.1.0"
-    "@siddomains/sidjs" "^0.1.2"
+    "@siddomains/sidjs" "^0.1.13"
+    csv-parse "^5.3.0"
     dns-packet "^5.3.0"
     web3 "^1.7.3"
 
@@ -3436,7 +3437,23 @@
     solc "^0.4.20"
     testrpc "0.0.1"
 
-"@siddomains/sidjs@^0.1.2", "@siddomains/sidjs@^0.1.8":
+"@siddomains/sidjs@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@siddomains/sidjs/-/sidjs-0.1.13.tgz#bd4eac06975d4317741a7123f40c9cf055a86485"
+  integrity sha512-wynOMw9xrOY/yr94j6KupPIPKO9rjfx/XluD0tSE350bsZMGiF1r0gJBw6MWi6Sb0F1gfuPR8joyyAbJSMB8DA==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@ensdomains/ens-validation" "^0.1.0"
+    "@ensdomains/eth-ens-namehash" "^2.0.15"
+    "@siddomains/address-encoder" "^0.0.3"
+    "@siddomains/resolver" "0.1.1"
+    "@siddomains/sid" "0.1.2"
+    content-hash "^2.5.2"
+    ethers "^5.0.13"
+    js-sha3 "^0.8.0"
+    lodash "^4.17.21"
+
+"@siddomains/sidjs@^0.1.8":
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/@siddomains/sidjs/-/sidjs-0.1.8.tgz#9cc270a353bfbed82e21faa569433c2cbdf5b097"
   integrity sha512-vigtr1gdyyci5sm1Gbq/U7clMSHAdeUjVjSEbZllRP22nIsvcXDUaIIHHbGRBs14+3BdR4Xgqrd+NoTDwv0VeQ==
@@ -8493,6 +8510,11 @@ csstype@^3.0.2:
   version "3.1.0"
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.0.tgz"
   integrity sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==
+
+csv-parse@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.3.0.tgz#85cc02fc9d1c89bd1b02e69069c960f8b8064322"
+  integrity sha512-UXJCGwvJ2fep39purtAn27OUYmxB1JQto+zhZ4QlJpzsirtSFbzLvip1aIgziqNdZp/TptvsKEV5BZSxe10/DQ==
 
 currently-unhandled@^0.4.1:
   version "0.4.1"
