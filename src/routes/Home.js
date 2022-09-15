@@ -133,16 +133,14 @@ export default () => {
           <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
             Staging Launch has ended. Please wait for the public registration.
           </p>
-        ) : (
-          isStart &&
+        ) : isStart &&
           individualQuota &&
-          individualQuotaUsed >= individualQuota && (
-            <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
-              You have used up your quota. Please wait for the public
-              registration.
-            </p>
-          )
-        )}
+          individualQuotaUsed >= individualQuota ? (
+          <p className="font-bold leading-[34px] text-center text-gray-700 font-urbanist md:text-2xl text-xl mt-[80px]">
+            You have used up your quota. Please wait for the public
+            registration.
+          </p>
+        ) : null}
       </div>
     )
   }
