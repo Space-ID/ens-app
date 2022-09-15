@@ -37,7 +37,6 @@ import { REGISTER, COMMIT } from '../../../graphql/mutations'
 import { TOGAL_GAS_WEI } from '../../../constants/gas'
 import { minYear, RegisterState } from './constant'
 import InsufficientBalanceModal from '../../Modal/InsufficientBalanceModal'
-import { useGetStagingQuota, useStagingInfo } from '../../../hooks/stagingHooks'
 
 const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [secret, setSecret] = useState(false)
@@ -60,8 +59,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [signature, setSignature] = useState([])
 
   const [nameArr, setNameArr] = useState([])
-
-  const { disableRegister } = useStagingInfo()
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
@@ -365,7 +362,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-2xl md:px-[50px] px-[24px] py-[24px]">
             {registerState.startsWith(RegisterState.request) && (
               <Step1Main
-                disable={disableRegister}
                 state={registerState}
                 duration={duration}
                 years={years}
@@ -388,7 +384,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             {(registerState === RegisterState.confirm ||
               registerState.startsWith(RegisterState.register)) && (
               <Step2Main
-                disable={disableRegister}
                 state={registerState}
                 onRegister={handleRegister}
                 onRetry={handleRetry}
