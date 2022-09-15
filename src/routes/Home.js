@@ -52,7 +52,6 @@ export default () => {
   }, [initStagingInfo])
   useEffect(() => {
     if (
-      isStart &&
       !isEmptyAddress(account) &&
       !isReadOnly &&
       (!individualQuota || individualQuota <= 2) &&
@@ -63,7 +62,7 @@ export default () => {
       setOpenVerifyModal(!tip)
       window.localStorage.setItem(`tip-${account}`, '1')
     }
-  }, [account, isReadOnly, individualQuota, isStart])
+  }, [account, isReadOnly, individualQuota])
 
   const getMainContent = () => {
     if (loading)
@@ -86,7 +85,7 @@ export default () => {
     return (
       <div className="mt-7 flex flex-col items-center">
         {isStart && !!totalQuota && (
-          <div className="mb-5 flex items-center flex-col">
+          <div className="flex items-center flex-col">
             <div className="flex md:justify-center md:flex-row flex-col items-center">
               <p className="text-lg text-gray-700">{`Staging launch limit: ${usedQuota}/${totalQuota}`}</p>
               {usedQuota < totalQuota && (
@@ -110,15 +109,15 @@ export default () => {
                 </>
               )}
             </div>
-            {usedQuota < totalQuota && (
-              <a
-                className="text-base font-semibold text-green-200 font-urbanist cursor-pointer mt-5"
-                onClick={() => setOpenVerifyModal(true)}
-              >
-                Staging Launch Rules ↗{' '}
-              </a>
-            )}
           </div>
+        )}
+        {(totalQuota === 0 || usedQuota < totalQuota) && (
+          <a
+            className="text-base font-semibold text-green-200 font-urbanist cursor-pointer mt-5 mb-5"
+            onClick={() => setOpenVerifyModal(true)}
+          >
+            Staging Launch Rules ↗{' '}
+          </a>
         )}
         <Search
           className="px-7 md:px-0 md:w-[600px] mx-auto"
