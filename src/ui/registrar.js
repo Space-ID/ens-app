@@ -443,7 +443,7 @@ export default class Registrar {
       )
     } else {
       const gasLimit = await this.estimateGasLimit(() => {
-        return permanentRegistrarController.estimateGas.registerWithConfigV6(
+        return permanentRegistrarController.estimateGas.registerWithConfig(
           label,
           account,
           duration,
@@ -454,7 +454,7 @@ export default class Registrar {
         )
       })
 
-      return permanentRegistrarController.registerWithConfigV6(
+      return permanentRegistrarController.registerWithConfig(
         label,
         account,
         duration,

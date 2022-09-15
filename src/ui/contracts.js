@@ -3,7 +3,7 @@ import {
   BaseRegistrarImplementation as permanentRegistrarContract,
   BulkRenewal as bulkRenewalContract,
   SID as ensContract,
-  BNBRegistrarControllerV6 as permanentRegistrarControllerContract,
+  BNBRegistrarControllerV7 as permanentRegistrarControllerContract,
   DNSRegistrar as dnsRegistrarContract,
   Resolver as resolverContract,
   ReverseRegistrar as reverseRegistrarContract,
