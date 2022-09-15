@@ -225,7 +225,6 @@ function Search({
                 {result.Owner ? 'Unavailable' : 'available'}
               </div>
               <button
-                disabled={!result.Owner}
                 onClick={gotoDetailPage}
                 className={cn(
                   'cursor-pointer w-[92px] justify-center flex items-center h-[28px] text-white text-center rounded-lg font-urbanist font-semibold ml-3',

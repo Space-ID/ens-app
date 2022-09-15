@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { useHistory } from 'react-router'
 import { RegisterState } from './constant'
 import AnimationSpin from '../../AnimationSpin'
-const Step2Main = ({ onRegister, state, onRetry, disable = false }) => {
+const Step2Main = ({ onRegister, state, onRetry }) => {
   const history = useHistory()
   const handleRegister = () => {
     onRegister()
@@ -41,13 +41,7 @@ const Step2Main = ({ onRegister, state, onRetry, disable = false }) => {
       {state === RegisterState.confirm && (
         <>
           <button
-            disabled={disable}
-            className={cn(
-              'w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto',
-              disable
-                ? 'bg-gray-800 text-white cursor-not-allowed'
-                : 'bg-green-200 text-dark-common'
-            )}
+            className="w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto bg-green-200 text-dark-common"
             onClick={handleRegister}
           >
             Register

@@ -27,7 +27,6 @@ const Step1Main = ({
   registrationFee,
   registrationFeeInUsd,
   registerGasFast,
-  disable = false,
 }) => {
   const account = useAccount()
 
@@ -114,11 +113,11 @@ const Step1Main = ({
           <button
             className={cn(
               'w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto mt-[24px]',
-              disable
+              isReadOnly || parseFloat(years) < minYear
                 ? 'bg-gray-800 text-white cursor-not-allowed'
                 : 'bg-green-200 text-dark-common'
             )}
-            disabled={disable || isReadOnly || parseFloat(years) < minYear}
+            disabled={isReadOnly || parseFloat(years) < minYear}
             onClick={handleRequest}
           >
             Request
