@@ -5,33 +5,34 @@ import { RegisterState } from './constant'
 function randomSecret() {
   return '0x' + crypto.randomBytes(32).toString('hex')
 }
-
+window.localStorage.removeItem('progress')
+const storeKey = 'spaceIdProgress'
 const Store = {
   get: (label) => {
-    return window.localStorage.getItem('progress')
-      ? JSON.parse(window.localStorage.getItem('progress'))[label]
+    return window.localStorage.getItem(storeKey)
+      ? JSON.parse(window.localStorage.getItem(storeKey))[label]
       : null
   },
   set: (label, obj) => {
     let data = {}
     let progress
-    if ((progress = window.localStorage.getItem('progress'))) {
+    if ((progress = window.localStorage.getItem(storeKey))) {
       data = JSON.parse(progress)
     }
     data[label] = {
       ...data[label],
       ...obj,
     }
-    window.localStorage.setItem('progress', JSON.stringify(data))
+    window.localStorage.setItem(storeKey, JSON.stringify(data))
   },
   remove: (label) => {
     let data = {}
     let progress
-    if ((progress = window.localStorage.getItem('progress'))) {
+    if ((progress = window.localStorage.getItem(storeKey))) {
       data = JSON.parse(progress)
     }
     delete data[label]
-    window.localStorage.setItem('progress', JSON.stringify(data))
+    window.localStorage.setItem(storeKey, JSON.stringify(data))
   },
 }
 

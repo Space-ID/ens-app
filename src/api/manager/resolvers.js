@@ -347,7 +347,7 @@ const resolvers = {
     publicResolver: async () => {
       try {
         const ens = getENS()
-        const resolver = await ens.getAddress('resolver.bnb')
+        const resolver = process.env.REACT_APP_RESOLVER_ADDRESS
         return {
           address: resolver,
           __typename: 'Resolver',
@@ -546,7 +546,7 @@ const resolvers = {
       }
 
       async function calculateIsPublicResolverReady() {
-        const publicResolver = await ens.getAddress('resolver.bnb')
+        const publicResolver = process.env.REACT_APP_RESOLVER_ADDRESS
         return !OLD_RESOLVERS.map((a) => a.toLowerCase()).includes(
           publicResolver
         )
