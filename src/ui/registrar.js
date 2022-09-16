@@ -422,7 +422,7 @@ export default class Registrar {
     const account = (await getAccount()).toLowerCase()
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
-    const resolverAddr = await this.getAddress('resolver.bnb')
+    const resolverAddr = '0x7A18768EdB2619e73c4d5067B90Fd84a71993C1D' //await this.getAddress('resolver.bnb')
     if (parseInt(resolverAddr, 16) === 0) {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.register(
