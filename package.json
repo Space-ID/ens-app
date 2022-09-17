@@ -66,7 +66,7 @@
     "react-daisyui": "^2.1.0",
     "react-dom": "17.0.0",
     "react-form-stepper": "^2.0.1",
-    "react-ga": "^2.5.7",
+    "react-ga": "^3.3.1",
     "react-i18next": "^11.18.5",
     "react-redux": "^7.2.8",
     "react-router": "5.1.2",

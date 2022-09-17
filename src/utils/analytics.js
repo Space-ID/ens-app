@@ -47,6 +47,7 @@ export const setupAnalytics = () => {
     ReactGA.plugin.require('ecommerce', { debug: true })
     console.log('Analytics setup for dev with ', TrackingID.dev)
   }
+  ReactGA.pageview(window.location.pathname + window.location.search)
   setUtm()
 }
 
