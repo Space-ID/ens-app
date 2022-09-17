@@ -2,7 +2,7 @@ import ReactGA from 'react-ga'
 import { getNetworkId } from 'ui'
 
 const TrackingID = {
-  live: 'UA-233964103-2',
+  live: 'UA-233964103-3',
   dev: 'UA-233964103-1',
 }
 
