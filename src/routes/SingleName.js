@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { gql } from '@apollo/client'
+import { toArray } from 'lodash'
 
-import { validateName, parseSearchTerm, validateDomain } from '../utils/utils'
-import { useScrollTo } from '../components/hooks'
+import { validateName, validateDomain } from '../utils/utils'
 import { GET_SINGLE_NAME } from '../graphql/queries'
 import Loader from '../components/Loader'
 import SearchErrors from '../components/SearchErrors/SearchErrors'
@@ -49,7 +49,11 @@ function SingleName({
         domain = searchTerm.substring(0, i)
         suffix = searchTerm.substring(i)
       }
-      if (suffix !== '.bnb' || !validateDomain(domain)) {
+      if (
+        suffix !== '.bnb' ||
+        toArray(domain).length < 3 ||
+        !validateDomain(domain)
+      ) {
         setValid(false)
         setType('invalid')
         history.replace('/404')
