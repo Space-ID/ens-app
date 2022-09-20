@@ -38,41 +38,30 @@ const option = {
         network: 'binance',
       },
     },
-    walletlink: {
-      package: () => import('walletlink'),
-      packageFactory: true,
-      options: {
-        appName: 'Ethereum name service',
-        jsonRpcUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
-      },
-    },
-    mewconnect: {
-      package: () => import('@myetherwallet/mewconnect-web-client'),
-      packageFactory: true,
-      options: {
-        infuraId: INFURA_ID,
-        description: ' ',
-      },
-    },
-    portis: {
-      package: () => import('@portis/web3'),
-      packageFactory: true,
-      options: {
-        id: PORTIS_ID,
-      },
-    },
-    torus: {
-      package: () => import('@toruslabs/torus-embed'),
-      packageFactory: true,
-    },
   },
 }
 
 let web3Modal
+let web3ModalProviderId
+export const setWeb3ModalProvider = (id) => {
+  web3ModalProviderId = id
+}
+
+export const getWeb3Modal = () => {
+  if (!web3Modal) {
+    web3Modal = new Web3Modal(option)
+  }
+  return web3Modal
+}
+
 export const connect = async () => {
   try {
-    web3Modal = new Web3Modal(option)
-    provider = await web3Modal.connect()
+    web3Modal = getWeb3Modal()
+    if (web3Modal.cachedProvider) {
+      provider = await web3Modal.connect()
+    } else {
+      provider = await web3Modal.connectTo(web3ModalProviderId)
+    }
     await setupENS({
       customProvider: provider,
       reloadOnAccountsChange: false,
@@ -88,10 +77,10 @@ export const connect = async () => {
 }
 
 export const disconnect = async function () {
+  web3ModalProviderId = undefined
   if (web3Modal) {
     await web3Modal.clearCachedProvider()
   }
-
   // Disconnect wallet connect provider
   if (provider && provider.disconnect) {
     provider.disconnect()

@@ -1,6 +1,6 @@
 import { getAccounts, getNetwork, getNetworkId, isReadOnly } from './ui'
 import { setup } from './apollo/mutations/ens'
-import { connect } from './api/web3modal'
+import { connect, getWeb3Modal } from './api/web3modal'
 import {
   accountsReactive,
   delegatesReactive,
@@ -39,10 +39,8 @@ export const getProvider = async (reconnect) => {
   try {
     let provider
     loadingWalletReactive(true)
-    if (
-      window.localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') ||
-      reconnect
-    ) {
+    const web3modal = getWeb3Modal()
+    if (web3modal.cachedProvider || reconnect) {
       provider = await connect()
       loadingWalletReactive(false)
       return provider
@@ -141,6 +139,7 @@ export default async (reconnect) => {
     isAppReadyReactive(true)
     loadingWalletReactive(false)
   } catch (e) {
+    loadingWalletReactive(false)
     console.error('setup error: ', e)
   }
 }
