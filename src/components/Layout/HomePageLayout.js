@@ -325,6 +325,7 @@ export default ({ children }) => {
                 {(!accounts || !accounts[0]) && (
                   <div className="">
                     <button
+                      disabled={loadingWallet}
                       className="flex items-center px-5 py-2 text-xl font-semibold bg-green-100 text-dark-100 rounded-2xl"
                       onClick={connectProvider}
                     >
@@ -354,6 +355,7 @@ export default ({ children }) => {
                   {isReadOnly && (
                     <div className="">
                       <button
+                        disabled={loadingWallet}
                         className="flex items-center px-5 py-2 text-xl font-semibold bg-green-100 text-dark-100 rounded-2xl"
                         onClick={connectProvider}
                       >
