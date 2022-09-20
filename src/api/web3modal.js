@@ -71,7 +71,7 @@ const option = {
 let web3Modal
 export const connect = async () => {
   try {
-    let web3Modal = new Web3Modal(option)
+    web3Modal = new Web3Modal(option)
     provider = await web3Modal.connect()
     await setupENS({
       customProvider: provider,
@@ -80,6 +80,7 @@ export const connect = async () => {
     })
     return provider
   } catch (e) {
+    web3Modal = undefined
     if (e !== 'Modal closed by user') {
       throw e
     }

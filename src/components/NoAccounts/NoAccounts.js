@@ -17,7 +17,7 @@ export default function NoAccounts({
       onClick={onClick}
       active={active}
       width={width}
-      disabled={!isReadOnly}
+      disabled={!isReadOnly || loadingWallet}
       className="bg-green-300/[0.85] px-[26px] py-[7px] rounded-2xl backdrop-blur-[10px] cursor-pointer"
     >
       <span className="text-white text-[18px] font-semibold font-urbanist uppercase flex items-center">
