@@ -190,7 +190,7 @@ export default function MainBoard({
   refetchAddress,
   fetchAddress,
   txHash,
-  address,
+  registrantAddress,
   isRegsitrant,
   showAddressChangeModalHandle,
   pendingBNBAddress,
@@ -241,13 +241,11 @@ export default function MainBoard({
     }
   }, [txState])
   useEffect(() => {
-    if (
-      updateLoading &&
-      isEmptyAddress(bnbAddress) &&
-      !isEmptyAddress(resolverAddress)
-    ) {
+    if (updateLoading && !isEmptyAddress(resolverAddress)) {
       setUpdateloading(false)
-      handleEdit()
+      if (isEmptyAddress(bnbAddress)) {
+        handleEdit(true)
+      }
     }
   }, [resolverAddress, bnbAddress, updateLoading])
 
@@ -279,8 +277,12 @@ export default function MainBoard({
       })
   }
 
-  const handleEdit = () => {
-    showAddressChangeModalHandle(getCoins(updatedRecords)[0])
+  const handleEdit = (defaultValue = false) => {
+    const params = { ...getCoins(updatedRecords)[0] }
+    if (defaultValue === true) {
+      params.value = registrantAddress
+    }
+    showAddressChangeModalHandle(params)
   }
 
   const handleUpdate = async () => {
@@ -387,7 +389,9 @@ export default function MainBoard({
             >
               <div className="flex items-center justify-center">
                 <p>Update</p>
-                {updateLoading && <AnimationSpin className="ml-2" />}
+                {updateLoading && (
+                  <AnimationSpin className="ml-2" loadingColor="white" />
+                )}
               </div>
             </button>
           </div>
