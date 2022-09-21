@@ -205,13 +205,9 @@ export default function Mainbar({
   }
 
   const refetchResolverAddress = async () => {
-    if (selectedDomain?.name) {
-      const nameUI = sid.name(`${selectedDomain.name}.bnb`)
-      const resolver = await nameUI.getResolver()
-      return resolver
-    } else {
-      return ''
-    }
+    const nameUI = sid.name(`${selectedDomain.name}.bnb`)
+    const resolver = await nameUI.getResolver()
+    return resolver
   }
 
   const fetchResolverAddress = async () => {
@@ -226,7 +222,7 @@ export default function Mainbar({
   }
 
   useEffect(() => {
-    if (sid && selectedDomain?.name) {
+    if (sid) {
       setLoading(false)
       setLoadingRegistration(true)
       setLoadingResolverAddress(true)
@@ -315,6 +311,7 @@ export default function Mainbar({
 
       {selectedDomain && (
         <MainBoard
+          registrantAddress={registrantAddress}
           isRegsitrant={isRegsitrant}
           selectedDomain={{ ...selectedDomain }}
           className="mt-8"
@@ -368,6 +365,7 @@ export default function Mainbar({
         extendHandler={extendExpiryDate}
       />
       <AddressChangeModal
+        defaultValue={updatedRecords.value}
         show={showAddressChangeModal}
         closeModal={() => setShowAddressChangeModal(false)}
         saveHandler={changeBNBAddress}

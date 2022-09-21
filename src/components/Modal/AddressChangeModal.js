@@ -7,7 +7,12 @@ import cn from 'classnames'
 //Import components
 import Modal from './Modal'
 
-export default function AddressChangeModal({ show, closeModal, saveHandler }) {
+export default function AddressChangeModal({
+  show,
+  closeModal,
+  saveHandler,
+  defaultValue,
+}) {
   const formik = useFormik({
     initialValues: {
       address: '',
@@ -25,7 +30,7 @@ export default function AddressChangeModal({ show, closeModal, saveHandler }) {
   })
 
   useEffect(() => {
-    formik.resetForm()
+    formik.resetForm({ values: { address: defaultValue } })
   }, [show])
 
   return (
