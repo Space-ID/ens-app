@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { getNamehash, emptyAddress } from 'ui'
 import { formatsByCoinType } from '@siddomains/address-encoder'
 import union from 'lodash/union'
@@ -17,6 +17,7 @@ import {
   GET_ADDRESSES,
   GET_TEXT_RECORDS,
 } from 'graphql/queries'
+import { SET_RESOLVER } from 'graphql/mutations'
 
 import TEXT_PLACEHOLDER_RECORDS from 'constants/textRecords'
 
@@ -24,10 +25,13 @@ import COIN_LIST from 'constants/coinList'
 import CopyIcon from 'components/Icons/CopyIcon'
 import AnimationSpin from 'components/AnimationSpin'
 
+import { isEmptyAddress } from 'utils/records'
 import { usePrevious } from '../../../../utils/utils'
 
 //Import GraphQL
 import { refetchTilUpdatedSingle } from 'utils/graphql'
+
+import useTransaction from 'hooks/useTransaction'
 
 const COIN_PLACEHOLDER_RECORDS = ['ETH', ...COIN_LIST.slice(0, 3)]
 
@@ -199,6 +203,10 @@ export default function MainBoard({
   const [tooltipMessage, setTooltipMessage] = useState('Copy to clipboard')
   const [bnbAddress, setBNBAddress] = useState('')
 
+  const [txState, setTxHash] = useTransaction()
+  const [updateLoading, setUpdateloading] = useState(false)
+  const [mutationResolver] = useMutation(SET_RESOLVER)
+
   useUpdatedRecords(recordsLoading, initialRecords, setUpdatedRecords)
 
   useInitRecords(
@@ -221,6 +229,24 @@ export default function MainBoard({
       setBNBAddress(getCoins(updatedRecords)[0]?.value)
     }
   }, [updatedRecords])
+
+  useEffect(() => {
+    if (txState.confirmed) {
+      refetchAddress(true)
+    }
+    if (txState.error) {
+      setUpdateloading(false)
+    }
+  }, [txState])
+  useEffect(() => {
+    if (updateLoading) {
+      setUpdateloading(false)
+      if (!isEmptyAddress(resolverAddress)) {
+        // update success
+        handleEdit()
+      }
+    }
+  }, [updateLoading, resolverAddress])
 
   const handleResolverAddressCopy = (e) => {
     e.preventDefault()
@@ -250,123 +276,120 @@ export default function MainBoard({
       })
   }
 
+  const handleEdit = () => {
+    showAddressChangeModalHandle(getCoins(updatedRecords)[0])
+  }
+
+  const handleUpdate = async () => {
+    const variables = {
+      name: selectedDomain.name + '.bnb',
+      address: process.env.REACT_APP_RESOLVER_ADDRESS,
+    }
+    try {
+      setUpdateloading(true)
+      const { data } = await mutationResolver({ variables })
+      setTxHash(data?.setResolver)
+    } catch (e) {
+      setUpdateloading(false)
+      console.error(e)
+    }
+  }
+
   return (
     <div className={cn(className)}>
       <div className="rounded-[24px]">
-        <p className="text-gray-600 font-bold text-[18px] xl:text-xl text-center md:text-left px-3">
-          Records
-        </p>
-        <div className="bg-[rgba(67,140,136,0.25)] rounded-[24px] block md:flex items-center justify-between py-5 px-6 mt-5">
-          {pendingBNBAddress ? (
-            <PendingTx
-              txHash={txHash}
-              onConfirmed={async () => {
-                setBNBAddress(updatingBNBAddress)
-                setConfirmed()
-              }}
-              className="mt-1"
-            />
-          ) : (
-            <div>
-              <p className="text-gray-600 font-bold text-[18px] xl:text-xl text-center md:text-left">
-                BNB Address
-              </p>
-              <div className="flex items-center text-gray-600 text-[14px] xl:text-[18px] mt-1 break-all justify-center md:justify-start">
-                <p className="mr-2 text-center">
-                  {updatingBNBAddress
-                    ? `${updatingBNBAddress.substring(
-                        0,
-                        10
-                      )}...${updatingBNBAddress.substring(
-                        updatingBNBAddress.length - 11
-                      )}`
-                    : `${bnbAddress.substring(0, 10)}...${bnbAddress.substring(
-                        bnbAddress.length - 11
-                      )}`}
-                </p>
-                <span className="cursor-pointer" onClick={handleBNBAddressCopy}>
-                  <Tooltip message={tooltipMessage} delay={1000}>
-                    <CopyIcon />
-                  </Tooltip>
-                </span>
-              </div>
-            </div>
-          )}
-
-          <div className="flex items-center justify-center mt-2">
-            <button
-              disabled={pendingBNBAddress || !isRegsitrant}
-              className={cn(
-                'py-2 px-10 rounded-full md:ml-4 font-semibold',
-                pendingBNBAddress || !isRegsitrant
-                  ? 'bg-gray-800 text-gray-700'
-                  : 'bg-blue-100 text-white'
-              )}
-              onClick={() =>
-                showAddressChangeModalHandle(getCoins(updatedRecords)[0])
-              }
-            >
-              Edit
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* <div className="flex justify-between px-6 mt-8"> */}
-      {/* {loadingResolverAddress ? (
-          <AnimationSpin />
-        ) : (
-          <div>
-            <p className="text-gray-600 font-bold text-[18px] md:text-xl">
-              Resolver
+        {loadingResolverAddress || !isEmptyAddress(resolverAddress) ? (
+          <>
+            <p className="text-gray-600 font-bold text-[18px] xl:text-xl text-center md:text-left px-3">
+              Records
             </p>
-            {pending ? (
-              <PendingTx
-                txHash={txHash}
-                onConfirmed={async () => {
-                  refetchTilUpdatedSingle({
-                    refetch: refetchAddress,
-                    interval: 300,
-                    keyToCompare: 'resolver',
-                    prevData: resolverAddress
-                  })
-                  await fetchAddress()
-                  setConfirmed()
-                }}
-                className="mt-1"
-              />
-            ) : (
-              <div>
-                <div className="flex items-center text-gray-600 text-[14px] xl:text-[18px] mt-1">
-                  <p className="mr-2">{resolverAddress}</p>
-                  <div
-                    className="cursor-pointer"
-                    onClick={e => handleResolverAddressCopy(e)}
-                  >
-                    <Tooltip message={tooltipMessage} delay={1000}>
-                      <CopyIcon />
-                    </Tooltip>
+            <div className="bg-[rgba(67,140,136,0.25)] rounded-[24px] block md:flex items-center justify-between py-5 px-6 mt-5">
+              {recordsLoading ? (
+                <PendingTx
+                  txHash={txHash}
+                  onConfirmed={async () => {
+                    setBNBAddress(updatingBNBAddress)
+                    setConfirmed()
+                  }}
+                  className="mt-1"
+                >
+                  {''}
+                </PendingTx>
+              ) : (
+                <div>
+                  <p className="text-gray-600 font-bold text-[18px] xl:text-xl text-center md:text-left">
+                    BNB Address
+                  </p>
+                  <div className="flex items-center text-gray-600 text-[14px] xl:text-[18px] mt-1 break-all justify-center md:justify-start">
+                    <p className="mr-2 text-center">
+                      {updatingBNBAddress
+                        ? `${updatingBNBAddress.substring(
+                            0,
+                            10
+                          )}...${updatingBNBAddress.substring(
+                            updatingBNBAddress.length - 11
+                          )}`
+                        : `${bnbAddress.substring(
+                            0,
+                            10
+                          )}...${bnbAddress.substring(bnbAddress.length - 11)}`}
+                    </p>
+                    <span
+                      className="cursor-pointer"
+                      onClick={handleBNBAddressCopy}
+                    >
+                      <Tooltip message={tooltipMessage} delay={1000}>
+                        <CopyIcon />
+                      </Tooltip>
+                    </span>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )} */}
+              )}
 
-      {/* <div className="flex items-center">
-          <button
-            disabled={pending || !isRegsitrant}
-            className={cn(
-              'py-2 px-[40px] rounded-full mr-4 font-semibold',
-              pending || !isRegsitrant
-                ? 'bg-gray-800 text-white'
-                : 'bg-green-200 text-dark-100'
-            )}
-            onClick={setResolver}
-          >
-            Set
-          </button>
-        </div> */}
-      {/* </div> */}
+              <div className="flex items-center justify-center mt-2">
+                <button
+                  disabled={pendingBNBAddress || !isRegsitrant}
+                  className={cn(
+                    'py-2 px-10 rounded-full md:ml-4 font-semibold',
+                    pendingBNBAddress || !isRegsitrant
+                      ? 'bg-gray-800 text-gray-700'
+                      : 'bg-blue-100 text-white'
+                  )}
+                  onClick={handleEdit}
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+            {!recordsLoading &&
+              isEmptyAddress(updatingBNBAddress || bnbAddress) && (
+                <p className="mt-2 text-lg text-red-100">
+                  *You have not set your BNB Address.
+                </p>
+              )}
+          </>
+        ) : (
+          <div className="mt-1 px-3 py-6 flex justify-between">
+            <div>
+              <p className="text-red-100 font-bold text-xl">Resolver error</p>
+              <p className="text-gray-600 text-lg mt-1">
+                There is an error occured in your resolver. Please update your
+                domain to solve the issue.
+              </p>
+            </div>
+            <button
+              disabled={updateLoading || pendingBNBAddress || !isRegsitrant}
+              className="bg-red-200 px-5 text-white min-w-[108px] h-[40px] rounded-[20px] font-semibold text-base"
+              onClick={handleUpdate}
+            >
+              <div className="flex items-center justify-center">
+                <p>Update</p>
+                {updateLoading && <AnimationSpin className="ml-2" />}
+              </div>
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

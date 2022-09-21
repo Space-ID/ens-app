@@ -205,9 +205,13 @@ export default function Mainbar({
   }
 
   const refetchResolverAddress = async () => {
-    const nameUI = sid.name(`${selectedDomain.name}.bnb`)
-    const resolver = await nameUI.getResolver()
-    return resolver
+    if (selectedDomain?.name) {
+      const nameUI = sid.name(`${selectedDomain.name}.bnb`)
+      const resolver = await nameUI.getResolver()
+      return resolver
+    } else {
+      return ''
+    }
   }
 
   const fetchResolverAddress = async () => {
@@ -216,12 +220,13 @@ export default function Mainbar({
       setResolverAddress(t_address)
       setLoadingResolverAddress(false)
     } catch (err) {
+      setLoadingResolverAddress(false)
       console.error(err)
     }
   }
 
   useEffect(() => {
-    if (sid) {
+    if (sid && selectedDomain?.name) {
       setLoading(false)
       setLoadingRegistration(true)
       setLoadingResolverAddress(true)
