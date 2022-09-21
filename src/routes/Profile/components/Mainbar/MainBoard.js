@@ -184,6 +184,7 @@ export default function MainBoard({
   resolverAddress,
   loadingResolverAddress,
   setResolver,
+  setResolverAddress,
   pending,
   setConfirmed,
   refetchAddress,
@@ -232,21 +233,23 @@ export default function MainBoard({
 
   useEffect(() => {
     if (txState.confirmed) {
-      refetchAddress(true)
+      // setUpdateloading(false)
+      setResolverAddress(process.env.REACT_APP_RESOLVER_ADDRESS)
     }
     if (txState.error) {
       setUpdateloading(false)
     }
   }, [txState])
   useEffect(() => {
-    if (updateLoading) {
+    if (
+      updateLoading &&
+      isEmptyAddress(bnbAddress) &&
+      !isEmptyAddress(resolverAddress)
+    ) {
       setUpdateloading(false)
-      if (!isEmptyAddress(resolverAddress)) {
-        // update success
-        handleEdit()
-      }
+      handleEdit()
     }
-  }, [updateLoading, resolverAddress])
+  }, [resolverAddress, bnbAddress, updateLoading])
 
   const handleResolverAddressCopy = (e) => {
     e.preventDefault()
