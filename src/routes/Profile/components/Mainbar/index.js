@@ -324,6 +324,7 @@ export default function Mainbar({
             setTitle('Resolver')
             setTransferShowModal(true)
           }}
+          setResolverAddress={setResolverAddress}
           pending={pending && title === 'Resolver'}
           setConfirmed={setConfirmed}
           refetchAddress={refetchResolverAddress}
