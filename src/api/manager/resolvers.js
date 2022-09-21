@@ -683,7 +683,8 @@ const resolvers = {
         const tx = await ens.setResolver(name, address)
         return sendHelper(tx)
       } catch (e) {
-        console.log(e)
+        console.error(e)
+        throw e
       }
     },
     setAddress: async (_, { name, recordValue }) => {
