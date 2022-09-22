@@ -34,7 +34,11 @@ import { setAllDomains, setSelectedDomain } from 'app/slices/domainSlice'
 
 // Import redux assets
 import { getAccounts, getHomeData } from 'app/slices/accountSlice'
-import { toggleDrawer, toggleNetworkError } from 'app/slices/uiSlice'
+import {
+  toggleDrawer,
+  toggleNetworkError,
+  setShowWalletModal,
+} from 'app/slices/uiSlice'
 import { globalErrorReactive } from 'apollo/reactiveVars'
 
 // Import assets
@@ -78,7 +82,7 @@ export default ({ children }) => {
   const [searchOpen, setSearchOpen] = useState(false)
   const [avatarPopup, setAvatarPopup] = useState(false)
   const [networkId, setNetworkID] = useState('')
-  const [showWalletModal, setShowWalletModal] = useState(false)
+  const showWalletModal = useSelector((state) => state.ui.showWalletModal)
   const domains = useSelector((state) => state.domain.domains)
   const selectedDomain = useSelector((state) => state.domain.selectedDomain)
   useReactiveVarListeners()
@@ -239,7 +243,7 @@ export default ({ children }) => {
   }
 
   const handleConnect = () => {
-    setShowWalletModal(true)
+    dispatch(setShowWalletModal(true))
   }
 
   return (
@@ -278,7 +282,7 @@ export default ({ children }) => {
         </Modal>
       )}
       {showWalletModal && (
-        <WalletModal closeModal={() => setShowWalletModal(false)} />
+        <WalletModal closeModal={() => dispatch(setShowWalletModal(false))} />
       )}
 
       {/* Header component for mobile and desktop device */}
