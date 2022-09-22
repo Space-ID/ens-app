@@ -58,17 +58,17 @@ const useGetRecords = (domain) => {
       })
       .filter((c) => c)
 
-  const { loading: addressesLoading, data: dataAddresses } = useQuery(
-    GET_ADDRESSES,
-    {
-      variables: {
-        name: domain.name + '.bnb',
-        keys: union(coinList, COIN_PLACEHOLDER_RECORDS),
-      },
-      fetchPolicy: 'network-only',
-    }
-  )
-
+  const {
+    loading: addressesLoading,
+    data: dataAddresses,
+    refetch: refetchDataAddress,
+  } = useQuery(GET_ADDRESSES, {
+    variables: {
+      name: domain.name + '.bnb',
+      keys: union(coinList, COIN_PLACEHOLDER_RECORDS),
+    },
+    fetchPolicy: 'network-only',
+  })
   const { loading: textRecordsLoading, data: dataTextRecords } = useQuery(
     GET_TEXT_RECORDS,
     {
@@ -83,6 +83,7 @@ const useGetRecords = (domain) => {
     dataAddresses,
     dataTextRecords,
     recordsLoading: addressesLoading || textRecordsLoading,
+    refetchDataAddress,
   }
 }
 
@@ -196,14 +197,13 @@ export default function MainBoard({
   pendingBNBAddress,
   updatingBNBAddress,
 }) {
-  const { dataAddresses, dataTextRecords, recordsLoading } =
+  const { dataAddresses, dataTextRecords, recordsLoading, refetchDataAddress } =
     useGetRecords(selectedDomain)
 
   const [updatedRecords, setUpdatedRecords] = useState([])
   const [initialRecords, setInitialRecords] = useState([])
   const [tooltipMessage, setTooltipMessage] = useState('Copy to clipboard')
   const [bnbAddress, setBNBAddress] = useState('')
-
   const [txState, setTxHash] = useTransaction()
   const [updateLoading, setUpdateloading] = useState(false)
   const [mutationResolver] = useMutation(SET_RESOLVER)
@@ -281,6 +281,8 @@ export default function MainBoard({
     const params = { ...getCoins(updatedRecords)[0] }
     if (defaultValue === true) {
       params.value = registrantAddress
+    } else {
+      params.value = ''
     }
     showAddressChangeModalHandle(params)
   }
@@ -309,16 +311,16 @@ export default function MainBoard({
               Records
             </p>
             <div className="bg-[rgba(67,140,136,0.25)] rounded-[24px] block md:flex items-center justify-between py-5 px-6 mt-5">
-              {recordsLoading ? (
+              {recordsLoading || pendingBNBAddress ? (
                 <PendingTx
                   txHash={txHash}
                   onConfirmed={async () => {
-                    setBNBAddress(updatingBNBAddress)
+                    refetchDataAddress()
                     setConfirmed()
                   }}
                   className="mt-1"
                 >
-                  {''}
+                  {txHash ? undefined : ''}
                 </PendingTx>
               ) : (
                 <div>
@@ -327,17 +329,9 @@ export default function MainBoard({
                   </p>
                   <div className="flex items-center text-gray-600 text-[14px] xl:text-[18px] mt-1 break-all justify-center md:justify-start">
                     <p className="mr-2 text-center">
-                      {updatingBNBAddress
-                        ? `${updatingBNBAddress.substring(
-                            0,
-                            10
-                          )}...${updatingBNBAddress.substring(
-                            updatingBNBAddress.length - 11
-                          )}`
-                        : `${bnbAddress.substring(
-                            0,
-                            10
-                          )}...${bnbAddress.substring(bnbAddress.length - 11)}`}
+                      {`${bnbAddress.substring(0, 10)}...${bnbAddress.substring(
+                        bnbAddress.length - 11
+                      )}`}
                     </p>
                     <span
                       className="cursor-pointer"
@@ -367,7 +361,8 @@ export default function MainBoard({
               </div>
             </div>
             {!recordsLoading &&
-              isEmptyAddress(updatingBNBAddress || bnbAddress) && (
+              !updatingBNBAddress &&
+              isEmptyAddress(bnbAddress) && (
                 <p className="mt-2 text-lg text-red-100">
                   *You have not set your BNB Address.
                 </p>
@@ -379,7 +374,7 @@ export default function MainBoard({
               <p className="text-red-100 font-bold text-xl">Resolver error</p>
               <p className="text-gray-600 text-lg mt-1">
                 There is an error occured in your resolver. Please update your
-                domain to solve the issue.
+                resolver to solve the issue.
               </p>
             </div>
             <button

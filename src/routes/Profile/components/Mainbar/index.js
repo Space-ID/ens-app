@@ -323,7 +323,10 @@ export default function Mainbar({
           }}
           setResolverAddress={setResolverAddress}
           pending={pending && title === 'Resolver'}
-          setConfirmed={setConfirmed}
+          setConfirmed={() => {
+            setUpdatingBNBAddress('')
+            setConfirmed()
+          }}
           refetchAddress={refetchResolverAddress}
           fetchAddress={fetchResolverAddress}
           txHash={txHash}
