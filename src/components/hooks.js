@@ -24,7 +24,7 @@ export function useEditable(
     confirmed: false,
     txHash: undefined,
     uploading: false,
-    authorized: loggedIn()
+    authorized: loggedIn(),
   }
 ) {
   const types = {
@@ -37,15 +37,16 @@ export function useEditable(
     START_UPLOADING: 'START_UPLOADING',
     STOP_UPLOADING: 'STOP_UPLOADING',
     START_AUTHORIZING: 'START_AUTHORIZING',
-    STOP_AUTHORIZING: 'STOP_AUTHORIZING'
+    STOP_AUTHORIZING: 'STOP_AUTHORIZING',
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const startEditing = () => dispatch({ type: types.START_EDITING })
   const stopEditing = () => dispatch({ type: types.STOP_EDITING })
-  const updateValue = value => dispatch({ type: types.UPDATE_VALUE, value })
-  const startPending = txHash => dispatch({ type: types.START_PENDING, txHash })
+  const updateValue = (value) => dispatch({ type: types.UPDATE_VALUE, value })
+  const startPending = (txHash) =>
+    dispatch({ type: types.START_PENDING, txHash })
   const resetPending = () => dispatch({ type: types.RESET_PENDING })
   const setConfirmed = () => dispatch({ type: types.SET_CONFIRMED })
   const startUploading = () => dispatch({ type: types.START_UPLOADING })
@@ -63,7 +64,7 @@ export function useEditable(
     startUploading,
     stopUploading,
     startAuthorizing,
-    stopAuthorizing
+    stopAuthorizing,
   }
 
   function reducer(state, action) {
@@ -71,7 +72,7 @@ export function useEditable(
       case types.UPDATE_VALUE:
         return {
           ...state,
-          newValue: action.value
+          newValue: action.value,
         }
       case types.START_EDITING:
         return { ...state, editing: true, confirmed: false, pending: false }
@@ -81,7 +82,7 @@ export function useEditable(
           editing: false,
           confirmed: false,
           pending: false,
-          uploading: false
+          uploading: false,
         }
       case types.START_PENDING:
         return {
@@ -89,7 +90,7 @@ export function useEditable(
           pending: true,
           editing: false,
           uploading: false,
-          txHash: action.txHash
+          txHash: action.txHash,
         }
       case types.RESET_PENDING:
         return {
@@ -97,17 +98,17 @@ export function useEditable(
           pending: false,
           uploading: false,
           editing: false,
-          txHash: undefined
+          txHash: undefined,
         }
       case types.SET_CONFIRMED:
-        return { ...state, pending: false, confirmed: true }
+        return { ...state, pending: false, confirmed: true, txHash: undefined }
       case types.START_UPLOADING:
         return {
           ...state,
           uploading: true,
           confirmed: false,
           pending: false,
-          newValue: ''
+          newValue: '',
         }
       case types.STOP_UPLOADING:
         return {
@@ -115,18 +116,18 @@ export function useEditable(
           uploading: false,
           confirmed: false,
           pending: false,
-          newValue: ''
+          newValue: '',
         }
       case types.START_AUTHORIZING:
         return {
           ...state,
-          authorized: true
+          authorized: true,
         }
       case types.STOP_AUTHORIZING:
         logout()
         return {
           ...state,
-          authorized: false
+          authorized: false,
         }
       default:
         return state
@@ -135,7 +136,7 @@ export function useEditable(
 
   return {
     state,
-    actions
+    actions,
   }
 }
 
@@ -176,7 +177,7 @@ export function useGasPrice(enabled = true, isReadOnly) {
           )
           const price = {
             slow: baseFeeWei + 2 * Math.pow(10, 9),
-            fast: baseFeeWei * 1.1 + 2 * Math.pow(10, 9)
+            fast: baseFeeWei * 1.1 + 2 * Math.pow(10, 9),
           }
           setPrice(price)
         } else {
@@ -193,7 +194,7 @@ export function useGasPrice(enabled = true, isReadOnly) {
 
   return {
     loading,
-    price
+    price,
   }
 }
 
@@ -223,7 +224,7 @@ export function useAvatar(textKey, name, network, uri) {
         setAvatar(data)
       }
       if (textKey === 'avatar' && uri) {
-        const _protocol = supportedAvatarProtocols.find(proto =>
+        const _protocol = supportedAvatarProtocols.find((proto) =>
           uri.startsWith(proto)
         )
         // check if given uri is supported
@@ -247,7 +248,7 @@ export function useBlock() {
 
   useEffect(() => {
     getBlock()
-      .then(res => {
+      .then((res) => {
         setBlock(res)
         setLoading(false)
       })
@@ -256,13 +257,13 @@ export function useBlock() {
 
   return {
     loading,
-    block
+    block,
   }
 }
 
 export function useOnClickOutside(refs = [], handler) {
   useEffect(() => {
-    const listener = event => {
+    const listener = (event) => {
       // Do nothing if any of given refs or descendants are clicked
       for (let i = 0; i < refs.length; i++) {
         if (!refs[i].current || refs[i].current.contains(event.target)) {
