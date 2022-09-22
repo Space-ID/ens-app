@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   subDomainEditMode: false,
   isShowDrawer: false,
-  isShowNetworkErrorModal: false
+  isShowNetworkErrorModal: false,
+  showWalletModal: false,
 }
 
 export const uiSlice = createSlice({
@@ -18,15 +19,19 @@ export const uiSlice = createSlice({
     },
     toggleNetworkError: (state, { payload }) => {
       state.isShowNetworkErrorModal = payload
-    }
-  }
+    },
+    setShowWalletModal: (state, { payload }) => {
+      state.showWalletModal = payload
+    },
+  },
 })
 
 // Action creators are generated for each case reducer function
 export const {
   toggleSubDomainEditMode,
   toggleDrawer,
-  toggleNetworkError
+  toggleNetworkError,
+  setShowWalletModal,
 } = uiSlice.actions
 
 export default uiSlice.reducer

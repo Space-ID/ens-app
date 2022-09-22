@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import moment from 'moment'
 import { toArray, last } from 'lodash'
+import { useDispatch } from 'react-redux'
 
-import { connectProvider } from 'utils/providerUtils'
 import EthVal from 'ethval'
 
 import {
@@ -20,6 +20,8 @@ import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
 import { calculateDuration, yearInSeconds } from 'utils/dates'
 import { GET_TRANSACTION_HISTORY } from 'graphql/queries'
+
+import { setShowWalletModal } from 'app/slices/uiSlice'
 
 import Loader from 'components/Loader'
 import NotAvailable from './NotAvailable'
@@ -42,7 +44,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [secret, setSecret] = useState(false)
   const { networkId } = useNetworkInfo()
   const account = useAccount()
-
+  const dispatch = useDispatch()
   const [registerState, setRegisterState] = useState(RegisterState.request)
   let now, currentPremium, underPremium
   const [years, setYears] = useState(minYear)
@@ -305,7 +307,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }
 
   const connectHandler = () => {
-    connectProvider()
+    dispatch(setShowWalletModal(true))
   }
 
   const handleRequest = () => {
