@@ -3453,6 +3453,22 @@
     js-sha3 "^0.8.0"
     lodash "^4.17.21"
 
+"@siddomains/sidjs@^0.1.16":
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/@siddomains/sidjs/-/sidjs-0.1.16.tgz#62430ed554e5de1c33868f32a2e64b1bc64c6bce"
+  integrity sha512-XzafwJO1GGcN4C/UMVJscNaq6Fb+yHe+26MVUe8ulv5ZKCRzqr0BhdWX9btdKYNz1LEeNOsePxZJOnj+fiteVA==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@ensdomains/ens-validation" "^0.1.0"
+    "@ensdomains/eth-ens-namehash" "^2.0.15"
+    "@siddomains/address-encoder" "^0.0.3"
+    "@siddomains/resolver" "0.1.1"
+    "@siddomains/sid" "0.1.2"
+    content-hash "^2.5.2"
+    ethers "^5.0.13"
+    js-sha3 "^0.8.0"
+    lodash "^4.17.21"
+
 "@siddomains/ui@1.4.14":
   version "1.4.14"
   resolved "https://registry.npmjs.org/@siddomains/ui/-/ui-1.4.14.tgz"

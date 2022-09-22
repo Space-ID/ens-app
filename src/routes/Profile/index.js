@@ -70,7 +70,10 @@ export default function Profile() {
       setNetworkId(networkId)
       const infura = process.env.REACT_APP_INFURA_URL
       const provider = new ethers.providers.JsonRpcProvider(infura)
-      const tSid = new SID({ provider, sidAddress: getSidAddress(networkId) })
+      const tSid = new SID({
+        provider,
+        sidAddress: process.env.REACT_APP_REGISTRY_ADDRESS,
+      })
       setSid(tSid)
     } catch (error) {
       console.log('tSid-error', error)

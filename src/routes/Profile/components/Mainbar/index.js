@@ -216,6 +216,7 @@ export default function Mainbar({
       setResolverAddress(t_address)
       setLoadingResolverAddress(false)
     } catch (err) {
+      setLoadingResolverAddress(false)
       console.error(err)
     }
   }
@@ -310,6 +311,7 @@ export default function Mainbar({
 
       {selectedDomain && (
         <MainBoard
+          registrantAddress={registrantAddress}
           isRegsitrant={isRegsitrant}
           selectedDomain={{ ...selectedDomain }}
           className="mt-8"
@@ -319,8 +321,12 @@ export default function Mainbar({
             setTitle('Resolver')
             setTransferShowModal(true)
           }}
+          setResolverAddress={setResolverAddress}
           pending={pending && title === 'Resolver'}
-          setConfirmed={setConfirmed}
+          setConfirmed={() => {
+            setUpdatingBNBAddress('')
+            setConfirmed()
+          }}
           refetchAddress={refetchResolverAddress}
           fetchAddress={fetchResolverAddress}
           txHash={txHash}
@@ -362,6 +368,7 @@ export default function Mainbar({
         extendHandler={extendExpiryDate}
       />
       <AddressChangeModal
+        defaultValue={updatedRecords.value}
         show={showAddressChangeModal}
         closeModal={() => setShowAddressChangeModal(false)}
         saveHandler={changeBNBAddress}

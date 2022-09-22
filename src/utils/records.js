@@ -16,7 +16,7 @@ export function validateRecord({ key, value, contractFn, addr }) {
       }
     case 'setText':
       if (key !== 'avatar') return true
-      const protocol = supportedAvatarProtocols.find(proto =>
+      const protocol = supportedAvatarProtocols.find((proto) =>
         value.startsWith(proto)
       )
       if (!protocol) return false
@@ -65,9 +65,9 @@ export const trimRecord = (key, value) => {
     'notice',
     'keywords',
     'name',
-    'location'
+    'location',
   ]
-  if (untrimmedRecordTypes.every(type => type !== key)) {
+  if (untrimmedRecordTypes.every((type) => type !== key)) {
     return value.trim()
   }
   return value
@@ -76,11 +76,12 @@ export const trimRecord = (key, value) => {
 export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export function isEmptyAddress(address) {
-  return parseInt(address) === 0
+  const num = parseInt(address)
+  return Number.isNaN(num) || num === 0
 }
 
 export const createRecord = (contractFn, key, value) => ({
   contractFn,
   key,
-  value
+  value,
 })
