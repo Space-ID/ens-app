@@ -216,6 +216,7 @@ export default function Mainbar({
       setResolverAddress(t_address)
       setLoadingResolverAddress(false)
     } catch (err) {
+      setResolverAddress('')
       setLoadingResolverAddress(false)
       console.error(err)
     }

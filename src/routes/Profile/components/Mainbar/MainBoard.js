@@ -305,7 +305,9 @@ export default function MainBoard({
   return (
     <div className={cn(className)}>
       <div className="rounded-[24px]">
-        {loadingResolverAddress || !isEmptyAddress(resolverAddress) ? (
+        {loadingResolverAddress ||
+        !resolverAddress ||
+        !isEmptyAddress(resolverAddress) ? (
           <>
             <p className="text-gray-600 font-bold text-[18px] xl:text-xl text-center md:text-left px-3">
               Records
@@ -379,7 +381,12 @@ export default function MainBoard({
             </div>
             <button
               disabled={updateLoading || pendingBNBAddress || !isRegsitrant}
-              className="bg-red-200 px-5 text-white min-w-[108px] h-[40px] rounded-[20px] font-semibold text-base"
+              className={cn(
+                'px-5 min-w-[108px] h-[40px] rounded-[20px] font-semibold text-base',
+                updateLoading || pendingBNBAddress || !isRegsitrant
+                  ? 'bg-gray-800 text-gray-700'
+                  : 'bg-red-200 text-white'
+              )}
               onClick={handleUpdate}
             >
               <div className="flex items-center justify-center">
