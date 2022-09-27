@@ -463,11 +463,7 @@ export default ({ children }) => {
                         <div className="w-8 h-8 flex-grow-0 flex-shrink-0">
                           <img
                             className="rounded-full"
-                            src={
-                              primaryDomain?.name
-                                ? getDomainNftUrl(primaryDomain.name)
-                                : DefaultAvatar
-                            }
+                            src={avatar}
                             alt="default avatar"
                           />
                         </div>
