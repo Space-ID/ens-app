@@ -15,6 +15,12 @@ import FailedImage from 'assets/images/image-failed.png'
 import { refetchTilUpdatedSingle } from 'utils/graphql'
 
 import { getDomainNftUrl } from 'utils/utils'
+import {
+  getLocalTime,
+  gracePeriodEndStr,
+  isExpired,
+  isExpiresLessThanOneMonth,
+} from 'utils/dates'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
 
 export default function TopAddress({
@@ -144,45 +150,69 @@ export default function TopAddress({
             </div>
           )}
         </div>
-        <div className="items-center justify-between mt-8 md:flex md:mt-0">
-          <div>
-            <p className="font-bold text-[18px] xl:text-xl text-green-100 text-center md:text-left">
-              Expiry Date
-            </p>
-            {pendingExp ? (
-              <PendingTx
-                txHash={txHash}
-                onConfirmed={async () => {
-                  setConfirmed()
-                }}
-                className="mt-1"
-              />
-            ) : (
-              <div className="flex text-[14px] xl:text-[18px] text-white font-semibold items-center mt-2">
-                {/* <p>2023.04.22 at 08:00 (UTC+8:00)</p> */}
-                <p className="w-full text-center md:text-left">
-                  {moment(selectedDomain?.expires).format('YYYY.MM.DD')}
-                  <span className="mx-1">at</span>
-                  {moment(selectedDomain?.expires).format('hh:mm')}
-                  <span className="ml-1">(UTC)</span>
-                </p>
-              </div>
-            )}
-          </div>
-          <div className="flex items-center justify-center mt-4 md:justify-start md:mt-0">
-            <button
-              disabled={pendingExp || loadingRegistration || !isRegsitrant}
-              className={cn(
-                'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
-                pendingExp || loadingRegistration || !isRegsitrant
-                  ? 'bg-gray-800 text-white'
-                  : 'bg-green-200 text-dark-100'
+        <div>
+          <div className="items-center justify-between mt-8 md:flex md:mt-0">
+            <div>
+              <p className="font-bold text-[18px] xl:text-xl text-green-100 text-center md:text-left">
+                Expiry Date
+              </p>
+              {pendingExp ? (
+                <PendingTx
+                  txHash={txHash}
+                  onConfirmed={async () => {
+                    setConfirmed()
+                  }}
+                  className="mt-1"
+                />
+              ) : (
+                <div className="flex text-[14px] xl:text-[18px] text-white font-semibold items-center mt-2">
+                  {/* <p>2023.04.22 at 08:00 (UTC+8:00)</p> */}
+                  <p
+                    className={cn(
+                      'w-full text-center md:text-left',
+                      isExpiresLessThanOneMonth(selectedDomain?.expires)
+                        ? 'text-red-100'
+                        : ''
+                    )}
+                  >
+                    {getLocalTime(selectedDomain?.expires).format('YYYY.MM.DD')}
+                    <span className="mx-1">at</span>
+                    {getLocalTime(selectedDomain?.expires).format(
+                      'HH:mm (UTCZ)'
+                    )}
+                  </p>
+                </div>
               )}
-              onClick={extendHandler}
-            >
-              Extend
-            </button>
+              {isExpired(selectedDomain?.expires) && (
+                <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 md:hidden text-center font-semibold">
+                  {`Expired. Grace period ends ${gracePeriodEndStr(
+                    selectedDomain?.expires
+                  )}`}
+                </p>
+              )}
+            </div>
+            <div className="flex items-center justify-center mt-4 md:justify-start md:mt-0">
+              <button
+                disabled={pendingExp || loadingRegistration || !isRegsitrant}
+                className={cn(
+                  'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
+                  pendingExp || loadingRegistration || !isRegsitrant
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-green-200 text-dark-100'
+                )}
+                onClick={extendHandler}
+              >
+                Extend
+              </button>
+            </div>
           </div>
+          {isExpired(selectedDomain?.expires) && (
+            <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 md:mr-4 md:block hidden font-semibold">
+              {`Expired. Grace period ends ${gracePeriodEndStr(
+                selectedDomain?.expires
+              )}`}
+            </p>
+          )}
         </div>
       </div>
     </div>
