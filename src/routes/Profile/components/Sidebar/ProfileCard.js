@@ -43,6 +43,7 @@ export default function ProfileCard({
   const newPrimaryName = useRef()
   const primaryDomain = useSelector((state) => state.domain.primaryDomain)
   const dispatch = useDispatch()
+  const [avatar, setAvatar] = useState(DefaultAvatar)
 
   const { actions, state } = useEditable()
 
@@ -77,6 +78,13 @@ export default function ProfileCard({
   useEffect(() => {
     domainsRef.current = domains
   }, [domains])
+  useEffect(() => {
+    if (primaryDomain?.name) {
+      setAvatar(getDomainNftUrl(primaryDomain.name))
+    } else {
+      setAvatar(DefaultAvatar)
+    }
+  }, [primaryDomain])
 
   useEffect(() => {
     if (confirmed && !pending) {
@@ -107,11 +115,8 @@ export default function ProfileCard({
             <div className="w-16 h-16 rounded-full ">
               <img
                 className="rounded-full"
-                src={
-                  primaryDomain?.name
-                    ? getDomainNftUrl(primaryDomain.name)
-                    : DefaultAvatar
-                }
+                src={avatar}
+                onError={() => setAvatar(DefaultAvatar)}
                 alt="default avatar"
               />
             </div>
