@@ -86,6 +86,7 @@ export default ({ children }) => {
   const [searchOpen, setSearchOpen] = useState(false)
   const [avatarPopup, setAvatarPopup] = useState(false)
   const [networkId, setNetworkID] = useState('')
+  const [avatar, setAvatar] = useState(DefaultAvatar)
   const showWalletModal = useSelector((state) => state.ui.showWalletModal)
   const domains = useSelector((state) => state.domain.domains)
   const primaryDomain = useSelector((state) => state.domain.primaryDomain)
@@ -119,6 +120,14 @@ export default ({ children }) => {
       dispatch(getHomeData(data))
     }
   }, [data])
+
+  useEffect(() => {
+    if (primaryDomain?.name) {
+      setAvatar(getDomainNftUrl(primaryDomain.name))
+    } else {
+      setAvatar(DefaultAvatar)
+    }
+  }, [primaryDomain])
 
   const initActions = async () => {
     const networkId = await getNetworkId()
@@ -418,11 +427,8 @@ export default ({ children }) => {
                         <div className="w-[44px] h-[44px] rounded-full">
                           <img
                             className="rounded-full"
-                            src={
-                              primaryDomain?.name
-                                ? getDomainNftUrl(primaryDomain.name)
-                                : DefaultAvatar
-                            }
+                            src={avatar}
+                            onError={() => setAvatar(DefaultAvatar)}
                             alt="default avatar"
                           />
                         </div>
