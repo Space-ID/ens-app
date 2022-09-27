@@ -33,8 +33,7 @@ function Search({
   const gotoDetailPage = () => {
     setShowPopup(false)
     if (result.Owner) {
-      const date = new Date(result?.Expires)
-      dispatch(setSelectedDomain({ ...result, expires_at: date }))
+      dispatch(setSelectedDomain({ ...result }))
       history.push(`/profile`)
     } else {
       history.push(`/name/${result.name}.bnb/register`)

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
 import moment from 'moment'
-import keccak256 from 'keccak256'
-import Web3 from 'web3'
 
 //Import Components
 import CopyIcon from 'components/Icons/CopyIcon'
@@ -15,6 +13,8 @@ import FailedImage from 'assets/images/image-failed.png'
 
 //Import GraphQL
 import { refetchTilUpdatedSingle } from 'utils/graphql'
+
+import { getDomainNftUrl } from 'utils/utils'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
 
 export default function TopAddress({
@@ -32,9 +32,6 @@ export default function TopAddress({
   extendHandler,
   isRegsitrant,
   pendingExp,
-  refetchExp,
-  fetchExp,
-  expDate,
 }) {
   const [tooltipMessage, setTooltipMessage] = useState('Copy to clipboard')
   const [imageURL, setImageURL] = useState('')
@@ -50,11 +47,7 @@ export default function TopAddress({
   useEffect(() => {
     if (selectedDomain.name) {
       const domain = selectedDomain.name
-      let label = keccak256(Buffer.from(domain)).toString('hex')
-      let nftId = Web3.utils.toBN(label).toString()
-      const url = `https://meta.image.space.id/image/${
-        process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
-      }/${nftId}.svg`
+      const url = getDomainNftUrl(domain)
       setImageURL(url)
     }
   }, [selectedDomain])
@@ -160,13 +153,6 @@ export default function TopAddress({
               <PendingTx
                 txHash={txHash}
                 onConfirmed={async () => {
-                  refetchTilUpdatedSingle({
-                    refetch: refetchExp,
-                    interval: 300,
-                    keyToCompare: 'expires',
-                    prevData: expDate,
-                  })
-                  await fetchExp()
                   setConfirmed()
                 }}
                 className="mt-1"
@@ -175,9 +161,9 @@ export default function TopAddress({
               <div className="flex text-[14px] xl:text-[18px] text-white font-semibold items-center mt-2">
                 {/* <p>2023.04.22 at 08:00 (UTC+8:00)</p> */}
                 <p className="w-full text-center md:text-left">
-                  {moment(selectedDomain?.expires_at).format('YYYY.MM.DD')}
+                  {moment(selectedDomain?.expires).format('YYYY.MM.DD')}
                   <span className="mx-1">at</span>
-                  {moment(selectedDomain?.expires_at).format('hh:mm')}
+                  {moment(selectedDomain?.expires).format('hh:mm')}
                   <span className="ml-1">(UTC)</span>
                 </p>
               </div>

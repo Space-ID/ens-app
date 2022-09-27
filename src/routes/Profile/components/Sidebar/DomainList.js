@@ -127,6 +127,7 @@ export default function DomainList({
         <div className="mt-4 relative max-h-[calc(100vh-335px)] md:max-h-[60vh] overflow-y-auto mr-3 pr-2">
           {domains.map((item, index) => (
             <div
+              key={item.name}
               onClick={() => {
                 clickHandle(item, index)
               }}
@@ -157,7 +158,7 @@ export default function DomainList({
                   ))
                 }
               >
-                expires {moment(item.expires_at).format('YYYY-MM-DD')}
+                expires {moment(item.expires).format('YYYY-MM-DD')}
               </div>
               {item.name === selectedDomain?.name && (
                 <div className="absolute right-4 top-[calc(50%-7px)]">

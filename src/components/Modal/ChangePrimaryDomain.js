@@ -66,6 +66,7 @@ export default function ChangePrimaryDomain({
   saveHandler,
   closeModal,
   domains,
+  loading,
 }) {
   const [selected, setSelected] = useState(null)
   const options = domains.map((item) => {
@@ -130,10 +131,10 @@ export default function ChangePrimaryDomain({
           {/* Footer Actions */}
           <div className="flex justify-center mt-5">
             <button
-              disabled={!selected}
+              disabled={!selected || loading}
               className={cn(
                 'rounded-2xl py-2 px-[60px] text-[18px] mx-auto font-semibold',
-                selected
+                selected && !loading
                   ? 'bg-green-200 text-dark-common cursor-pointer'
                   : 'bg-gray-800 text-white cursor-not-allowed'
               )}
