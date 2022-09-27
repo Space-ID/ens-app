@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
 import moment from 'moment'
-import keccak256 from 'keccak256'
-import Web3 from 'web3'
 
 //Import Components
 import CopyIcon from 'components/Icons/CopyIcon'
@@ -15,6 +13,14 @@ import FailedImage from 'assets/images/image-failed.png'
 
 //Import GraphQL
 import { refetchTilUpdatedSingle } from 'utils/graphql'
+
+import { getDomainNftUrl } from 'utils/utils'
+import {
+  getLocalTime,
+  gracePeriodEndStr,
+  isExpired,
+  isExpiresLessThanOneMonth,
+} from 'utils/dates'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
 
 export default function TopAddress({
@@ -32,9 +38,6 @@ export default function TopAddress({
   extendHandler,
   isRegsitrant,
   pendingExp,
-  refetchExp,
-  fetchExp,
-  expDate,
 }) {
   const [tooltipMessage, setTooltipMessage] = useState('Copy to clipboard')
   const [imageURL, setImageURL] = useState('')
@@ -50,11 +53,7 @@ export default function TopAddress({
   useEffect(() => {
     if (selectedDomain.name) {
       const domain = selectedDomain.name
-      let label = keccak256(Buffer.from(domain)).toString('hex')
-      let nftId = Web3.utils.toBN(label).toString()
-      const url = `https://meta.image.space.id/image/${
-        process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
-      }/${nftId}.svg`
+      const url = getDomainNftUrl(domain)
       setImageURL(url)
     }
   }, [selectedDomain])
@@ -151,52 +150,69 @@ export default function TopAddress({
             </div>
           )}
         </div>
-        <div className="items-center justify-between mt-8 md:flex md:mt-0">
-          <div>
-            <p className="font-bold text-[18px] xl:text-xl text-green-100 text-center md:text-left">
-              Expiry Date
-            </p>
-            {pendingExp ? (
-              <PendingTx
-                txHash={txHash}
-                onConfirmed={async () => {
-                  refetchTilUpdatedSingle({
-                    refetch: refetchExp,
-                    interval: 300,
-                    keyToCompare: 'expires',
-                    prevData: expDate,
-                  })
-                  await fetchExp()
-                  setConfirmed()
-                }}
-                className="mt-1"
-              />
-            ) : (
-              <div className="flex text-[14px] xl:text-[18px] text-white font-semibold items-center mt-2">
-                {/* <p>2023.04.22 at 08:00 (UTC+8:00)</p> */}
-                <p className="w-full text-center md:text-left">
-                  {moment(selectedDomain?.expires_at).format('YYYY.MM.DD')}
-                  <span className="mx-1">at</span>
-                  {moment(selectedDomain?.expires_at).format('hh:mm')}
-                  <span className="ml-1">(UTC)</span>
-                </p>
-              </div>
-            )}
-          </div>
-          <div className="flex items-center justify-center mt-4 md:justify-start md:mt-0">
-            <button
-              disabled={pendingExp || loadingRegistration || !isRegsitrant}
-              className={cn(
-                'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
-                pendingExp || loadingRegistration || !isRegsitrant
-                  ? 'bg-gray-800 text-white'
-                  : 'bg-green-200 text-dark-100'
+        <div>
+          <div className="items-center justify-between mt-8 md:flex md:mt-0">
+            <div>
+              <p className="font-bold text-[18px] xl:text-xl text-green-100 text-center md:text-left">
+                Expiry Date
+              </p>
+              {pendingExp ? (
+                <PendingTx
+                  txHash={txHash}
+                  onConfirmed={async () => {
+                    setConfirmed()
+                  }}
+                  className="mt-1"
+                />
+              ) : (
+                <div className="flex text-[14px] xl:text-[18px] text-white font-semibold items-center mt-2">
+                  {/* <p>2023.04.22 at 08:00 (UTC+8:00)</p> */}
+                  <p
+                    className={cn(
+                      'w-full text-center md:text-left',
+                      isExpiresLessThanOneMonth(selectedDomain?.expires)
+                        ? 'text-red-100'
+                        : ''
+                    )}
+                  >
+                    {getLocalTime(selectedDomain?.expires).format('YYYY.MM.DD')}
+                    <span className="mx-1">at</span>
+                    {getLocalTime(selectedDomain?.expires).format(
+                      'HH:mm (UTCZ)'
+                    )}
+                  </p>
+                </div>
               )}
-              onClick={extendHandler}
-            >
-              Extend
-            </button>
+              {isExpired(selectedDomain?.expires) && (
+                <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 md:hidden text-center font-semibold">
+                  {`Expired. Grace period ends ${gracePeriodEndStr(
+                    selectedDomain?.expires
+                  )}`}
+                </p>
+              )}
+            </div>
+            <div className="flex items-center justify-center mt-4 md:justify-start md:mt-0">
+              <button
+                disabled={pendingExp || loadingRegistration || !isRegsitrant}
+                className={cn(
+                  'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
+                  pendingExp || loadingRegistration || !isRegsitrant
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-green-200 text-dark-100'
+                )}
+                onClick={extendHandler}
+              >
+                Extend
+              </button>
+            </div>
           </div>
+          {isExpired(selectedDomain?.expires) && (
+            <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 md:mr-4 md:block hidden font-semibold">
+              {`Expired. Grace period ends ${gracePeriodEndStr(
+                selectedDomain?.expires
+              )}`}
+            </p>
+          )}
         </div>
       </div>
     </div>

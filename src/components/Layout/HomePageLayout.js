@@ -1,5 +1,5 @@
 // Import packages
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
@@ -9,7 +9,6 @@ import cn from 'classnames'
 import ClickAwayListener from 'react-click-away-listener'
 
 import { Button } from 'react-daisyui'
-import axios from 'axios'
 
 // Import components
 import NoAccountsDefault from 'components/NoAccounts/NoAccounts'
@@ -30,7 +29,11 @@ import ProfileCard from 'routes/Profile/components/Sidebar/ProfileCard'
 
 // Import graphql quires
 import { GET_REVERSE_RECORD } from 'graphql/queries'
-import { setAllDomains, setSelectedDomain } from 'app/slices/domainSlice'
+import {
+  getDomainList,
+  setAllDomains,
+  setSelectedDomain,
+} from 'app/slices/domainSlice'
 
 // Import redux assets
 import { getAccounts, getHomeData } from 'app/slices/accountSlice'
@@ -49,6 +52,7 @@ import { chainsInfo } from 'utils/constants'
 // Import custom functions
 import { disconnectProvider } from 'utils/providerUtils'
 import { EMPTY_ADDRESS } from 'utils/records'
+import { getDomainNftUrl } from 'utils/utils'
 import { GET_ERRORS } from 'graphql/queries'
 
 //Import Assets
@@ -84,6 +88,7 @@ export default ({ children }) => {
   const [networkId, setNetworkID] = useState('')
   const showWalletModal = useSelector((state) => state.ui.showWalletModal)
   const domains = useSelector((state) => state.domain.domains)
+  const primaryDomain = useSelector((state) => state.domain.primaryDomain)
   const selectedDomain = useSelector((state) => state.domain.selectedDomain)
   useReactiveVarListeners()
 
@@ -102,30 +107,6 @@ export default ({ children }) => {
       address: accounts?.[0],
     },
   })
-  const fetchDomainsList = useCallback(async (netId, account, selected) => {
-    const params = {
-      ChainID: netId,
-      Address: account,
-    }
-    let result = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/listname`,
-      params
-    )
-    const data = result?.data?.map((item) => {
-      const date = new Date(item?.expires)
-      return {
-        expires_at: date,
-        ...item,
-      }
-    })
-    if (data.length > 0) {
-      if (!selected) {
-        dispatch(setSelectedDomain(data[0]))
-      }
-    }
-    dispatch(setAllDomains(data))
-    return data
-  }, [])
 
   useEffect(() => {
     if (accounts) {
@@ -150,7 +131,7 @@ export default ({ children }) => {
   useEffect(async () => {
     if (!isReadOnly && accounts?.[0] !== EMPTY_ADDRESS) {
       const netId = await initActions()
-      fetchDomainsList(netId, accounts[0], selectedDomain)
+      dispatch(getDomainList({ account: accounts[0], networkId: netId }))
     }
     if (isReadOnly) {
       dispatch(setAllDomains([]))
@@ -437,7 +418,11 @@ export default ({ children }) => {
                         <div className="w-[44px] h-[44px] rounded-full">
                           <img
                             className="rounded-full"
-                            src={DefaultAvatar}
+                            src={
+                              primaryDomain?.name
+                                ? getDomainNftUrl(primaryDomain.name)
+                                : DefaultAvatar
+                            }
                             alt="default avatar"
                           />
                         </div>
@@ -457,7 +442,7 @@ export default ({ children }) => {
               >
                 <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
                   <div>
-                    <div className="flex items-center border-b-[2px] border-gray-800 pb-4">
+                    <div className="flex items-center justify-center border-b-[2px] border-gray-800 pb-4">
                       {!reverseRecordLoading &&
                       getReverseRecord &&
                       getReverseRecord.avatar ? (
@@ -469,33 +454,35 @@ export default ({ children }) => {
                           )}
                         />
                       ) : (
-                        <div className="w-8 h-8">
+                        <div className="w-8 h-8 flex-grow-0 flex-shrink-0">
                           <img
                             className="rounded-full"
-                            src={DefaultAvatar}
+                            src={
+                              primaryDomain?.name
+                                ? getDomainNftUrl(primaryDomain.name)
+                                : DefaultAvatar
+                            }
                             alt="default avatar"
                           />
                         </div>
                       )}
-                      <div className="ml-4 text-xl font-semibold text-white font-urbanist">{`${accounts[0].substring(
-                        0,
-                        6
-                      )}....${accounts[0].substring(
-                        accounts[0].length - 6,
-                        accounts[0].length
-                      )}`}</div>
+                      <div className="ml-4 text-xl font-semibold text-white font-urbanist truncate">
+                        {primaryDomain?.name
+                          ? primaryDomain.name + '.bnb'
+                          : `${accounts[0].substring(
+                              0,
+                              6
+                            )}....${accounts[0].substring(
+                              accounts[0].length - 6,
+                              accounts[0].length
+                            )}`}
+                      </div>
                     </div>
                   </div>
                   <div
                     className="font-semibold text-white font-urbanist text-[18px] text-center pt-4"
                     onClick={showAvatarPopup}
                   >
-                    {/*<div*/}
-                    {/*  onClick={moveToWishList}*/}
-                    {/*  className="flex items-center justify-center h-10 font-semibold cursor-pointer hover:bg-dark-200 hover:rounded-xl"*/}
-                    {/*>*/}
-                    {/*  Wishlist*/}
-                    {/*</div>*/}
                     <div
                       className="items-center justify-center hidden h-10 font-semibold cursor-pointer md:flex hover:bg-dark-200 hover:rounded-xl"
                       onClick={moveToProfile}

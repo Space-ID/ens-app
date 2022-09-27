@@ -1,5 +1,7 @@
 import { validate } from '@ensdomains/ens-validation'
 import { normalize } from '@ensdomains/eth-ens-namehash'
+import keccak256 from 'keccak256'
+import Web3 from 'web3'
 import {
   emptyAddress as _emptyAddress,
   getEnsStartBlock as _ensStartBlock,
@@ -14,7 +16,6 @@ import { throttle } from 'lodash'
 import { CID } from 'multiformats'
 import { useEffect, useRef } from 'react'
 import { saveName } from '../api/labels'
-import getENS from '../apollo/mutations/ens'
 import { globalErrorReactive } from '../apollo/reactiveVars'
 import { EMPTY_ADDRESS } from './records'
 
@@ -360,4 +361,12 @@ export const validateDomain = (value) => {
     return false
   }
   return true
+}
+
+export const getDomainNftUrl = (domainName) => {
+  let label = keccak256(Buffer.from(domainName)).toString('hex')
+  let nftId = Web3.utils.toBN(label).toString()
+  return `https://meta.image.space.id/image/${
+    process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
+  }/${nftId}.svg`
 }

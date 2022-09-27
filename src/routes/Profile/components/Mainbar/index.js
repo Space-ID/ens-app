@@ -34,7 +34,7 @@ import { calculateDuration } from 'utils/dates'
 import PremiumPriceOracle from 'components/SingleName/NameRegister/PremiumPriceOracle'
 
 //Import Redux
-import { setSelectedDomain, setAllDomains } from 'app/slices/domainSlice'
+import { getDomainList } from 'app/slices/domainSlice'
 
 export default function Mainbar({
   sid,
@@ -73,7 +73,6 @@ export default function Mainbar({
   const { state, actions } = useEditable()
   const { editing, txHash, pending, confirmed } = state
   const { startPending, setConfirmed } = actions
-
   const { block } = useBlock()
 
   const [mutation] = useMutation(mutationQuery ?? SET_REGISTRANT, {
@@ -133,7 +132,7 @@ export default function Mainbar({
     isReadOnly
   )
 
-  const expiryDate = moment(selectedDomain?.expires_at)
+  const expiryDate = moment(selectedDomain?.expires)
 
   const oracle = new PremiumPriceOracle(expiryDate, getPriceCurve)
   const { releasedDate, zeroPremiumDate } = oracle
@@ -154,37 +153,11 @@ export default function Mainbar({
     setLoadingRegistration(false)
   }
 
-  const refetchExpiryDate = async () => {
-    const params = {
-      ChainID: networkId,
-      Address: account,
+  useEffect(() => {
+    if (confirmed && !pending) {
+      dispatch(getDomainList({ account, networkId }))
     }
-    let result = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/listname`,
-      params
-    )
-    const data = result?.data?.map((item) => {
-      const date = new Date(item?.expires)
-      return {
-        expires_at: date.toISOString(),
-        ...item,
-      }
-    })
-    return data
-  }
-
-  const fetchExpiryDate = async () => {
-    let data = await refetchExpiryDate()
-    if (data.length > 0) {
-      const matchedData = data.filter(
-        (item) => item.name === selectedDomain.name
-      )
-      if (matchedData && matchedData.length > 0) {
-        dispatch(setSelectedDomain(matchedData[0]))
-      }
-      // dispatch(setAllDomains(data));
-    }
-  }
+  }, [pending, confirmed, account, networkId])
 
   useEffect(() => {
     setIsRegsitrant(registrantAddress === account)
@@ -304,8 +277,6 @@ export default function Mainbar({
             setExtendPeriodShowModal(true)
           }}
           pendingExp={pending && title === 'ExpirationDate'}
-          refetchExp={refetchExpiryDate}
-          fetchExp={fetchExpiryDate}
           expDate={selectedDomain.expires}
         />
       )}

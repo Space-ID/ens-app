@@ -9,6 +9,12 @@ import SortAscendingIcon from '../../../../components/Icons/SortAssendingIcon'
 import SortDescendingIcon from 'components/Icons/SortDecendingIcon'
 import TimeAscendingIcon from 'components/Icons/TimeAscendingIcon'
 import TimeDecendingIcon from 'components/Icons/TimeDecendingIcon'
+import {
+  isExpiresLessThanOneMonth,
+  getLocalTime,
+  isExpired,
+  gracePeriodEndStr,
+} from 'utils/dates'
 
 function sortFunctionByAToZ(first, second) {
   if (first.name > second.name) {
@@ -127,6 +133,7 @@ export default function DomainList({
         <div className="mt-4 relative max-h-[calc(100vh-335px)] md:max-h-[60vh] overflow-y-auto mr-3 pr-2">
           {domains.map((item, index) => (
             <div
+              key={item.name}
               onClick={() => {
                 clickHandle(item, index)
               }}
@@ -148,16 +155,24 @@ export default function DomainList({
                 {item.name}
               </div>
               <div
-                className={
-                  ('text-[14px]',
-                  cn(
-                    item.name === selectedDomain?.name
-                      ? 'text-[#2A9971]'
-                      : 'text-gray-700'
-                  ))
-                }
+                className={cn(
+                  'text-[14px] pr-6',
+                  item.name === selectedDomain?.name
+                    ? isExpiresLessThanOneMonth(item.expires)
+                      ? 'text-red-300'
+                      : 'text-[#2A9971]'
+                    : isExpiresLessThanOneMonth(item.expires)
+                    ? 'text-red-100'
+                    : 'text-gray-700'
+                )}
               >
-                expires {moment(item.expires_at).format('YYYY-MM-DD')}
+                {isExpired(item.expires)
+                  ? `Grace period ends ${gracePeriodEndStr(
+                      selectedDomain?.expires
+                    )}`
+                  : `expires ${getLocalTime(item.expires).format(
+                      'YYYY-MM-DD'
+                    )}`}
               </div>
               {item.name === selectedDomain?.name && (
                 <div className="absolute right-4 top-[calc(50%-7px)]">
