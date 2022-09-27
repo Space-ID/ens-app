@@ -442,7 +442,7 @@ export default ({ children }) => {
               >
                 <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
                   <div>
-                    <div className="flex items-center border-b-[2px] border-gray-800 pb-4">
+                    <div className="flex items-center justify-center border-b-[2px] border-gray-800 pb-4">
                       {!reverseRecordLoading &&
                       getReverseRecord &&
                       getReverseRecord.avatar ? (
@@ -454,7 +454,7 @@ export default ({ children }) => {
                           )}
                         />
                       ) : (
-                        <div className="w-8 h-8">
+                        <div className="w-8 h-8 flex-grow-0 flex-shrink-0">
                           <img
                             className="rounded-full"
                             src={
@@ -466,7 +466,7 @@ export default ({ children }) => {
                           />
                         </div>
                       )}
-                      <div className="ml-4 text-xl font-semibold text-white font-urbanist">
+                      <div className="ml-4 text-xl font-semibold text-white font-urbanist truncate">
                         {primaryDomain?.name
                           ? primaryDomain.name + '.bnb'
                           : `${accounts[0].substring(
@@ -483,12 +483,6 @@ export default ({ children }) => {
                     className="font-semibold text-white font-urbanist text-[18px] text-center pt-4"
                     onClick={showAvatarPopup}
                   >
-                    {/*<div*/}
-                    {/*  onClick={moveToWishList}*/}
-                    {/*  className="flex items-center justify-center h-10 font-semibold cursor-pointer hover:bg-dark-200 hover:rounded-xl"*/}
-                    {/*>*/}
-                    {/*  Wishlist*/}
-                    {/*</div>*/}
                     <div
                       className="items-center justify-center hidden h-10 font-semibold cursor-pointer md:flex hover:bg-dark-200 hover:rounded-xl"
                       onClick={moveToProfile}
