@@ -92,9 +92,9 @@ export default function Profile() {
 
   return (
     <div className="my-[86px]">
-      <div className="flex justify-center mx-[10px] md:mx-0 px-[10px] 1400px:px-0">
+      <div className="flex justify-center mx-[10px] md:mx-0 px-[10px] 2xl:px-0">
         <Sidebar
-          className="mr-[10px] 1400px:mr-[32px] hidden lg:block"
+          className="mr-[10px] 2xl:mr-[32px] hidden lg:block"
           isReadOnly={isReadOnly}
           displayName={displayName}
           isSafeApp={isSafeApp}
