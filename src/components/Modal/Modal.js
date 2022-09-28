@@ -26,7 +26,7 @@ function Modal({
       >
         {showingCrossIcon && (
           <div
-            className="absolute right-[24px] top-[24px]"
+            className="absolute right-[24px] top-[24px] select-none outline-none"
             onClick={() => {
               closeModal()
             }}

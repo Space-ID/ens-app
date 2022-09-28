@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled/macro'
 import { gql } from '@apollo/client'
 import { useQuery } from '@apollo/client'
 import { EMPTY_ADDRESS } from '../../utils/records'

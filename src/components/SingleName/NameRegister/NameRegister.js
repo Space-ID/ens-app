@@ -15,6 +15,7 @@ import {
   GET_BALANCE,
   GET_ETH_PRICE,
   GET_PRICE_CURVE,
+  GET_RENT_PRICE_WITH_POINT,
 } from 'graphql/queries'
 import { useInterval, useGasPrice, useBlock } from 'components/hooks'
 import { useAccount } from '../../QueryAccount'
@@ -59,6 +60,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [transactionHash, setTransactionHash] = useState('')
   const [showInsufficientModal, setShowInsufficientModal] = useState(false)
   const [signature, setSignature] = useState([])
+  const [usePoint, setUsePoint] = useState(undefined)
 
   const [nameArr, setNameArr] = useState([])
 
@@ -210,6 +212,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     commitmentExpirationDate,
     setCommitmentExpirationDate,
     now,
+    usePoint,
+    setUsePoint,
   })
 
   useInterval(
@@ -256,6 +260,18 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       },
     }
   )
+  // rent price with point
+  const {
+    data: { getRentPriceWithPoint } = {},
+    loading: rentPriceWithPointLoading,
+  } = useQuery(GET_RENT_PRICE_WITH_POINT, {
+    variables: {
+      duration,
+      label: domain.label,
+      account,
+      commitmentTimerRunning,
+    },
+  })
   // rent price duration 0
   const {
     data: { getRentPrice: getPremiumPrice } = {},
@@ -267,11 +283,17 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       commitmentTimerRunning,
     },
   })
-
   const ethVal = new EthVal(`${getRentPrice || 0}`).toEth()
+  const ethValWithPoint = new EthVal(
+    `${getRentPriceWithPoint || getRentPrice || 0}`
+  ).toEth()
   const registerGasFast = new EthVal(`${TOGAL_GAS_WEI * gasPrice.fast}`).toEth()
   const registrationFee = ethVal.add(registerGasFast)
+  const registrationFeeWithPoint = ethValWithPoint.add(registerGasFast)
   const registrationFeeInUsd = registrationFee.mul(ethUsdPrice ?? 0)
+  const registrationFeeWithPointInUsd = registrationFeeWithPoint.mul(
+    ethUsdPrice ?? 0
+  )
 
   let hasSufficientBalance
   if (!blockCreatedAt && checkCommitment > 0) {
@@ -310,7 +332,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     dispatch(setShowWalletModal(true))
   }
 
-  const handleRequest = () => {
+  const handleRequest = (usePoint = false) => {
     if (!hasSufficientBalance) {
       setShowInsufficientModal(true)
       return
@@ -336,6 +358,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       label: domain.label,
       duration,
       secret,
+      usePoint,
     }
     mutationRegister({ variables })
   }
@@ -353,7 +376,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             {nameArr.join('')}
           </p>
         </div>
-        <div className="flex flex-col md:flex-row md:w-[928px] w-[360px]">
+        <div className="flex flex-col md:flex-row">
           {(registerState === RegisterState.confirm ||
             registerState.startsWith(RegisterState.register)) && (
             <Step1Sidebar
@@ -361,9 +384,11 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
               totalUsd={registrationFeeInUsd}
             />
           )}
-          <div className="md:w-[742px] w-full h-full bg-[#438C88]/25 backdrop-blur-[5px] rounded-2xl md:px-[50px] px-[24px] py-[24px]">
+          <div className="bg-fill-2 backdrop-blur-[5px] rounded-2xl md:px-[50px] p-6 space-y-6">
             {registerState.startsWith(RegisterState.request) && (
               <Step1Main
+                usePoint={usePoint}
+                setUsePoint={setUsePoint}
                 state={registerState}
                 duration={duration}
                 years={years}
@@ -380,6 +405,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                 registerGasFast={registerGasFast}
                 registrationFee={registrationFee}
                 registrationFeeInUsd={registrationFeeInUsd}
+                registrationFeeWithPoint={registrationFeeWithPoint}
+                registrationFeeWithPointInUsd={registrationFeeWithPointInUsd}
                 onRequest={handleRequest}
               />
             )}

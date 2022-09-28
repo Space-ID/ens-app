@@ -27,10 +27,17 @@ const resolvers = {
       const rentPrice = await registrar.getRentPrice(label, duration)
       return rentPrice[0]
     },
+    async getRentPriceWithPoint(_, { label, duration, account }) {
+      const registrar = getRegistrar()
+      const rentPrice = await registrar.getRentPriceWithPoint(
+        label,
+        duration,
+        account
+      )
+      return rentPrice[0]
+    },
     async getEligibleCount(_, { account }) {
       const registrar = getRegistrar()
-      console.log('label', account)
-      console.log('registrar', registrar)
       const eligibleCount = await registrar.getEligibleCount(account)
       return eligibleCount
     },
@@ -93,9 +100,9 @@ const resolvers = {
       const tx = await registrar.commit(label, secret)
       return sendHelper(tx)
     },
-    async register(_, { label, duration, secret }) {
+    async register(_, { label, duration, secret, usePoint }) {
       const registrar = getRegistrar()
-      const tx = await registrar.register(label, duration, secret)
+      const tx = await registrar.register(label, duration, secret, usePoint)
       return sendHelper(tx)
     },
     async reclaim(_, { name, address }) {
@@ -103,9 +110,9 @@ const resolvers = {
       const tx = await registrar.reclaim(name, address)
       return sendHelper(tx)
     },
-    async renew(_, { label, duration }) {
+    async renew(_, { label, duration, usePoint }) {
       const registrar = getRegistrar()
-      const tx = await registrar.renew(label, duration)
+      const tx = await registrar.renew(label, duration, usePoint)
       return sendHelper(tx)
     },
     async getDomainAvailability(_, { name }) {

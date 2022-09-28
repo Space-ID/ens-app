@@ -155,3 +155,65 @@ input[type='number'] {
     width: calc(100vw - 56px) !important;
   }
 }
+
+.btn {
+  text-transform: none;
+  transition-property: none;
+  border: none;
+  animation: none;
+  --btn-focus-scale: 1;
+  --animation-btn: 0;
+  --animation-input: 0;
+}
+.btn-sm {
+  @apply rounded-full;
+}
+.btn-secondary {
+  @apply text-white;
+}
+.btn-primary:disabled,
+.btn-disabled {
+  @apply bg-gray-800;
+  @apply text-white;
+}
+.loading:before {
+  display: none;
+}
+
+.loading,
+.loading:hover {
+  pointer-events: none;
+}
+.loading:after {
+  margin-left: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 9999px;
+  border-width: 2px;
+  content: '';
+  border-top-color: #7e9195;
+  border-left-color: #7e9195;
+  border-bottom-color: #7e9195;
+  border-right-color: currentColor;
+  @apply animate-spin;
+}
+
+.s-divider {
+  @apply bg-fill-3;
+}
+.s-divider-h {
+  height: 1px;
+}
+.s-divider-v {
+  width: 1px;
+}
+.s-input {
+  @apply bg-fill-2;
+  @apply rounded-xl;
+  @apply h-9;
+  @apply w-full;
+  @apply px-4;
+  @apply outline-none;
+  @apply text-base;
+  @apply placeholder-gray-800;
+}

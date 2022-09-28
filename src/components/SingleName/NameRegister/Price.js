@@ -7,7 +7,6 @@ const Price = ({
   ethUsdPrice,
   ethUsdPremiumPrice,
   underPremium,
-  years,
   registrationFee,
 }) => {
   let withPremium, c
@@ -27,7 +26,7 @@ const Price = ({
   const priceInUsd = c?.priceInUsd
   return (
     <div>
-      <div className="w-[120px] md:w-[160px] h-[40px] flex justify-center items-center bg-[#C4C4C4]/20 text-white font-bold font-urbanist text-[18px] leading-[26px] rounded-lg">
+      <div className="w-[120px] md:w-[160px] h-[40px] flex justify-center items-center bg-[#C4C4C4]/20 text-white font-bold font-urbanist text-lg rounded-lg">
         {registrationFee.toFixed(3)} <span>BNB</span>
         {withPremium && (
           <span>

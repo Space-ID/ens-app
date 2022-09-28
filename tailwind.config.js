@@ -20,6 +20,7 @@ module.exports = {
         100: '#1EEFA4',
         200: '#30DB9E',
         300: '#0EA59C',
+        600: '#B1D6D3',
       },
       dark: {
         common: '#071A2F',
@@ -46,6 +47,13 @@ module.exports = {
         100: '#2980E8',
         200: '#45A6FF',
       },
+      fill: {
+        2: 'rgba(67, 140, 136, 0.25)',
+        3: 'rgba(204, 252, 255, 0.2)',
+        4: 'rgba(0, 47, 57, 0.5)',
+      },
+      overlay: 'rgba(0,0,0,0.5)',
+      boxBg: '#0E4549',
     },
     screens: {
       xs: '320px',
@@ -94,9 +102,9 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          primary: '#30DB9E',
-          secondary: '#1EEFA4',
-          accent: '#B1D6D3',
+          primary: '#1EEFA4',
+          secondary: '#2980E8',
+          accent: 'rgba(204, 252, 255, 0.2)',
           neutral: '#68ffc9',
           info: '#BDCED1',
           success: '#218752',

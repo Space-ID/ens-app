@@ -16,6 +16,7 @@ import {
 import DNSRegistrarJS from './dnsregistrar'
 import { isEncodedLabelhash, labelhash } from './utils/labelhash'
 import { namehash } from './utils/namehash'
+import { getBufferedPrice } from './utils'
 import {
   getAccount,
   getBlock,
@@ -52,13 +53,6 @@ function checkArguments({
   if (!provider) throw 'Provider is required for Registrar'
 
   return
-}
-
-// Add 10% buffer to handle price fructuation.
-// Any unused value will be sent back by the smart contract.
-function getBufferedPrice(price) {
-  let p = price[0]
-  return p.mul(110).div(100) // FIXME, we did not transfer back in the contract now
 }
 
 export default class Registrar {
@@ -320,6 +314,15 @@ export default class Registrar {
     let price = await permanentRegistrarController.rentPrice(name, duration)
     return price
   }
+  async getRentPriceWithPoint(name, duration, account) {
+    const permanentRegistrarController = this.permanentRegistrarController
+    let price = await permanentRegistrarController.rentPriceWithPointRedemption(
+      name,
+      duration,
+      account
+    )
+    return price
+  }
 
   async getEligibleCount(name) {
     const permanentRegistrarController = this.permanentRegistrarController
@@ -413,14 +416,19 @@ export default class Registrar {
     return permanentRegistrarController.commit(commitment)
   }
 
-  async register(label, duration, secret) {
+  async register(label, duration, secret, usePoint = false) {
     const permanentRegistrarControllerWithoutSigner =
       this.permanentRegistrarController
     const signer = await getSigner()
     const permanentRegistrarController =
       permanentRegistrarControllerWithoutSigner.connect(signer)
     const account = (await getAccount()).toLowerCase()
-    const price = await this.getRentPrice(label, duration)
+    let price
+    if (usePoint) {
+      price = await this.getRentPriceWithPoint(label, duration, account)
+    } else {
+      price = await this.getRentPrice(label, duration)
+    }
     const priceWithBuffer = getBufferedPrice(price)
     const resolverAddr = process.env.REACT_APP_RESOLVER_ADDRESS
     if (parseInt(resolverAddr, 16) === 0) {
@@ -443,26 +451,18 @@ export default class Registrar {
       )
     } else {
       const gasLimit = await this.estimateGasLimit(() => {
-        return permanentRegistrarController.estimateGas.registerWithConfig(
-          label,
-          account,
-          duration,
-          secret,
-          resolverAddr,
-          account,
-          { value: priceWithBuffer }
-        )
+        return permanentRegistrarController.estimateGas[
+          'registerWithConfig(string,address,uint256,bytes32,address,address,bool)'
+        ](label, account, duration, secret, resolverAddr, account, usePoint, {
+          value: priceWithBuffer,
+        })
       })
-
-      return permanentRegistrarController.registerWithConfig(
-        label,
-        account,
-        duration,
-        secret,
-        resolverAddr,
-        account,
-        { value: priceWithBuffer, gasLimit }
-      )
+      return permanentRegistrarController[
+        'registerWithConfig(string,address,uint256,bytes32,address,address,bool)'
+      ](label, account, duration, secret, resolverAddr, account, usePoint, {
+        value: priceWithBuffer,
+        gasLimit,
+      })
     }
   }
 
@@ -486,23 +486,36 @@ export default class Registrar {
     }
   }
 
-  async renew(label, duration) {
+  async renew(label, duration, usePoint = false) {
     const permanentRegistrarControllerWithoutSigner =
       this.permanentRegistrarController
     const signer = await getSigner()
     const permanentRegistrarController =
       permanentRegistrarControllerWithoutSigner.connect(signer)
-    const price = await this.getRentPrice(label, duration)
+    const account = (await getAccount()).toLowerCase()
+    let price
+    if (usePoint) {
+      price = await this.getRentPriceWithPoint(label, duration, account)
+    } else {
+      price = await this.getRentPrice(label, duration)
+    }
     const priceWithBuffer = getBufferedPrice(price)
     const gasLimit = await this.estimateGasLimit(() => {
-      return permanentRegistrarController.estimateGas.renew(label, duration, {
+      return permanentRegistrarController.estimateGas[
+        'renew(string,uint256,bool)'
+      ](label, duration, usePoint, {
         value: priceWithBuffer,
       })
     })
-    return permanentRegistrarController.renew(label, duration, {
-      value: priceWithBuffer,
-      gasLimit,
-    })
+    return permanentRegistrarController['renew(string,uint256,bool)'](
+      label,
+      duration,
+      usePoint,
+      {
+        value: priceWithBuffer,
+        gasLimit,
+      }
+    )
   }
 
   async renewAll(labels, duration) {

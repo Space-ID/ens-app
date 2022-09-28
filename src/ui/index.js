@@ -1,6 +1,7 @@
 import { getProvider, setupWeb3, getNetworkId, getNetwork } from './web3'
 import { ENS } from './ens.js'
 import { setupRegistrar } from './registrar'
+import { setUpGiftCard } from './giftCard'
 export { utils, ethers } from 'ethers'
 
 export async function setupENS({
@@ -22,12 +23,14 @@ export async function setupENS({
   const ens = new ENS({ provider, networkId, registryAddress: ensAddress })
   const registrar = await setupRegistrar(ens.registryAddress)
   const network = await getNetwork()
+  const giftCard = await setUpGiftCard()
   return {
     ens,
     registrar,
     provider: customProvider,
     network,
     providerObject: provider,
+    giftCard,
   }
 }
 
