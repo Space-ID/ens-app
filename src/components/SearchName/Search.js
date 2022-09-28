@@ -31,7 +31,7 @@ function Search({
   const gotoDetailPage = () => {
     setShowPopup(false)
     if (result.Owner) {
-      dispatch(setSelectedDomain({ ...result }))
+      dispatch(setSelectedDomain({ ...result, expires: result.Expires }))
       history.push(`/profile`)
     } else {
       history.push(`/name/${result.name}.bnb/register`)
