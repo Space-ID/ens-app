@@ -376,7 +376,9 @@ export default class Registrar {
     const permanentRegistrarController =
       permanentRegistrarControllerWithoutSigner.connect(signer)
     const account = await getAccount()
-    const resolverAddr = process.env.REACT_APP_RESOLVER_ADDRESS
+    const resolverAddr = await this.getAddress(
+      process.env.REACT_APP_RESOLVER_DOMAIN
+    )
     if (parseInt(resolverAddr, 16) === 0) {
       return permanentRegistrarController.makeCommitment(name, owner, secret)
     } else {
@@ -422,7 +424,9 @@ export default class Registrar {
     const account = (await getAccount()).toLowerCase()
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
-    const resolverAddr = process.env.REACT_APP_RESOLVER_ADDRESS
+    const resolverAddr = await this.getAddress(
+      process.env.REACT_APP_RESOLVER_DOMAIN
+    )
     if (parseInt(resolverAddr, 16) === 0) {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.register(
@@ -650,7 +654,9 @@ export default class Registrar {
     } else {
       // Only available for the new DNSRegistrar
       if (!isOld && owner === user) {
-        const resolverAddress = process.env.REACT_APP_RESOLVER_ADDRESS
+        const resolverAddress = await this.getAddress(
+          process.env.REACT_APP_RESOLVER_DOMAIN
+        )
         return registrar.proveAndClaimWithResolver(
           claim.encodedName,
           data,

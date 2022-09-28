@@ -16,6 +16,7 @@ import {
   GET_RESOLVER_FROM_SUBGRAPH,
   GET_ADDRESSES,
   GET_TEXT_RECORDS,
+  GET_PUBLIC_RESOLVER,
 } from 'graphql/queries'
 import { SET_RESOLVER } from 'graphql/mutations'
 
@@ -217,6 +218,9 @@ export default function MainBoard({
     setInitialRecords
   )
 
+  const { data: resolverData } = useQuery(GET_PUBLIC_RESOLVER, {
+    fetchPolicy: 'network-only',
+  })
   async function copyTextToClipboard(text) {
     if ('clipboard' in navigator) {
       return await navigator.clipboard.writeText(text)
@@ -234,7 +238,7 @@ export default function MainBoard({
   useEffect(() => {
     if (txState.confirmed) {
       // setUpdateloading(false)
-      setResolverAddress(process.env.REACT_APP_RESOLVER_ADDRESS)
+      setResolverAddress(resolverData?.publicResolver?.address)
     }
     if (txState.error) {
       setUpdateloading(false)
@@ -288,9 +292,11 @@ export default function MainBoard({
   }
 
   const handleUpdate = async () => {
+    const address = resolverData?.publicResolver?.address
+    if (isEmptyAddress(address)) return
     const variables = {
       name: selectedDomain.name + '.bnb',
-      address: process.env.REACT_APP_RESOLVER_ADDRESS,
+      address,
     }
     try {
       setUpdateloading(true)
