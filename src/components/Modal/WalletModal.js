@@ -21,7 +21,7 @@ const mobileWallets = [
   },
   {
     id: 'Trust Wallet',
-    link: `https://link.trustwallet.com/open_url?coin_id=714&url=${process.env.REACT_APP_PUBLIC_URL}`,
+    link: `https://link.trustwallet.com/open_url?coin_id=20000714&url=${process.env.REACT_APP_PUBLIC_URL}`,
   },
 ]
 const isMobile = () => {
@@ -61,23 +61,38 @@ export default function WalletModal({ closeModal }) {
         Select Wallet
       </p>
       <div className="grid gap-5 md:grid-cols-[300px_300px] grid-cols-[300px]">
-        {mobile &&
-          mobileWallets.map((v) => (
+        {
+          mobile && (
             <div
-              href={v.link}
-              onClick={() => window.open(v.link, '_blank')}
-              key={`mobile-${v.id}`}
-              className="w-[300px] h-[72px] rounded-2xl p-4 flex items-center cursor-pointer md:hidden text-white"
-              style={{ backgroundColor: WalletBg[v.id] ?? WalletBg.default }}
+              onClick={() => handleClick('walletconnect')}
+              className="w-[300px] h-[72px] rounded-2xl p-4 flex items-center cursor-pointer md:hidden"
+              style={{ backgroundColor: WalletBg['Trust Wallet'] }}
             >
               <img
-                src={WalletLogo[v.id]}
+                src={WalletLogo['Trust Wallet']}
                 alt=""
                 className="w-[40px] h-[40px] bg-white rounded-md p-0.5"
               />
-              <p className="ml-5 font-semibold text-xl">{v.id}</p>
+              <p className="ml-5 font-semibold text-xl">Trust Wallet</p>
             </div>
-          ))}
+          )
+          // mobileWallets.map((v) => (
+          //   <div
+          //     href={v.link}
+          //     onClick={() => window.open(v.link, '_blank')}
+          //     key={`mobile-${v.id}`}
+          //     className="w-[300px] h-[72px] rounded-2xl p-4 flex items-center cursor-pointer md:hidden text-white"
+          //     style={{ backgroundColor: WalletBg[v.id] ?? WalletBg.default }}
+          //   >
+          //     <img
+          //       src={WalletLogo[v.id]}
+          //       alt=""
+          //       className="w-[40px] h-[40px] bg-white rounded-md p-0.5"
+          //     />
+          //     <p className="ml-5 font-semibold text-xl">{v.id}</p>
+          //   </div>
+          // ))
+        }
         {options.map((item) => (
           <div
             key={item.id}
