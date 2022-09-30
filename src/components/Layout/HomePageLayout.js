@@ -230,6 +230,7 @@ export default ({ children }) => {
       network: null,
     })
     dispatch(toggleNetworkError(false))
+    disconnectProvider()
   }
 
   const handleConnect = () => {
