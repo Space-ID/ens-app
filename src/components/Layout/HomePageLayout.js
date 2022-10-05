@@ -186,14 +186,14 @@ export default ({ children }) => {
     if (chain && chain.length > 0) {
       chain = chain[0]
       try {
-        await window.ethereum.request({
+        await window.ethereum?.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: `0x${chain.chainId.toString(16)}` }],
         })
       } catch (err) {
         if (err.code === 4902) {
           try {
-            await window.ethereum.request({
+            await window.ethereum?.request({
               method: 'wallet_addEthereumChain',
               params: [
                 {
@@ -241,8 +241,8 @@ export default ({ children }) => {
     <section className="bg-[url('assets/images/home-bg.png')] bg-cover relative min-h-[100vh] flex items-center justify-center">
       {globalError.network && (
         <Modal
+          width="auto"
           cannotCloseFromOutside={false}
-          width="574px"
           className="px-6 pt-6 pb-9"
           showingCrossIcon={true}
           closeModal={closeModal}
@@ -251,14 +251,14 @@ export default ({ children }) => {
             <div className="text-xl md:text-[28px] font-cocoSharp text-center font-bold text-white leading-10">
               Unsupported Network
             </div>
-            <div className="mt-4 font-semibold text-center text-white text-urbanist">
+            <div className="mt-4 font-semibold text-center text-white text-urbanist md:w-[auto] w-[300px]">
               Please change your dapp browser to Binance Smart Chain{' '}
               {process.env.REACT_APP_MODE === 'production' ? null : (
                 <span>Testnet</span>
               )}
               {'  '}to continue.
             </div>
-            <div className="justify-center hidden md:flex">
+            <div className="justify-center flex">
               <Button
                 onClick={() => changeToBSCChain()}
                 className="leading-[26px] text-dark-common border-none mt-9 bg-primary rounded-full text-[18px] font-urbanist py-2 px-9 font-semibold normal-case"
