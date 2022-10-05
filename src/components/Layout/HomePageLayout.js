@@ -258,17 +258,19 @@ export default ({ children }) => {
               )}
               {'  '}to continue.
             </div>
-            <div className="justify-center flex">
-              <Button
-                onClick={() => changeToBSCChain()}
-                className="leading-[26px] text-dark-common border-none mt-9 bg-primary rounded-full text-[18px] font-urbanist py-2 px-9 font-semibold normal-case"
-              >
-                Switch to BSC{' '}
-                {process.env.REACT_APP_MODE === 'production' ? null : (
-                  <span className="ml-1">Testnet</span>
-                )}
-              </Button>
-            </div>
+            {window.ethereum !== undefined && (
+              <div className="justify-center flex">
+                <Button
+                  onClick={() => changeToBSCChain()}
+                  className="leading-[26px] text-dark-common border-none mt-9 bg-primary rounded-full text-[18px] font-urbanist py-2 px-9 font-semibold normal-case"
+                >
+                  Switch to BSC{' '}
+                  {process.env.REACT_APP_MODE === 'production' ? null : (
+                    <span className="ml-1">Testnet</span>
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
         </Modal>
       )}
