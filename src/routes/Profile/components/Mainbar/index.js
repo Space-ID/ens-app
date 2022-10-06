@@ -169,9 +169,8 @@ export default function Mainbar({
 
   const refetchRegistrantAddress = async () => {
     try {
-      const registrar = getRegistrar()
-      const entry = await registrar.getEntry(selectedDomain.name)
-      return entry.registrant
+      const ownerAddr = await sid.name(`${selectedDomain.name}.bnb`).getOwner()
+      return ownerAddr
     } catch (err) {
       console.log('debug: error: refetchRegistrantAddress', err)
     }
