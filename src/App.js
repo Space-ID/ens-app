@@ -37,7 +37,7 @@ const App = () => {
   useReactiveVarListeners()
   const account = useAccount()
   const accountRef = useRef(account)
-  const [showAlert, setShowAlert] = useState(true)
+  // const [showAlert, setShowAlert] = useState(true)
   useEffect(() => {
     if (
       accountRef.current !== emptyAddress &&
@@ -52,26 +52,26 @@ const App = () => {
 
   return (
     <BrowserRouter basename="/">
-      {showAlert && (
-        <div className="text-center bg-red-100 text-white text-2xl p-2 px-6 flex items-center justify-between">
-          <div className="flex-1">
-            BNB Chain is temporarily suspended, please see{' '}
-            <a
-              href="https://twitter.com/bnbchain/status/1578148078636650496"
-              target="_blank"
-              className="text-white visited:text-white underline"
-            >
-              {' '}
-              here{' '}
-            </a>{' '}
-            for additional info. Please wait to register, extend and transfer
-            domains until the chain is restored.
-          </div>
-          <div className="flex-none" onClick={() => setShowAlert(false)}>
-            <CrossIcon className="text-white cursor-pointer" size={11} />
-          </div>
-        </div>
-      )}
+      {/*{showAlert && (*/}
+      {/*  <div className="text-center bg-red-100 text-white text-2xl p-2 px-6 flex items-center justify-between">*/}
+      {/*    <div className="flex-1">*/}
+      {/*      BNB Chain is temporarily suspended, please see{' '}*/}
+      {/*      <a*/}
+      {/*        href="https://twitter.com/bnbchain/status/1578148078636650496"*/}
+      {/*        target="_blank"*/}
+      {/*        className="text-white visited:text-white underline"*/}
+      {/*      >*/}
+      {/*        {' '}*/}
+      {/*        here{' '}*/}
+      {/*      </a>{' '}*/}
+      {/*      for additional info. Please wait to register, extend and transfer*/}
+      {/*      domains until the chain is restored.*/}
+      {/*    </div>*/}
+      {/*    <div className="flex-none" onClick={() => setShowAlert(false)}>*/}
+      {/*      <CrossIcon className="text-white cursor-pointer" size={11} />*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*)}*/}
       <Switch>
         <Route exact path="/" component={Home} layout={HomePageLayout} />
         <Route
