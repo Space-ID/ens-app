@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import { utils as ethersUtils } from 'ethers'
 import GiftCardSwiper from 'components/GiftCard/GiftCardSwiper'
-import { GiftCardFaceIds, GiftCards } from 'constants/index'
+import { GiftCardFaceIds, GiftCards, noGiftCardUlr } from 'constants/index'
 import { isEmptyAddress } from 'utils/records'
 import Modal from './index'
 import { useAccount } from '../QueryAccount'
@@ -11,7 +11,6 @@ import { QUERY_POINT_BALANCE, QUERY_USER_GIFT_CARDS } from 'graphql/queries'
 import { REDEEM_GIFT_CARD, TRANSFER_GIFT_CARD } from 'graphql/mutations'
 import useTransaction from 'hooks/useTransaction'
 
-import noGiftCardImg from 'assets/images/giftCard/no-gift-card.png'
 import Toast from '../Toast'
 const TabValue = {
   redeem: 'REDEEM',
@@ -178,7 +177,7 @@ const GiftCardRedeemModal = (props) => {
           {giftCardData.length <= 0 ? (
             <img
               className="mx-auto md:w-[320px] w-[240px]"
-              src={noGiftCardImg}
+              src={noGiftCardUlr}
               alt=""
               style={{
                 filter: 'drop-shadow(0px 0px 32px rgba(80, 255, 192, 0.6))',

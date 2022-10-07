@@ -1,26 +1,18 @@
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { EffectCoverflow } from 'swiper'
 import { useState } from 'react'
-import gift5 from 'assets/images/giftCard/gift-card-5.png'
-import gift160 from 'assets/images/giftCard/gift-card-160.png'
-import gift650 from 'assets/images/giftCard/gift-card-650.png'
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
 import './index.css'
 import NumberInput from '../Input/NumberInput'
 import ArrowIcon from '../Icons/ArrowIcon'
 
-const imgMap = {
-  5: gift5,
-  160: gift160,
-  650: gift650,
-}
-
 function GiftCardSwiperControl({
   max = 9999,
   value,
   onNumberChange,
   disabled,
+  length,
 }) {
   const swiper = useSwiper()
   return (
@@ -40,10 +32,8 @@ function GiftCardSwiperControl({
         disable={disabled}
       />
       <button
-        disabled={swiper.activeIndex >= swiper.slides.length - 1 || disabled}
-        className={
-          swiper.activeIndex >= swiper.slides.length - 1 ? 'invisible' : ''
-        }
+        disabled={swiper.activeIndex >= length - 1 || disabled}
+        className={swiper.activeIndex >= length - 1 ? 'invisible' : ''}
         onClick={() => swiper.slideNext()}
       >
         <ArrowIcon direction="right" className="text-white" />
@@ -85,7 +75,7 @@ export default function GiftCardSwiper({ value, onChange, disabled }) {
           className="w-fit"
           data-invisible={Math.abs(index - i) >= 2}
         >
-          <img src={imgMap[`${v.faceValue}`]} alt={v.faceValue} />
+          <img src={v.url} alt={v.faceValue} />
         </SwiperSlide>
       ))}
       <GiftCardSwiperControl
@@ -93,6 +83,7 @@ export default function GiftCardSwiper({ value, onChange, disabled }) {
         onNumberChange={onNumberChange}
         value={value[index].count}
         disabled={disabled}
+        length={value.length}
       />
     </Swiper>
   )

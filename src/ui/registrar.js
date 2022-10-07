@@ -451,18 +451,32 @@ export default class Registrar {
       )
     } else {
       const gasLimit = await this.estimateGasLimit(() => {
-        return permanentRegistrarController.estimateGas[
-          'registerWithConfig(string,address,uint256,bytes32,address,address,bool)'
-        ](label, account, duration, secret, resolverAddr, account, usePoint, {
+        return permanentRegistrarController.estimateGas.registerWithConfigAndPoint(
+          label,
+          account,
+          duration,
+          secret,
+          resolverAddr,
+          account,
+          usePoint,
+          {
+            value: priceWithBuffer,
+          }
+        )
+      })
+      return permanentRegistrarController.registerWithConfigAndPoint(
+        label,
+        account,
+        duration,
+        secret,
+        resolverAddr,
+        account,
+        usePoint,
+        {
           value: priceWithBuffer,
-        })
-      })
-      return permanentRegistrarController[
-        'registerWithConfig(string,address,uint256,bytes32,address,address,bool)'
-      ](label, account, duration, secret, resolverAddr, account, usePoint, {
-        value: priceWithBuffer,
-        gasLimit,
-      })
+          gasLimit,
+        }
+      )
     }
   }
 
@@ -501,13 +515,16 @@ export default class Registrar {
     }
     const priceWithBuffer = getBufferedPrice(price)
     const gasLimit = await this.estimateGasLimit(() => {
-      return permanentRegistrarController.estimateGas[
-        'renew(string,uint256,bool)'
-      ](label, duration, usePoint, {
-        value: priceWithBuffer,
-      })
+      return permanentRegistrarController.estimateGas.renewWithPoint(
+        label,
+        duration,
+        usePoint,
+        {
+          value: priceWithBuffer,
+        }
+      )
     })
-    return permanentRegistrarController['renew(string,uint256,bool)'](
+    return permanentRegistrarController.renewWithPoint(
       label,
       duration,
       usePoint,

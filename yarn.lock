@@ -3553,19 +3553,6 @@
   resolved "https://registry.npmjs.org/@siddomains/resolver/-/resolver-0.1.1.tgz"
   integrity sha512-cZYaHJN9iXNXeLvaMPDm3p6ymNklDzQ11reIfLMvLi0zP0UGERM+YXCqwzAZkoKulysVWX0iUbihl64/NrJJew==
 
-"@siddomains/sid-contracts@0.1.23":
-  version "0.1.23"
-  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.23.tgz#5d4819583fcd3bb76b0920da8ee3365adee56190"
-  integrity sha512-pgau9MOdFJjtMC2mMeGpyxwHk9qnkl323JSGMurrcFxF8hidVmvLwtgRLRpbHcUHY3kI0wLZL4/7gjym9zxjRw==
-  dependencies:
-    "@ensdomains/buffer" "^0.0.13"
-    "@ensdomains/solsha1" "0.0.3"
-    "@openzeppelin/contracts" "^4.1.0"
-    "@siddomains/sidjs" "^0.1.13"
-    csv-parse "^5.3.0"
-    dns-packet "^5.3.0"
-    web3 "^1.7.3"
-
 "@siddomains/sid-contracts@^0.1.2":
   version "0.1.2"
   resolved "https://registry.npmjs.org/@siddomains/sid-contracts/-/sid-contracts-0.1.2.tgz"
@@ -3575,6 +3562,19 @@
     "@ensdomains/solsha1" "0.0.3"
     "@openzeppelin/contracts" "^4.1.0"
     dns-packet "^5.3.0"
+
+"@siddomains/sid-contracts@^0.1.24":
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/@siddomains/sid-contracts/-/sid-contracts-0.1.24.tgz#2bb68e8a46a17f72b329c49010cdbe14d7938b2a"
+  integrity sha512-8FVg/95M8eVilliSrPwQKjbdkI0fPl4IfZy91cKxb3X7H5oH9HvzwmSdWUx4GOCwiA7sXJ4cBc3P1V5Y0ao+Mg==
+  dependencies:
+    "@ensdomains/buffer" "^0.0.13"
+    "@ensdomains/solsha1" "0.0.3"
+    "@openzeppelin/contracts" "^4.1.0"
+    "@siddomains/sidjs" "^0.1.13"
+    csv-parse "^5.3.0"
+    dns-packet "^5.3.0"
+    web3 "^1.7.3"
 
 "@siddomains/sid@0.1.2":
   version "0.1.2"
