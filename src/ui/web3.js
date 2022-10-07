@@ -71,7 +71,6 @@ export async function setupWeb3({
       })
 
       await Promise.race([
-        iframeProvider.enable(),
         // Race the enable with a promise that rejects after 1 second
         new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Timed out after 1 second')), 1000)
@@ -182,7 +181,6 @@ export async function getSigner() {
     if (window.ethereum) {
       try {
         if (requested === true) return provider
-        await window.ethereum.enable()
         const signer = await provider.getSigner()
         await signer.getAddress()
         return signer
@@ -212,14 +210,6 @@ export async function getAccounts() {
     const account = await getAccount()
     if (parseInt(account, 16) !== 0) {
       return [account]
-    } else if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.enable()
-        return accounts
-      } catch (error) {
-        console.warn('Did not allow app to access dapp browser')
-        throw error
-      }
     } else {
       return []
     }

@@ -104,8 +104,10 @@ export const setWeb3Provider = async (provider) => {
 
 export default async (reconnect) => {
   try {
-    setFavourites()
-    setSubDomainFavourites()
+    // favour
+    // setFavourites()
+    // setSubDomainFavourites()
+
     const provider = await getProvider(reconnect)
 
     if (!provider) throw 'Please install a wallet'
