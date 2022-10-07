@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import EthVal from 'ethval'
 import GiftCardSwiper from 'components/GiftCard/GiftCardSwiper'
-import { GiftCardFaceIds, GiftCardFaceValues } from 'constants/index'
+import { GiftCards } from 'constants/index'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_ETH_PRICE, QUERY_GIFT_CARD_MINT_PRICE } from 'graphql/queries'
 import Toast from 'components/Toast'
@@ -12,19 +12,18 @@ import Modal from './index'
 import { MINT_GIFT_CARD } from '../../graphql/mutations'
 
 const initialData = () =>
-  GiftCardFaceValues.reduce((pre, cur) => {
-    pre[cur] = {
+  GiftCards.map((item, i) => {
+    return {
+      ...item,
       count: 0,
     }
-    return pre
-  }, {})
+  })
 
 const GiftCardModal = (props) => {
   const { children, onOpenChange, ...otherProps } = props
   const [giftCardData, setGiftCardData] = useState(initialData())
-  const [amounts, setAmounts] = useState(
-    new Array(GiftCardFaceValues.length).fill(0)
-  )
+  const [amounts, setAmounts] = useState(new Array(giftCardData.length).fill(0))
+  const [ids, setIds] = useState(giftCardData.map((v) => v.id))
   const [mintLoading, setMintLoading] = useState(false)
   const [txState, setTxHash] = useTransaction()
   // get eth price
@@ -36,7 +35,7 @@ const GiftCardModal = (props) => {
     error,
   } = useQuery(QUERY_GIFT_CARD_MINT_PRICE, {
     variables: {
-      ids: GiftCardFaceIds,
+      ids,
       amounts,
     },
     fetchPolicy: 'no-cache',
@@ -44,7 +43,7 @@ const GiftCardModal = (props) => {
 
   const [mintGiftCard] = useMutation(MINT_GIFT_CARD, {
     variables: {
-      ids: GiftCardFaceIds,
+      ids,
       amounts,
     },
     onCompleted: (data) => {
@@ -56,11 +55,9 @@ const GiftCardModal = (props) => {
   })
 
   useEffect(() => {
-    const arr = []
-    GiftCardFaceValues.reduce((pre, cur) => {
-      arr.push(giftCardData[cur].count)
-    }, arr)
+    const arr = giftCardData.map((v) => v.count)
     setAmounts(arr)
+    // setIds(giftCardData.map(v => v.id))
   }, [giftCardData])
 
   useEffect(() => {
@@ -100,13 +97,13 @@ const GiftCardModal = (props) => {
         <div className="grid gap-6 md:grid-cols-[438px] grid-cols-[310px] auto-rows-min m-auto">
           <div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
             <div className="flex flex-col justify-center">
-              {GiftCardFaceValues.map((v) => (
+              {giftCardData.map((v) => (
                 <div
-                  key={v}
+                  key={`${v.id}-${v.count}`}
                   className="flex justify-between items-center md:text-base text-sm"
                 >
-                  <span>${v} Gift Card:</span>
-                  <span className="font-semibold">{giftCardData[v].count}</span>
+                  <span>${v.faceValue} Gift Card:</span>
+                  <span className="font-semibold">{v.count}</span>
                 </div>
               ))}
             </div>

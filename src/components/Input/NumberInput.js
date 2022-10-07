@@ -24,12 +24,14 @@ function NumberInput({
   }
   const handleInput = (e) => {
     const v = parseInt(e.target.value)
-    if (v > max) {
-      onChange(max)
+    if (Number.isNaN(v)) {
+      onChange(min)
+    } else if (v > max) {
+      // onChange(max)
     } else if (v < min) {
       onChange(min)
     } else {
-      onChange(min)
+      onChange(v)
     }
   }
   return (

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import { utils as ethersUtils } from 'ethers'
 import GiftCardSwiper from 'components/GiftCard/GiftCardSwiper'
-import { GiftCardFaceValues, GiftCardFaceIds } from 'constants/index'
+import { GiftCardFaceIds, GiftCards } from 'constants/index'
 import { isEmptyAddress } from 'utils/records'
 import Modal from './index'
 import { useAccount } from '../QueryAccount'
@@ -12,29 +12,22 @@ import { REDEEM_GIFT_CARD, TRANSFER_GIFT_CARD } from 'graphql/mutations'
 import useTransaction from 'hooks/useTransaction'
 
 import noGiftCardImg from 'assets/images/giftCard/no-gift-card.png'
-
-const initialData = () =>
-  GiftCardFaceValues.reduce((pre, cur) => {
-    pre[cur] = {
-      count: 0,
-      total: 0,
-    }
-    return pre
-  }, {})
+import Toast from '../Toast'
 const TabValue = {
   redeem: 'REDEEM',
   transfer: 'TRANSFER',
 }
 const GiftCardRedeemModal = (props) => {
-  const { children, ...otherProps } = props
-  const [giftCardData, setGiftCardData] = useState(initialData())
+  const { children, onOpenChange, ...otherProps } = props
+  const [giftCardData, setGiftCardData] = useState([])
   const [curTab, setCurTab] = useState(TabValue.redeem)
   const [totalPoints, setTotalPoints] = useState(0)
   const [toAddress, setToAddress] = useState('')
-  const [totalGiftCard, setTotalGiftCard] = useState(0)
   const [loading, setLoading] = useState(false)
   const [txState, setTxHash] = useTransaction()
   const account = useAccount()
+  const curTabRef = useRef(curTab)
+  curTabRef.current = curTab
 
   const { data: { getPointBalance = 0 } = {}, refetch } = useQuery(
     QUERY_POINT_BALANCE,
@@ -54,20 +47,19 @@ const GiftCardRedeemModal = (props) => {
       },
       fetchPolicy: 'no-cache',
       onCompleted: (data) => {
-        const counts = data?.getUserGiftCards ?? []
-        const newData = {}
-        let total = 0
-        GiftCardFaceValues.reduce((pre, cur, currentIndex) => {
-          const num = counts[currentIndex]?.toNumber() ?? 0
-          total += num
-          pre[cur] = {
-            count: 0,
-            total: num,
+        const res = data?.getUserGiftCards ?? []
+        const newData = []
+        res.forEach((v, i) => {
+          const num = v?.toNumber() ?? 0
+          if (num > 0) {
+            newData.push({
+              ...GiftCards[i],
+              count: 0,
+              total: num,
+            })
           }
-          return pre
-        }, newData)
+        })
         setGiftCardData(newData)
-        setTotalGiftCard(total)
       },
     }
   )
@@ -76,7 +68,6 @@ const GiftCardRedeemModal = (props) => {
     variables: {
       from: account,
       to: toAddress,
-      ids: GiftCardFaceIds,
     },
     onCompleted: (data) => {
       setTxHash(data.transferGiftCard)
@@ -88,7 +79,6 @@ const GiftCardRedeemModal = (props) => {
   })
 
   const [redeemGiftCard] = useMutation(REDEEM_GIFT_CARD, {
-    variables: { ids: GiftCardFaceIds },
     onCompleted: (data) => {
       setTxHash(data.redeemGiftCard)
     },
@@ -106,11 +96,8 @@ const GiftCardRedeemModal = (props) => {
 
   useEffect(() => {
     let total = 0
-    GiftCardFaceValues.forEach((value) => {
-      const data = giftCardData[value]
-      if (data) {
-        total += Number(value) * data.count
-      }
+    giftCardData.forEach((value) => {
+      total += value.faceValue * value.count
     })
     setTotalPoints(total)
   }, [giftCardData])
@@ -121,32 +108,47 @@ const GiftCardRedeemModal = (props) => {
     }
     if (txState.confirmed) {
       setLoading(false)
-      fetchUserGiftCards()
+      // fetchUserGiftCards()
       refetch()
+      Toast.success(
+        curTabRef.current === TabValue.transfer
+          ? 'Gift Card successfully transferred.'
+          : 'SID Points successfully redeemed.'
+      )
+      onOpenChange(false)
     }
   }, [txState])
 
   const handleTransfer = () => {
     if (ethersUtils.isAddress(toAddress) && !isEmptyAddress(toAddress)) {
       setLoading(true)
+      let ids = []
       let arr = []
-      GiftCardFaceValues.forEach((v) => {
-        arr.push(giftCardData[v].count)
+      giftCardData.forEach((v) => {
+        ids.push(v.id)
+        arr.push(v.count)
       })
-      transferGiftCard({ variables: { amounts: arr } })
+      transferGiftCard({ variables: { amounts: arr, ids } })
     }
   }
   const handleRedeem = () => {
     setLoading(true)
+    let ids = []
     let arr = []
-    GiftCardFaceValues.forEach((v) => {
-      arr.push(giftCardData[v].count)
+    giftCardData.forEach((v) => {
+      ids.push(v.id)
+      arr.push(v.count)
     })
-    redeemGiftCard({ variables: { amounts: arr } })
+    redeemGiftCard({ variables: { amounts: arr, ids } })
   }
 
   return (
-    <Modal title="My Gift Card" width="auto" {...otherProps}>
+    <Modal
+      title="My Gift Card"
+      width="auto"
+      onOpenChange={onOpenChange}
+      {...otherProps}
+    >
       <div className="grid md:gap-x-14 md:px-9 md:grid-cols-2 md:grid-rows-[46px_1fr] md:pb-6 grid-cols-1 gap-8 ">
         {/*tab btn*/}
         <div className="w-full px-2.5 py-2 bg-fill-4 rounded-2xl flex items-center justify-between text-center text-gray-700 text-sm font-semibold space-x-3">
@@ -173,7 +175,7 @@ const GiftCardRedeemModal = (props) => {
         </div>
         {/*swiper*/}
         <div className="m-auto md:row-span-full">
-          {totalGiftCard <= 0 ? (
+          {giftCardData.length <= 0 ? (
             <img
               className="mx-auto md:w-[320px] w-[240px]"
               src={noGiftCardImg}
@@ -194,13 +196,13 @@ const GiftCardRedeemModal = (props) => {
         <div className="grid gap-6 grid-cols-1">
           <div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
             <div className="flex flex-col justify-center">
-              {GiftCardFaceValues.map((v) => (
+              {giftCardData.map((v) => (
                 <div
-                  key={v}
+                  key={`${v.id}-${v.count}`}
                   className="flex justify-between items-center md:text-base text-sm"
                 >
-                  <span>${v} Gift Card:</span>
-                  <span className="font-semibold">{`${giftCardData[v].count}/${giftCardData[v].total}`}</span>
+                  <span>${v.faceValue} Gift Card:</span>
+                  <span className="font-semibold">{`${v.count}/${v.total}`}</span>
                 </div>
               ))}
             </div>

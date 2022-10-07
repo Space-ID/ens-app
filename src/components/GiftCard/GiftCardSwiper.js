@@ -1,15 +1,20 @@
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { EffectCoverflow } from 'swiper'
-import { GiftCardFaceValues } from 'constants/index'
+import { useState } from 'react'
 import gift5 from 'assets/images/giftCard/gift-card-5.png'
 import gift160 from 'assets/images/giftCard/gift-card-160.png'
 import gift650 from 'assets/images/giftCard/gift-card-650.png'
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
 import './index.css'
-import { useState } from 'react'
 import NumberInput from '../Input/NumberInput'
 import ArrowIcon from '../Icons/ArrowIcon'
+
+const imgMap = {
+  5: gift5,
+  160: gift160,
+  650: gift650,
+}
 
 function GiftCardSwiperControl({
   max = 9999,
@@ -35,8 +40,10 @@ function GiftCardSwiperControl({
         disable={disabled}
       />
       <button
-        disabled={swiper.activeIndex >= 2 || disabled}
-        className={swiper.activeIndex >= 2 ? 'invisible' : ''}
+        disabled={swiper.activeIndex >= swiper.slides.length - 1 || disabled}
+        className={
+          swiper.activeIndex >= swiper.slides.length - 1 ? 'invisible' : ''
+        }
         onClick={() => swiper.slideNext()}
       >
         <ArrowIcon direction="right" className="text-white" />
@@ -50,10 +57,11 @@ const stretch = window.innerWidth >= 768 ? 240 : 180
 export default function GiftCardSwiper({ value, onChange, disabled }) {
   const [index, setIndex] = useState(0)
   const onNumberChange = (v) => {
-    const key = GiftCardFaceValues[index]
-    const temp = value[key]
+    const temp = value[index]
     temp.count = v
-    onChange({ ...value, [key]: temp })
+    const arr = [...value]
+    arr[index] = temp
+    onChange(arr)
   }
   return (
     <Swiper
@@ -70,27 +78,20 @@ export default function GiftCardSwiper({ value, onChange, disabled }) {
       modules={[EffectCoverflow]}
       onSlideChange={(v) => setIndex(v.activeIndex)}
     >
-      <SwiperSlide
-        itemID={GiftCardFaceValues[0]}
-        className="w-fit"
-        data-invisible={index >= 2}
-      >
-        <img src={gift5} alt="5" />
-      </SwiperSlide>
-      <SwiperSlide itemID={GiftCardFaceValues[1]} className="w-fit">
-        <img src={gift160} alt="160" />
-      </SwiperSlide>
-      <SwiperSlide
-        itemID={GiftCardFaceValues[2]}
-        className="w-fit"
-        data-invisible={index <= 0}
-      >
-        <img src={gift650} alt="650" />
-      </SwiperSlide>
+      {value.map((v, i) => (
+        <SwiperSlide
+          key={v.faceValue}
+          itemID={v.faceValue}
+          className="w-fit"
+          data-invisible={Math.abs(index - i) >= 2}
+        >
+          <img src={imgMap[`${v.faceValue}`]} alt={v.faceValue} />
+        </SwiperSlide>
+      ))}
       <GiftCardSwiperControl
-        max={value[GiftCardFaceValues[index]].total}
+        max={value[index].total}
         onNumberChange={onNumberChange}
-        value={value[GiftCardFaceValues[index]].count}
+        value={value[index].count}
         disabled={disabled}
       />
     </Swiper>

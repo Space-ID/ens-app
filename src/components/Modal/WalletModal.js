@@ -45,7 +45,6 @@ export default function WalletModal({ closeModal }) {
     connectProvider()
     closeModal()
   }
-  console.log(options)
   return (
     <Modal
       showingCrossIcon

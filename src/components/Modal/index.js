@@ -18,6 +18,7 @@ export default function Modal(props) {
       <Dialog.Portal>
         <Dialog.Overlay className="dialog-overlay">
           <Dialog.Content
+            autofocus={false}
             onInteractOutside={handleClickOutside}
             className="dialog-content select-none outline-none"
             style={{ width }}
