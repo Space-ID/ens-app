@@ -24,6 +24,7 @@ import { setSelectedDomain } from 'app/slices/domainSlice'
 //Import Assets
 import LogoText from '../../assets/images/space-logo-text.png'
 import { isEmptyAddress } from '../../utils/records'
+import { getProvider } from '../../ui'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -68,8 +69,13 @@ export default function Profile() {
     try {
       const networkId = await getNetworkId()
       setNetworkId(networkId)
-      const infura = process.env.REACT_APP_INFURA_URL
-      const provider = new ethers.providers.JsonRpcProvider(infura)
+      let provider
+      try {
+        provider = await getProvider()
+      } catch (e) {
+        const infura = process.env.REACT_APP_INFURA_URL
+        provider = new ethers.providers.JsonRpcProvider(infura)
+      }
       const tSid = new SID({
         provider,
         sidAddress: process.env.REACT_APP_REGISTRY_ADDRESS,
@@ -92,9 +98,9 @@ export default function Profile() {
 
   return (
     <div className="my-[86px]">
-      <div className="flex justify-center mx-[10px] md:mx-0 px-[10px] 1400px:px-0">
+      <div className="flex justify-center mx-[10px] md:mx-0 px-[10px] 2xl:px-0">
         <Sidebar
-          className="mr-[10px] 1400px:mr-[32px] hidden lg:block"
+          className="mr-[10px] 2xl:mr-[32px] hidden lg:block"
           isReadOnly={isReadOnly}
           displayName={displayName}
           isSafeApp={isSafeApp}

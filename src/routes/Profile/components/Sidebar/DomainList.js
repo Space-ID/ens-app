@@ -176,7 +176,7 @@ export default function DomainList({
               </div>
               {item.name === selectedDomain?.name && (
                 <div className="absolute right-4 top-[calc(50%-7px)]">
-                  <ArrowIcon />
+                  <ArrowIcon size={11} />
                 </div>
               )}
             </div>

@@ -20,6 +20,7 @@ module.exports = {
         100: '#1EEFA4',
         200: '#30DB9E',
         300: '#0EA59C',
+        600: '#B1D6D3',
       },
       dark: {
         common: '#071A2F',
@@ -46,19 +47,34 @@ module.exports = {
         100: '#2980E8',
         200: '#45A6FF',
       },
+      fill: {
+        2: 'rgba(67, 140, 136, 0.25)',
+        3: 'rgba(204, 252, 255, 0.2)',
+        4: 'rgba(0, 47, 57, 0.5)',
+      },
+      overlay: 'rgba(0,0,0,0.5)',
+      boxBg: '#0E4549',
     },
     screens: {
-      '400px': '400px',
-      sm: '640px',
+      xs: '320px',
+      sm: '429px',
       md: '768px',
-      '900px': '900px',
       lg: '1024px',
-      '1100px': '1100px',
-      '1200px': '1200px',
       xl: '1280px',
-      '1400px': '1400px',
-      '2xl': '1536px',
+      '2xl': '1480px',
       menu: 'linear-gradient(180deg, #3d888d 0%, #2e4450 100%)',
+    },
+    fontSize: {
+      xs: ['12px', '20px'],
+      sm: ['14px', '22px'],
+      base: ['16px', '24px'],
+      lg: ['18px', '26px'],
+      xl: ['20px', '28px'],
+      '2xl': ['24px', '34px'],
+      '3xl': ['28px', '40px'],
+      '4xl': ['32px', '46px'],
+      '5xl': ['36px', '52px'],
+      '6xl': ['40px', '56px'],
     },
     extend: {
       boxShadow: {
@@ -86,9 +102,9 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          primary: '#30DB9E',
-          secondary: '#1EEFA4',
-          accent: '#B1D6D3',
+          primary: '#1EEFA4',
+          secondary: '#2980E8',
+          accent: 'rgba(204, 252, 255, 0.2)',
           neutral: '#68ffc9',
           info: '#BDCED1',
           success: '#218752',

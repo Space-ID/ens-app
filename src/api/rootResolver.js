@@ -1,16 +1,12 @@
 import merge from 'lodash/merge'
-import managerResolvers, {
-  defaults as managerDefaults
-} from './manager/resolvers'
-import auctionRegistrarResolvers, {
-  defaults as auctionRegistrarDefaults
-} from './registrar/resolvers'
-import subDomainRegistrarResolvers, {
-  defaults as subDomainRegistrarDefaults
-} from './subDomainRegistrar/resolvers'
+import managerResolvers from './manager/resolvers'
+import auctionRegistrarResolvers from './registrar/resolvers'
+import subDomainRegistrarResolvers from './subDomainRegistrar/resolvers'
+import giftCardResolvers from './giftCard'
 
 export default merge(
   managerResolvers,
   auctionRegistrarResolvers,
-  subDomainRegistrarResolvers
+  subDomainRegistrarResolvers,
+  giftCardResolvers
 )

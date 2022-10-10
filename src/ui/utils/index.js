@@ -6,13 +6,13 @@ import {
   isDecrypted,
   decodeLabelhash,
   encodeLabelhash,
-  labelhash
+  labelhash,
 } from './labelhash'
 import {
   encodeContenthash,
   decodeContenthash,
   isValidContenthash,
-  getProtocolType
+  getProtocolType,
 } from './contents'
 import { normalize } from '@ensdomains/eth-ens-namehash'
 import { namehash } from './namehash'
@@ -21,10 +21,11 @@ import { namehash } from './namehash'
 
 const uniq = (a, param) =>
   a.filter(
-    (item, pos) => a.map(mapItem => mapItem[param]).indexOf(item[param]) === pos
+    (item, pos) =>
+      a.map((mapItem) => mapItem[param]).indexOf(item[param]) === pos
   )
 
-const checkLabels = (...labelHashes) => labelHashes.map(hash => null)
+const checkLabels = (...labelHashes) => labelHashes.map((hash) => null)
 
 async function getEtherScanAddr() {
   const networkId = await getNetworkId()
@@ -65,9 +66,9 @@ const mergeLabels = (labels1, labels2) =>
 
 function validateName(name) {
   const nameArray = name.split('.')
-  const hasEmptyLabels = nameArray.some(label => label.length == 0)
+  const hasEmptyLabels = nameArray.some((label) => label.length == 0)
   if (hasEmptyLabels) throw new Error('Domain cannot have empty labels')
-  const normalizedArray = nameArray.map(label => {
+  const normalizedArray = nameArray.map((label) => {
     if (label === '[root]') {
       return label
     } else {
@@ -125,6 +126,13 @@ const parseSearchTerm = (term, validTld) => {
   }
 }
 
+// Add 10% buffer to handle price fructuation.
+// Any unused value will be sent back by the smart contract.
+function getBufferedPrice(price) {
+  let p = price[0]
+  return p.mul(110).div(100) // FIXME, we did not transfer back in the contract now
+}
+
 const emptyAddress = '0x0000000000000000000000000000000000000000'
 
 export {
@@ -151,5 +159,6 @@ export {
   encodeContenthash,
   decodeContenthash,
   isValidContenthash,
-  getProtocolType
+  getProtocolType,
+  getBufferedPrice,
 }

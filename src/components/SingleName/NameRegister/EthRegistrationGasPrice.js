@@ -47,9 +47,7 @@ const EthRegistrationGasPrice = ({
         </div>
       </div>
       <div className="mt-6 text-center text-white">
-        <div className="text-[14px] leading-[22px] font-urbanist">
-          Total Cost
-        </div>
+        <div className="text-sm font-urbanist">Total Cost</div>
         {!(isAuctionWinner && years === 1) && domain?.length < 5 && (
           <div className="font-bold text-[36px] text-white line-through heading-[34px]">
             {registerGasFast.add(registrationFee).toFixed(3).toString()}
