@@ -14,6 +14,8 @@ import AnimationSpin from '../../AnimationSpin'
 import { minYear, RegisterState } from './constant'
 import CheckCircle from '../../Icons/CheckCircle'
 import { QUERY_POINT_BALANCE } from '../../../graphql/queries'
+import HelpInfo from '../../Icons/HelpInfo'
+import Tooltip from '../../Tooltip/index'
 
 const Step1Main = ({
   years,
@@ -98,6 +100,25 @@ const Step1Main = ({
                       }
                     />
                     <span>SID point</span>
+                    <Tooltip
+                      side="bottom"
+                      title={
+                        <p className="text-sm text-white w-[280px] text-center">
+                          SID Points are in-app credits which can be redeemed
+                          from Gift Cards and be used to purchase domains.{' '}
+                          <a
+                            className="underline"
+                            style={{ color: 'white' }}
+                            href=""
+                            target="_blank"
+                          >
+                            More details here
+                          </a>
+                        </p>
+                      }
+                    >
+                      <HelpInfo className="text-green-600" />
+                    </Tooltip>
                   </div>
                   <div className="flex justify-between space-x-3">
                     <span className="md:text-sm text-xs text-green-600">
