@@ -56,6 +56,8 @@ const ProgressRecorder = ({
   commitmentExpirationDate,
   setCommitmentExpirationDate,
   now,
+  usePoint,
+  setUsePoint,
 }) => {
   const stepIndex = Object.keys(states).indexOf(step)
   const label = `${networkId}-${domain.label}`
@@ -105,14 +107,17 @@ const ProgressRecorder = ({
       // todo behind
     }
   }
+  if (savedStep && usePoint === undefined && savedStep.usePoint !== undefined) {
+    setUsePoint(savedStep.usePoint)
+  }
   // todo change step
   switch (step) {
     case RegisterState.request: // init state
       if (!savedStep) {
-        Store.set(label, { step, secret })
+        Store.set(label, { step, secret, usePoint })
       } else {
         if (!savedStep.secret || !savedStep.years) {
-          Store.set(label, { step, secret, years })
+          Store.set(label, { step, secret, years, usePoint })
         } else {
           let commitmentDate = new Date(checkCommitment * 1000)
 
@@ -129,7 +134,7 @@ const ProgressRecorder = ({
             // dispatch('NEXT') // Go to confirmed
           } else {
             // This should be called only when user increament/decrement years
-            Store.set(label, { step, secret, years })
+            Store.set(label, { step, secret, years, usePoint })
           }
         }
       }
@@ -141,6 +146,7 @@ const ProgressRecorder = ({
         waitUntil,
         secondsPassed,
         commitmentExpirationDate,
+        usePoint,
       })
       if (!timerRunning) {
         setTimerRunning(true)

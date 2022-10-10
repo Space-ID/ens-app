@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import UaParser from 'ua-parser-js'
 import { getWeb3Modal } from 'api/web3modal'
 import { connectProvider } from 'utils/providerUtils'
 import { setWeb3ModalProvider } from 'api/web3modal'
-
+import { isMobile } from 'utils/utils'
 import Modal from './Modal'
 const WalletBg = {
   MetaMask: '#F5841F',
@@ -24,10 +23,6 @@ const mobileWallets = [
     link: `https://link.trustwallet.com/open_url?coin_id=20000714&url=${process.env.REACT_APP_PUBLIC_URL}`,
   },
 ]
-const isMobile = () => {
-  const parser = new UaParser(window.navigator.userAgent)
-  return parser.getDevice().type === 'mobile'
-}
 
 const WalletLogo = {
   WalletConnect:
@@ -50,7 +45,6 @@ export default function WalletModal({ closeModal }) {
     connectProvider()
     closeModal()
   }
-  console.log(options)
   return (
     <Modal
       showingCrossIcon

@@ -10,10 +10,10 @@ const Step2Main = ({ onRegister, state, onRetry }) => {
   }
   return (
     <div className="flex flex-col items-center font-semibold text-white">
-      <div className="font-bold text-center md:text-[24px] md:leading-[34px] text-xl leading-[28px]">
+      <div className="font-bold text-center md:text-2xl text-xl">
         Step 2: Complete Registration
       </div>
-      <div className="text-center text-[14px] leading-[22px] mt-3 md:mt-4">
+      <div className="text-center text-sm mt-3 md:mt-4 md:w-[640px] w-[312px]">
         Confirm the registration, perform payment and complete the registration.
         Please note that if the second transaction is not processed within 7
         days after the first, the registration will be forfeited and has to be
@@ -41,12 +41,12 @@ const Step2Main = ({ onRegister, state, onRetry }) => {
       {state === RegisterState.confirm && (
         <>
           <button
-            className="w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto bg-green-200 text-dark-common"
+            className="w-[160px] h-[42px] rounded-2xl text-lg font-semibold mx-auto bg-green-200 text-dark-common"
             onClick={handleRegister}
           >
             Register
           </button>
-          <div className="md:w-[512px] mt-4 font-normal text-center text-xs leading-xl text-gray-600">
+          <div className="md:w-[512px] w-[312px] mt-4 font-normal text-center text-xs leading-xl text-gray-600">
             *An additional 10% will be charged prior to prevent transaction
             failure due to currency fluctuation. You will be refunded with the
             excess amount from the transaction.
@@ -57,7 +57,7 @@ const Step2Main = ({ onRegister, state, onRetry }) => {
         state === RegisterState.registerSuccess) && (
         <>
           {state === RegisterState.registerSuccess ? (
-            <div className="text-green-100 text-xl leading-[28px] text-center mb-[30px]">
+            <div className="text-green-100 text-xl text-center mb-[30px]">
               Registration completed!
             </div>
           ) : (
@@ -68,7 +68,7 @@ const Step2Main = ({ onRegister, state, onRetry }) => {
           )}
           <button
             className={cn(
-              'w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto',
+              'w-[160px] h-[42px] rounded-2xl text-lg font-semibold mx-auto',
               state === RegisterState.registerSuccess
                 ? 'bg-green-200 text-dark-common'
                 : 'bg-gray-800 text-white'
@@ -84,11 +84,11 @@ const Step2Main = ({ onRegister, state, onRetry }) => {
       )}
       {state === RegisterState.registerError && (
         <>
-          <div className="text-red-100 text-xl leading-[28px] text-center mb-[30px]">
+          <div className="text-red-100 text-xl text-center mb-[30px]">
             Error in registration :(
           </div>
           <button
-            className="w-[160px] h-[42px] rounded-2xl text-[18px] leading-[26px] font-semibold mx-auto text-green-200 bg-[#438C88]/25 backdrop-blur-[5px] border border-solid border-green-200"
+            className="w-[160px] h-[42px] rounded-2xl text-lg font-semibold mx-auto text-green-200 bg-fill-2 backdrop-blur-[5px] border border-solid border-green-200"
             onClick={onRetry}
           >
             Retry

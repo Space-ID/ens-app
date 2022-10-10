@@ -1,0 +1,17 @@
+.dialog-overlay {
+  @apply fixed;
+  @apply inset-0;
+  @apply bg-overlay;
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  z-index: 999;
+}
+
+.dialog-content {
+  @apply relative;
+  @apply p-6;
+  @apply rounded-3xl;
+  @apply bg-boxBg;
+  @apply text-white;
+}

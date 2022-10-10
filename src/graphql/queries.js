@@ -288,6 +288,15 @@ export const GET_RENT_PRICE = gql`
     getRentPrice(label: $label, duration: $duration)
   }
 `
+export const GET_RENT_PRICE_WITH_POINT = gql`
+  query getRentPriceWithPoint(
+    $label: String
+    $duration: Number
+    $account: String
+  ) {
+    getRentPriceWithPoint(label: $label, duration: $duration, account: $account)
+  }
+`
 
 export const GET_ELIGIBLE_COUNT = gql`
   query getEligibleCount($label: String) {
@@ -356,5 +365,21 @@ export const IS_MIGRATED = gql`
 export const IS_CONTRACT_CONTROLLER = gql`
   query isContractController($address: String) {
     isContractController(address: $address)
+  }
+`
+/* Gift Card */
+export const QUERY_GIFT_CARD_MINT_PRICE = gql`
+  query getGiftCardMintPrice($ids: [Number], $amounts: [Number]) {
+    getGiftCardMintPrice(ids: $ids, amounts: $amounts)
+  }
+`
+export const QUERY_USER_GIFT_CARDS = gql`
+  query getUserGiftCards($account: String, $ids: [Number]) {
+    getUserGiftCards(account: $account, ids: $ids)
+  }
+`
+export const QUERY_POINT_BALANCE = gql`
+  query getPointBalance($account: String) {
+    getPointBalance(account: $account)
   }
 `

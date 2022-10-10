@@ -111,7 +111,7 @@ const RegisterProgress = ({ state }) => {
           />
           <div
             className={cn(
-              'font-semibold text-center text-[14px] leading-[22px]',
+              'font-semibold text-center text-sm',
               state === RegisterState.registerSuccess
                 ? 'text-green-100'
                 : 'text-gray-600'

@@ -10,7 +10,6 @@ export const registerSlice = createSlice({
   initialState,
   reducers: {
     startRegistering: (state, { payload }) => {
-      console.log('2222222222')
       state.registering = true
     },
     errorRegistering: (state, { payload }) => {

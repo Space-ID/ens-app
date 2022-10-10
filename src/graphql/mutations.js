@@ -160,14 +160,24 @@ export const COMMIT = gql`
 `
 
 export const REGISTER = gql`
-  mutation register($label: String, $duration: Int, $signature: String) {
-    register(label: $label, duration: $duration, signature: $signature)
+  mutation register(
+    $label: String
+    $duration: Int
+    $signature: String
+    $usePoint: Boolean
+  ) {
+    register(
+      label: $label
+      duration: $duration
+      signature: $signature
+      usePoint: $usePoint
+    )
   }
 `
 
 export const RENEW = gql`
-  mutation renew($label: String, $duration: Int) {
-    renew(label: $label, duration: $duration)
+  mutation renew($label: String, $duration: Int, $usePoint: Boolean) {
+    renew(label: $label, duration: $duration, usePoint: $usePoint)
   }
 `
 
@@ -188,5 +198,27 @@ export const RENEW_DOMAINS = gql`
 export const MIGRATE_REGISTRY = gql`
   mutation migrateRegistry($name: String, $address: String) {
     migrateRegistry(name: $name, address: $address)
+  }
+`
+
+/* Gift Card */
+export const MINT_GIFT_CARD = gql`
+  mutation mintGiftCard($ids: [Number], $amounts: [Number]) {
+    mintGiftCard(ids: $ids, amounts: $amounts)
+  }
+`
+export const REDEEM_GIFT_CARD = gql`
+  mutation redeemGiftCard($ids: [Number], $amounts: [Number]) {
+    redeemGiftCard(ids: $ids, amounts: $amounts)
+  }
+`
+export const TRANSFER_GIFT_CARD = gql`
+  mutation transferGiftCard(
+    $from: String
+    $to: String
+    $ids: [Number]
+    $amounts: [Number]
+  ) {
+    transferGiftCard(from: $from, to: $to, ids: $ids, amounts: $amounts)
   }
 `

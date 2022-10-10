@@ -42,6 +42,7 @@ import {
   toggleNetworkError,
   setShowWalletModal,
 } from 'app/slices/uiSlice'
+import { setShowRedeem, setShowMint } from 'app/slices/giftCardSlice'
 import { globalErrorReactive } from 'apollo/reactiveVars'
 
 // Import assets
@@ -61,6 +62,8 @@ import SearchIcon from '../Icons/SearchIcon'
 // Import custom hooks
 import useReactiveVarListeners from 'hooks/useReactiveVarListeners'
 import useDeviceSize from '../../hooks/useDeviceSize'
+import GiftCardRedeemModal from '../Modal/GiftCardRedeemModal'
+import GiftCardModal from '../Modal/GiftCardModal'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -88,6 +91,8 @@ export default ({ children }) => {
   const [networkId, setNetworkID] = useState('')
   const [avatar, setAvatar] = useState(DefaultAvatar)
   const showWalletModal = useSelector((state) => state.ui.showWalletModal)
+  const showRedeem = useSelector((state) => state.giftCard.showRedeem)
+  const showMint = useSelector((state) => state.giftCard.showMint)
   const domains = useSelector((state) => state.domain.domains)
   const primaryDomain = useSelector((state) => state.domain.primaryDomain)
   const selectedDomain = useSelector((state) => state.domain.selectedDomain)
@@ -155,6 +160,12 @@ export default ({ children }) => {
   }
 
   useEffect(() => {
+    if (showMint || showRedeem) {
+      setIsMenuOpen(false)
+    }
+  }, [showRedeem, showMint])
+
+  useEffect(() => {
     if (isReadOnly) {
       dispatch(setAllDomains([]))
     }
@@ -216,10 +227,6 @@ export default ({ children }) => {
     history.push('/profile')
   }
 
-  const moveToWishList = () => {
-    window.location.href = process.env.REACT_APP_AUCTION_WISHLIST_URL
-  }
-
   const showDrawer = () => {
     dispatch(toggleDrawer(true))
   }
@@ -276,6 +283,19 @@ export default ({ children }) => {
       )}
       {showWalletModal && (
         <WalletModal closeModal={() => dispatch(setShowWalletModal(false))} />
+      )}
+
+      {showRedeem && (
+        <GiftCardRedeemModal
+          open={showRedeem}
+          onOpenChange={(v) => dispatch(setShowRedeem(v))}
+        />
+      )}
+      {showMint && (
+        <GiftCardModal
+          open={showMint}
+          onOpenChange={(v) => dispatch(setShowMint(v))}
+        />
       )}
 
       {/* Header component for mobile and desktop device */}

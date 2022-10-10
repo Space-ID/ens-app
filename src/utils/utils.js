@@ -2,6 +2,7 @@ import { validate } from '@ensdomains/ens-validation'
 import { normalize } from '@ensdomains/eth-ens-namehash'
 import keccak256 from 'keccak256'
 import Web3 from 'web3'
+import UaParser from 'ua-parser-js'
 import {
   emptyAddress as _emptyAddress,
   getEnsStartBlock as _ensStartBlock,
@@ -369,4 +370,9 @@ export const getDomainNftUrl = (domainName) => {
   return `https://meta.image.space.id/image/${
     process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
   }/${nftId}.svg`
+}
+
+export const isMobile = () => {
+  const parser = new UaParser(window.navigator.userAgent)
+  return parser.getDevice().type === 'mobile'
 }

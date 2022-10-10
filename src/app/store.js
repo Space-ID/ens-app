@@ -5,6 +5,7 @@ import uiSlice from './slices/uiSlice'
 import domainSlice from './slices/domainSlice'
 import registerSlice from './slices/registerSlice'
 import stagingSlice from './slices/stagingSlice'
+import giftCardSlice from './slices/giftCardSlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     domain: domainSlice,
     register: registerSlice,
     staging: stagingSlice,
+    giftCard: giftCardSlice,
   },
   devTools: process.env.NODE_ENV !== 'production',
 })
