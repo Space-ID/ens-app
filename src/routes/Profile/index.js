@@ -24,6 +24,7 @@ import { setSelectedDomain } from 'app/slices/domainSlice'
 //Import Assets
 import LogoText from '../../assets/images/space-logo-text.png'
 import { isEmptyAddress } from '../../utils/records'
+import { getProvider } from '../../ui'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -68,8 +69,13 @@ export default function Profile() {
     try {
       const networkId = await getNetworkId()
       setNetworkId(networkId)
-      const infura = process.env.REACT_APP_INFURA_URL
-      const provider = new ethers.providers.JsonRpcProvider(infura)
+      let provider
+      try {
+        provider = await getProvider()
+      } catch (e) {
+        const infura = process.env.REACT_APP_INFURA_URL
+        provider = new ethers.providers.JsonRpcProvider(infura)
+      }
       const tSid = new SID({
         provider,
         sidAddress: process.env.REACT_APP_REGISTRY_ADDRESS,

@@ -193,8 +193,9 @@ const GiftCardRedeemModal = (props) => {
         </div>
 
         <div className="grid gap-6 grid-cols-1">
-          <div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
-            <div className="flex flex-col justify-center">
+          {/*<div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">*/}
+          <div className="flex justify-center md:space-x-8 space-x-[18px] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
+            <div className="flex flex-col justify-center md:w-[144px] w-[120px]">
               {giftCardData.map((v) => (
                 <div
                   key={`${v.id}-${v.count}`}
@@ -205,19 +206,24 @@ const GiftCardRedeemModal = (props) => {
                 </div>
               ))}
             </div>
-            <div className="w-1px bg-fill-3" />
-            <div className="flex items-center justify-center">
-              <div className="md:text-xl text-base font-semibold text-center">
-                <span>
-                  Points to {curTab === TabValue.redeem ? 'Redeem' : 'Transfer'}
-                </span>
-                <br />
-                <span className="md:text-5xl text-2xl font-bold text-primary">
-                  {totalPoints}
-                </span>
-                <span> Points</span>
-              </div>
-            </div>
+            {curTab === TabValue.redeem && (
+              <>
+                <div className="divider s-divider s-divider-v my-0" />
+                <div className="flex items-center justify-center flex-grow">
+                  <div className="md:text-xl text-base font-semibold text-center">
+                    <span>
+                      Points to{' '}
+                      {curTab === TabValue.redeem ? 'Redeem' : 'Transfer'}
+                    </span>
+                    <br />
+                    <span className="md:text-5xl text-2xl font-bold text-primary">
+                      {totalPoints}
+                    </span>
+                    <span> Points</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
           {/*redeem*/}
           {curTab === TabValue.redeem && (

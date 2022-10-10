@@ -203,9 +203,11 @@ input[type='number'] {
 }
 .s-divider-h {
   height: 1px;
+  width: 100%;
 }
 .s-divider-v {
   width: 1px;
+  height: 100%;
 }
 .s-input {
   @apply bg-fill-2;

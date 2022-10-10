@@ -380,8 +380,11 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           {(registerState === RegisterState.confirm ||
             registerState.startsWith(RegisterState.register)) && (
             <Step1Sidebar
+              usePoint={usePoint}
               price={registrationFee}
+              priceWithPoint={registrationFeeWithPoint}
               totalUsd={registrationFeeInUsd}
+              totalUsdWithPoint={registrationFeeWithPointInUsd}
             />
           )}
           <div className="bg-fill-2 backdrop-blur-[5px] rounded-2xl md:px-[50px] p-6 space-y-6">

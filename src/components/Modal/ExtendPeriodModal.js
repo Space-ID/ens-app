@@ -56,14 +56,15 @@ export default function ExtendPeriodModal(props) {
   return (
     <Modal title="Extend Registration" {...otherProps}>
       <div className="flex flex-col space-y-6 items-center">
-        <div className="rounded-2xl p-[18px] bg-fill-2 flex flex-col md:flex-row md:space-x-8">
-          <div className="flex flex-col justify-center space-y-2">
-            <div className="flex">
-              <Years years={years} setYears={setYears} />
-              <span className="text-white font-bold font-urbanist text-[18px] flex pt-2 md:mx-5 mx-3">
-                =
-              </span>
+        <div className="rounded-2xl p-[18px] bg-fill-2 flex flex-col space-y-3 md:text-base text-sm font-semibold text-white">
+          <div className="flex flex-col justify-center space-y-2 md:w-[600px] w-[274px]">
+            <div className="flex md:flex-row flex-col md:items-center justify-between md:space-x-6 md:space-y-0 space-y-2">
+              <div className="flex items-center justify-between flex-1 bg-fill-2 rounded-2xl px-4 py-1">
+                <span>Registration Year</span>
+                <Years years={years} setYears={setYears} />
+              </div>
               <Price
+                className="w-[116px] text-right ml-auto md:pr-4 pr-2"
                 price={price}
                 gasPrice={gasPrice.fast}
                 loading={rentPriceLoading}
@@ -72,48 +73,64 @@ export default function ExtendPeriodModal(props) {
                 registrationFee={ethVal}
               />
             </div>
-            <div className="text-sm md:ml-[9px]">
-              {`*Estimated with ${registerGasFast.toFixed(3)} BNB gas fee.`}
+            <div className="flex md:flex-row flex-col md:items-center justify-between md:space-x-6 md:space-y-0 space-y-2">
+              <div className="flex items-center justify-between flex-1 bg-fill-2 rounded-2xl px-4 py-1">
+                <div
+                  className={cn(
+                    'flex items-center space-x-2',
+                    getPointBalance <= 0 ? 'text-gray-800' : ''
+                  )}
+                >
+                  <CheckBox
+                    checked={usePoint}
+                    onChange={setUsePoint}
+                    disabled={getPointBalance <= 0}
+                  />
+                  <span>SID point</span>
+                </div>
+                <div className="flex justify-between space-x-3">
+                  <span className="md:text-sm text-xs text-green-600">
+                    Balance: {getPointBalance}
+                  </span>
+                  <button
+                    className="px-2 rounded-[10px] bg-fill-3 text-xs text-white font-semibold"
+                    onClick={() => dispatch(setShowRedeem(true))}
+                  >
+                    Redeem
+                  </button>
+                </div>
+              </div>
+              <div className="w-[116px] text-right ml-auto md:pr-4 pr-2">
+                {usePoint &&
+                  `- USD $${(
+                    registrationFeeInUsd - registrationFeeWithPointInUsd
+                  ).toFixed(2)}`}
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between md:px-4 px-2">
+              <span className="font-normal">Estimated Gas Fee</span>
+              <span className="w-[116px] text-right ml-auto">{`USD $${registerGasFast
+                .mul(ethUsdPrice)
+                .toFixed(2)}`}</span>
             </div>
           </div>
-          <div className="s-divider s-divider-v" />
-          <div className="flex flex-col justify-between grow text-center md:mr-[9px] space-y-3">
-            <div className="flex flex-col">
-              <div className="text-sm font-normal">Estimated Total</div>
-              <div
-                className={cn(
-                  'font-bold',
-                  usePoint ? 'text-xl leading-[34px] line-through' : 'text-4xl'
-                )}
-              >
-                {`${registrationFee.toFixed(3)} BNB`}
+          <div className="divider md:pr-4 pr-0 s-divider s-divider-h"></div>
+          <div className="flex items-center justify-between md:px-4 px-2 text-right">
+            <span>Total</span>
+            <div className="flex items-center text-xl font-bold md:space-x-4 space-x-2">
+              <div className="text-primary">
+                {usePoint
+                  ? registrationFeeWithPoint.toFixed(3)
+                  : registrationFee.toFixed(3)}
+                BNB
               </div>
-              {usePoint && (
-                <div className="text-[36px] leading-[36px] text-primary font-extrabold">{`${registrationFeeWithPoint.toFixed(
-                  3
-                )} BNB`}</div>
-              )}
-              <div className="text-sm font-normal">
-                {`USD ${
+              <div className="divider divider-horizontal s-divider s-divider-v"></div>
+              <div>
+                {`USD $${
                   usePoint
-                    ? registrationFeeWithPointInUsd.toFixed(3)
-                    : registrationFeeInUsd.toFixed(3)
+                    ? registrationFeeWithPointInUsd.toFixed(2)
+                    : registrationFeeInUsd.toFixed(2)
                 }`}
-              </div>
-            </div>
-            <div className="flex flex-col items-center space-y-1 text-sm text-gray-600 font-semibold">
-              <div className="flex items-center">
-                <CheckBox onChange={setUsePoint} />
-                <span className="ml-3">Use SID point</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="mr-3">Point balance: {getPointBalance}</span>
-                <button
-                  className="px-2 rounded-[10px] bg-fill-3 text-xs text-white font-semibold"
-                  onClick={() => dispatch(setShowRedeem(true))}
-                >
-                  Redeem
-                </button>
               </div>
             </div>
           </div>
