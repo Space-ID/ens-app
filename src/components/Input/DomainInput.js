@@ -81,7 +81,7 @@ export default function DomainInput(props) {
       ></input>
       <div className="text-sm font-semibold text-primary mt-1">
         {domainState === DOMAIN_STATE.error ? (
-          <span className="text-red-100">.bnb domain not found</span>
+          <span className="text-red-100">Address not found</span>
         ) : domainState === DOMAIN_STATE.success ? (
           <span>{resolvedAddr}</span>
         ) : (
