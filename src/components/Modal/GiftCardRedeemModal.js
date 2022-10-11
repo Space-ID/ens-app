@@ -128,8 +128,10 @@ const GiftCardRedeemModal = (props) => {
       let ids = []
       let arr = []
       giftCardData.forEach((v) => {
-        ids.push(v.id)
-        arr.push(v.count)
+        if (v.count > 0) {
+          ids.push(v.id)
+          arr.push(v.count)
+        }
       })
       transferGiftCard({ variables: { amounts: arr, ids } })
     }
@@ -139,8 +141,10 @@ const GiftCardRedeemModal = (props) => {
     let ids = []
     let arr = []
     giftCardData.forEach((v) => {
-      ids.push(v.id)
-      arr.push(v.count)
+      if (v.count > 0) {
+        ids.push(v.id)
+        arr.push(v.count)
+      }
     })
     redeemGiftCard({ variables: { amounts: arr, ids } })
   }

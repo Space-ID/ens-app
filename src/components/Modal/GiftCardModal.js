@@ -77,7 +77,15 @@ const GiftCardModal = (props) => {
 
   const handleMint = () => {
     setMintLoading(true)
-    mintGiftCard({ variables: { amounts } })
+    const idArr = []
+    const amountArr = []
+    amounts.forEach((v, i) => {
+      if (v > 0) {
+        amountArr.push(v)
+        idArr.push(ids[i])
+      }
+    })
+    mintGiftCard({ variables: { amounts: amountArr, ids: idArr } })
   }
   return (
     <Modal
