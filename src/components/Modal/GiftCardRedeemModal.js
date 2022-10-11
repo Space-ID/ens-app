@@ -281,6 +281,7 @@ const GiftCardRedeemModal = (props) => {
                 Recipient domain/address
                 <br />
                 <DomainInput
+                  disabled={loading}
                   placeholder="Enter the domain/address"
                   onChange={(v) => setToAddress(v)}
                 />

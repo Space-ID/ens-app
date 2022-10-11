@@ -272,7 +272,7 @@ export default function Mainbar({
   }
 
   return (
-    <div className="bg-[rgba(72,143,139,0.25)] rounded-[24px] backdrop-blur-sm px-5 xl:px-[40px] py-6 md:py-[40px] relative 2xl:w-[962px]">
+    <div className="bg-[rgba(72,143,139,0.25)] rounded-[24px] backdrop-blur-sm px-5 xl:px-[40px] py-6 md:py-[40px] relative max-w-[962px] md:w-[calc(100vw-440px)] w-[calc(100vw-56px)]">
       {selectedDomain && (
         <TopAddress
           isRegsitrant={isRegsitrant}

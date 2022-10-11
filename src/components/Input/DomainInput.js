@@ -15,7 +15,7 @@ const DOMAIN_STATE = {
 }
 
 export default function DomainInput(props) {
-  const { onChange, placeholder } = props
+  const { onChange, placeholder, disabled } = props
   const [domainState, setDomainState] = useState(DOMAIN_STATE.default)
   const [innerV, setInnerV] = useState('')
   const innerVRef = useRef(innerV)
@@ -71,6 +71,7 @@ export default function DomainInput(props) {
   return (
     <div className="relative">
       <input
+        disabled={disabled}
         value={innerV}
         className="s-input"
         placeholder={placeholder}
