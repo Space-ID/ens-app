@@ -26,6 +26,7 @@
     "@siddomains/ui": "1.4.14",
     "@toruslabs/torus-embed": "^1.8.6",
     "@walletconnect/web3-provider": "^1.7.4",
+    "ahooks": "^3.7.1",
     "assert": "npm:assert",
     "authereum": "^0.1.0",
     "axios": "^0.27.2",
