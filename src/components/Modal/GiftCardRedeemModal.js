@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import cn from 'classnames'
 import { utils as ethersUtils } from 'ethers'
 import GiftCardSwiper from 'components/GiftCard/GiftCardSwiper'
@@ -10,8 +11,9 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { QUERY_POINT_BALANCE, QUERY_USER_GIFT_CARDS } from 'graphql/queries'
 import { REDEEM_GIFT_CARD, TRANSFER_GIFT_CARD } from 'graphql/mutations'
 import useTransaction from 'hooks/useTransaction'
-
 import Toast from '../Toast'
+import DomainInput from '../Input/DomainInput'
+
 const TabValue = {
   redeem: 'REDEEM',
   transfer: 'TRANSFER',
@@ -26,6 +28,8 @@ const GiftCardRedeemModal = (props) => {
   const [txState, setTxHash] = useTransaction()
   const account = useAccount()
   const curTabRef = useRef(curTab)
+  const primaryDomain = useSelector((state) => state.domain.primaryDomain)
+
   curTabRef.current = curTab
 
   const { data: { getPointBalance = 0 } = {}, refetch } = useQuery(
@@ -261,23 +265,19 @@ const GiftCardRedeemModal = (props) => {
           {curTab === TabValue.transfer && (
             <>
               <div className="text-base font-semibold">
-                From address
+                From domain/address
                 <br />
                 <span className="text-sm text-gray-600 font-normal">
-                  {account}
+                  {primaryDomain?.name ? `${primaryDomain.name}.bnb` : account}
                 </span>
               </div>
               <div className="text-base font-semibold">
-                To address
+                Recipient domain/address
                 <br />
-                <input
-                  className="s-input"
-                  placeholder="Enter the address"
-                  autoComplete="on"
-                  type="text"
-                  name="address"
-                  onChange={(e) => setToAddress(e.target.value)}
-                ></input>
+                <DomainInput
+                  placeholder="Enter the domain/address"
+                  onChange={(v) => setToAddress(v)}
+                />
               </div>
               <p className="text-sm text-center text-green-600 md:w-[422px] w-[310px]">
                 After transferring, the points will be added to your address
