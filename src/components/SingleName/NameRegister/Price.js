@@ -1,7 +1,7 @@
 import React from 'react'
 import priceCalculator from './PriceCalculator'
 
-const Price = ({ className, loading, price, ethUsdPrice }) => {
+const Price = ({ className, loading, price, ethUsdPrice, registrationFee }) => {
   let c
   if (!loading && price) {
     c = priceCalculator({
@@ -11,7 +11,7 @@ const Price = ({ className, loading, price, ethUsdPrice }) => {
     })
   }
   const priceInUsd = c?.priceInUsd ?? 0
-  return <div className={className}>USD ${priceInUsd}</div>
+  return <div className={className}>{registrationFee.toFixed(3)} BNB</div>
 }
 
 export default Price
