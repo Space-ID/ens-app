@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { utils as ethersUtils } from 'ethers'
 import { useDebounceEffect } from 'ahooks'
 import { isEmptyAddress } from 'utils/records'
@@ -19,44 +19,44 @@ export default function DomainInput(props) {
   const [domainState, setDomainState] = useState(DOMAIN_STATE.default)
   const [innerV, setInnerV] = useState('')
   const innerVRef = useRef(innerV)
+  const resolveDomainRef = useRef(() => {})
   const [resolvedAddr, setResolvedAddr] = useState('')
   const sid = useSID()
 
-  const resolveDomain = useCallback(
-    async (domain) => {
-      setDomainState(DOMAIN_STATE.loading)
-      const param = domain.endsWith('.bnb') ? domain : domain + '.bnb'
-      try {
-        const addr = await sid.name(param).getAddress()
-        if (isEmptyAddress(addr)) {
-          throw 'not found'
-        }
-        if (domain === innerVRef.current) {
-          setDomainState(DOMAIN_STATE.success)
-          setResolvedAddr(addr)
-          onChange(addr)
-        }
-      } catch (e) {
-        if (domain === innerVRef.current) {
-          setDomainState(DOMAIN_STATE.error)
-          onChange('')
-        }
+  const resolveDomain = async (domain) => {
+    setDomainState(DOMAIN_STATE.loading)
+    const param = domain.endsWith('.bnb') ? domain : domain + '.bnb'
+    try {
+      const addr = await sid.name(param).getAddress()
+      if (isEmptyAddress(addr)) {
+        throw 'not found'
       }
-    },
-    [sid, onChange]
-  )
+      if (domain === innerVRef.current) {
+        setDomainState(DOMAIN_STATE.success)
+        setResolvedAddr(addr)
+        onChange(addr)
+      }
+    } catch (e) {
+      if (domain === innerVRef.current) {
+        setDomainState(DOMAIN_STATE.error)
+        onChange('')
+      }
+    }
+  }
+
+  resolveDomainRef.current = resolveDomain
 
   useDebounceEffect(
     () => {
       if (ethersUtils.isAddress(innerV)) {
         onChange(innerV)
       } else if (innerV) {
-        resolveDomain(innerV)
+        resolveDomainRef?.current(innerV)
       }
     },
-    [innerV, resolveDomain],
+    [innerV],
     {
-      wait: 1000,
+      wait: 1500,
     }
   )
   const handleOnChange = (e) => {

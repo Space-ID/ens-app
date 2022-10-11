@@ -128,8 +128,10 @@ const GiftCardRedeemModal = (props) => {
       let ids = []
       let arr = []
       giftCardData.forEach((v) => {
-        ids.push(v.id)
-        arr.push(v.count)
+        if (v.count > 0) {
+          ids.push(v.id)
+          arr.push(v.count)
+        }
       })
       transferGiftCard({ variables: { amounts: arr, ids } })
     }
@@ -139,8 +141,10 @@ const GiftCardRedeemModal = (props) => {
     let ids = []
     let arr = []
     giftCardData.forEach((v) => {
-      ids.push(v.id)
-      arr.push(v.count)
+      if (v.count > 0) {
+        ids.push(v.id)
+        arr.push(v.count)
+      }
     })
     redeemGiftCard({ variables: { amounts: arr, ids } })
   }
@@ -202,7 +206,9 @@ const GiftCardRedeemModal = (props) => {
             <div
               className={cn(
                 'flex flex-col justify-center',
-                curTab === TabValue.redeem ? 'md:w-[144px] w-[120px]' : ''
+                curTab === TabValue.redeem
+                  ? 'md:w-[144px] w-[120px]'
+                  : 'md:min-w-[144px] min-w-[120px]'
               )}
             >
               {giftCardData.map((v) => (
@@ -210,7 +216,7 @@ const GiftCardRedeemModal = (props) => {
                   key={`${v.id}-${v.count}`}
                   className="flex justify-between items-center md:text-base text-sm truncate"
                 >
-                  <span className="whitespace-nowrap">
+                  <span className="whitespace-nowrap mr-1">
                     ${v.faceValue} Gift Card:
                   </span>
                   <span className="font-semibold">{`${v.count}/${v.total}`}</span>
