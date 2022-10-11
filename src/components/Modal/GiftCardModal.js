@@ -103,14 +103,14 @@ const GiftCardModal = (props) => {
           />
         </div>
         <div className="grid gap-6 md:grid-cols-[448px] grid-cols-[310px] auto-rows-min m-auto">
-          <div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr  ] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
+          <div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
             <div className="flex flex-col justify-center">
               {giftCardData.map((v) => (
                 <div
                   key={`${v.id}-${v.count}`}
                   className="flex justify-between items-center md:text-base text-sm"
                 >
-                  <span className="whitespace-nowrap">
+                  <span className="whitespace-nowrap mr-1">
                     ${v.faceValue} Gift Card:
                   </span>
                   <span className="font-semibold">{v.count}</span>

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { utils as ethersUtils } from 'ethers'
 import { useDebounceEffect } from 'ahooks'
 import { isEmptyAddress } from 'utils/records'
