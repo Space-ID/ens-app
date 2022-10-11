@@ -94,15 +94,17 @@ const GiftCardModal = (props) => {
             disabled={mintLoading}
           />
         </div>
-        <div className="grid gap-6 md:grid-cols-[438px] grid-cols-[310px] auto-rows-min m-auto">
-          <div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
+        <div className="grid gap-6 md:grid-cols-[448px] grid-cols-[310px] auto-rows-min m-auto">
+          <div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr  ] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
             <div className="flex flex-col justify-center">
               {giftCardData.map((v) => (
                 <div
                   key={`${v.id}-${v.count}`}
                   className="flex justify-between items-center md:text-base text-sm"
                 >
-                  <span>${v.faceValue} Gift Card:</span>
+                  <span className="whitespace-nowrap">
+                    ${v.faceValue} Gift Card:
+                  </span>
                   <span className="font-semibold">{v.count}</span>
                 </div>
               ))}
@@ -112,7 +114,7 @@ const GiftCardModal = (props) => {
               <span className="md:text-xl text-sm font-semibold">
                 Total Cost
               </span>
-              <div className="md:text-5xl text-2xl font-bold">
+              <div className="md:text-5xl text-2xl font-bold text-center whitespace-nowrap">
                 {mintFee} BNB
               </div>
               <span className="text-sm">USD ${mintFeeInUsd}</span>
