@@ -85,6 +85,7 @@ const Step1Main = ({
                   className="w-[116px] text-right ml-auto 2md:pr-4 pr-2"
                   price={ethVal}
                   loading={loading}
+                  registrationFee={registrationFee}
                   ethUsdPrice={ethUsdPrice}
                 />
               </div>
