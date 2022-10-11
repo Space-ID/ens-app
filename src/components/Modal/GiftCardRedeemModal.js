@@ -195,13 +195,20 @@ const GiftCardRedeemModal = (props) => {
         <div className="grid gap-6 grid-cols-1">
           {/*<div className="grid md:gap-8 gap-[18px] md:grid-cols-[144px_1px_1fr] grid-cols-[120px_1px_1fr] bg-fill-2 rounded-2xl md:px-7 p-[18px]">*/}
           <div className="flex justify-center md:space-x-8 space-x-[18px] bg-fill-2 rounded-2xl md:px-7 p-[18px]">
-            <div className="flex flex-col justify-center md:w-[144px] w-[120px]">
+            <div
+              className={cn(
+                'flex flex-col justify-center',
+                curTab === TabValue.redeem ? 'md:w-[144px] w-[120px]' : ''
+              )}
+            >
               {giftCardData.map((v) => (
                 <div
                   key={`${v.id}-${v.count}`}
-                  className="flex justify-between items-center md:text-base text-sm"
+                  className="flex justify-between items-center md:text-base text-sm truncate"
                 >
-                  <span>${v.faceValue} Gift Card:</span>
+                  <span className="whitespace-nowrap">
+                    ${v.faceValue} Gift Card:
+                  </span>
                   <span className="font-semibold">{`${v.count}/${v.total}`}</span>
                 </div>
               ))}

@@ -326,7 +326,6 @@ export default class Registrar {
 
   async getEligibleCount(name) {
     const permanentRegistrarController = this.permanentRegistrarController
-    console.log('name', name)
     let eligibleCount = await permanentRegistrarController.eligibleCount(name)
     return eligibleCount
   }

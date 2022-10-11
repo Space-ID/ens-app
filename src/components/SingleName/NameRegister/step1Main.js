@@ -81,6 +81,7 @@ const Step1Main = ({
                   className="w-[116px] text-right ml-auto md:pr-4 pr-2"
                   price={price}
                   loading={loading}
+                  registrationFee={registrationFee}
                   ethUsdPrice={ethUsdPrice}
                 />
               </div>
@@ -101,7 +102,10 @@ const Step1Main = ({
                     />
                     <span>SID point</span>
                     <Tooltip
+                      color="#2980E8"
                       side="bottom"
+                      contentClass="rounded-xl p-2"
+                      offset={10}
                       title={
                         <p className="text-sm text-white w-[280px] text-center">
                           SID Points are in-app credits which can be redeemed
@@ -135,35 +139,35 @@ const Step1Main = ({
                 </div>
                 <div className="w-[116px] text-right ml-auto md:pr-4 pr-2">
                   {usePoint &&
-                    `- USD $${(
-                      registrationFeeInUsd - registrationFeeWithPointInUsd
-                    ).toFixed(2)}`}
+                    `- ${(registrationFee - registrationFeeWithPoint).toFixed(
+                      3
+                    )} BNB`}
                 </div>
               </div>
               <div className="flex flex-row items-center justify-between md:px-4 px-2">
                 <span className="font-normal">Estimated Gas Fee</span>
-                <span className="w-[116px] text-right ml-auto">{`USD $${registerGasFast
-                  .mul(ethUsdPrice)
-                  .toFixed(2)}`}</span>
+                <span className="w-[116px] text-right ml-auto">{`${registerGasFast.toFixed(
+                  3
+                )} BNB`}</span>
               </div>
             </div>
             <div className="divider md:pr-4 pr-0 s-divider s-divider-h"></div>
             <div className="flex items-center justify-between md:px-4 px-2 text-right">
               <span>Total</span>
-              <div className="flex items-center text-xl font-bold md:space-x-4 space-x-2">
-                <div className="text-primary">
-                  {usePoint
-                    ? registrationFeeWithPoint.toFixed(3)
-                    : registrationFee.toFixed(3)}
-                  BNB
-                </div>
-                <div className="divider divider-horizontal s-divider s-divider-v"></div>
-                <div>
+              <div className="flex items-end text-xl font-bold md:space-x-4 space-x-2">
+                <div className="font-normal text-sm text-green-600">
                   {`USD $${
                     usePoint
                       ? registrationFeeWithPointInUsd.toFixed(2)
                       : registrationFeeInUsd.toFixed(2)
                   }`}
+                </div>
+                <div className="divider divider-horizontal s-divider w-[1px] my-1"></div>
+                <div className="text-primary">
+                  {usePoint
+                    ? registrationFeeWithPoint.toFixed(3)
+                    : registrationFee.toFixed(3)}
+                  BNB
                 </div>
               </div>
             </div>

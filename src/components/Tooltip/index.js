@@ -5,8 +5,9 @@ export default function Tooltip(props) {
     title,
     children,
     side,
-    sideOffset = 2,
+    offset = 4,
     color = 'white',
+    contentClass = '',
     ...other
   } = props
   return (
@@ -15,11 +16,12 @@ export default function Tooltip(props) {
         <TooltipPrimitive.Trigger>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
-            className="bg-secondary rounded-xl p-2 z-[999]"
+            className={`z-[999] p-1 rounded-lg ${contentClass}`}
+            style={{ backgroundColor: color }}
             side={side}
-            sideOffset={10}
+            sideOffset={offset}
           >
-            <TooltipPrimitive.Arrow fill="#2980E8" />
+            <TooltipPrimitive.Arrow fill={color} />
             {title}
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
