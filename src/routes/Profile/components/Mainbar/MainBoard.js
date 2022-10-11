@@ -9,7 +9,7 @@ import union from 'lodash/union'
 
 //Import components
 import PendingTx from 'components/PendingTx'
-import { Tooltip } from 'components/Tooltip/Tooltip'
+import Tooltip from 'components/Tooltip/index'
 
 //Import GraphQL Queries
 import {
@@ -339,7 +339,11 @@ export default function MainBoard({
                       className="cursor-pointer"
                       onClick={handleBNBAddressCopy}
                     >
-                      <Tooltip message={tooltipMessage} delay={1000}>
+                      <Tooltip
+                        title={tooltipMessage}
+                        color="#508292"
+                        contentClass="text-white text-xs font-semibold"
+                      >
                         <CopyIcon />
                       </Tooltip>
                     </span>

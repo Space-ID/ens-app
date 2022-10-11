@@ -90,7 +90,10 @@ export default function ExtendPeriodModal(props) {
                   />
                   <span>SID point</span>
                   <Tooltip
+                    color="#2980E8"
                     side="bottom"
+                    contentClass="rounded-xl p-2"
+                    offset={10}
                     title={
                       <p className="text-sm text-white w-[280px] text-center">
                         SID Points are in-app credits which can be redeemed from

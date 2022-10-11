@@ -21,7 +21,7 @@ import {
   isExpired,
   isExpiresLessThanOneMonth,
 } from 'utils/dates'
-import { Tooltip } from '../../../../components/Tooltip/Tooltip'
+import Tooltip from 'components/Tooltip/index'
 import { useLazyQuery } from '@apollo/client'
 import { QUERY_POINT_BALANCE } from '../../../../graphql/queries'
 import { utils as ethersUtils } from 'ethers/lib/ethers'
@@ -134,7 +134,11 @@ export default function TopAddress({
                         : ''}
                     </p>
                     <div className="ml-2" onClick={handleCopyRegistrantAddress}>
-                      <Tooltip message={tooltipMessage} delay={1000}>
+                      <Tooltip
+                        title={tooltipMessage}
+                        color="#508292"
+                        contentClass="text-white text-xs font-semibold"
+                      >
                         <CopyIcon />
                       </Tooltip>
                     </div>
