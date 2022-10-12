@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EthVal from 'ethval'
 import { utils as ethersUtils } from 'ethers'
 import cn from 'classnames'
@@ -32,6 +32,7 @@ const Step1Main = ({
   underPremium,
   connectHandler,
   onRequest,
+  refetchRent,
   state,
   registrationFee,
   registrationFeeInUsd,
@@ -58,6 +59,9 @@ const Step1Main = ({
     skip: !ethersUtils.isAddress(account),
     fetchPolicy: 'network-only',
   })
+  useEffect(() => {
+    refetchRent()
+  }, [getPointBalance])
 
   return (
     <>
@@ -79,9 +83,8 @@ const Step1Main = ({
                 </div>
                 <Price
                   className="w-[116px] text-right ml-auto md:pr-4 pr-2"
-                  price={price}
+                  price={ethVal}
                   loading={loading}
-                  registrationFee={registrationFee}
                   ethUsdPrice={ethUsdPrice}
                 />
               </div>

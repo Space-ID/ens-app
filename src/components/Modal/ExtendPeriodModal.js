@@ -1,5 +1,5 @@
 //Import packages
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import EthVal from 'ethval'
 import { useDispatch } from 'react-redux'
@@ -31,6 +31,7 @@ export default function ExtendPeriodModal(props) {
     rentPriceLoading,
     gasPrice,
     extendHandler,
+    refetchRent,
     ...otherProps
   } = props
   const account = useAccount()
@@ -42,6 +43,9 @@ export default function ExtendPeriodModal(props) {
     skip: !ethersUtils.isAddress(account),
     fetchPolicy: 'network-only',
   })
+  useEffect(() => {
+    refetchRent()
+  }, [getPointBalance])
 
   const ethVal = new EthVal(`${price || 0}`).toEth()
   const ethValWithPoint = new EthVal(`${priceWithPoint || price || 0}`).toEth()
@@ -67,12 +71,11 @@ export default function ExtendPeriodModal(props) {
               </div>
               <Price
                 className="w-[116px] text-right ml-auto md:pr-4 pr-2"
-                price={price}
+                price={ethVal}
                 gasPrice={gasPrice.fast}
                 loading={rentPriceLoading}
                 ethUsdPrice={ethUsdPrice}
                 underPremium={false}
-                registrationFee={ethVal}
               />
             </div>
             <div className="flex md:flex-row flex-col md:items-center justify-between md:space-x-6 md:space-y-0 space-y-2">

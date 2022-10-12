@@ -137,6 +137,7 @@ export default function Mainbar({
   const {
     data: { getRentPriceWithPoint } = {},
     loading: rentPriceWithPointLoading,
+    refetch: refetchRentPriceWithPoint,
   } = useQuery(GET_RENT_PRICE_WITH_POINT, {
     variables: {
       duration,
@@ -184,6 +185,10 @@ export default function Mainbar({
   useEffect(() => {
     loadEthUSDPriceData()
   }, [isReadOnly])
+
+  const refetchRent = () => {
+    refetchRentPriceWithPoint()
+  }
 
   const refetchRegistrantAddress = async () => {
     try {
@@ -354,6 +359,7 @@ export default function Mainbar({
         ethUsdPremiumPrice={currentPremium}
         premiumOnlyPrice={getPremiumPrice}
         extendHandler={extendExpiryDate}
+        refetchRent={refetchRent}
       />
       <AddressChangeModal
         defaultValue={updatedRecords.value}

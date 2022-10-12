@@ -264,6 +264,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const {
     data: { getRentPriceWithPoint } = {},
     loading: rentPriceWithPointLoading,
+    refetch: refetchRentPriceWithPoint,
   } = useQuery(GET_RENT_PRICE_WITH_POINT, {
     variables: {
       duration,
@@ -326,6 +327,10 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   if (block) {
     currentPremium = oracle.getTargetAmountByDaysPast(oracle.getDaysPast(now))
     underPremium = now.isBetween(releasedDate, zeroPremiumDate)
+  }
+
+  const refetchRent = () => {
+    refetchRentPriceWithPoint()
   }
 
   const connectHandler = () => {
@@ -411,6 +416,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                 registrationFeeWithPoint={registrationFeeWithPoint}
                 registrationFeeWithPointInUsd={registrationFeeWithPointInUsd}
                 onRequest={handleRequest}
+                refetchRent={refetchRent}
               />
             )}
             {(registerState === RegisterState.confirm ||
