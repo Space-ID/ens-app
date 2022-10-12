@@ -200,7 +200,7 @@ export default function ProfileCard({
         <div className="grid gap-2 bg-fill-2 rounded-2xl px-3 py-4">
           <div className="flex justify-between">
             <div className="text-base font-bold text-white">
-              SPACE ID Point
+              SID Point
               <br />
               <span
                 className="text-xs font-semibold text-green-100 cursor-pointer hover:opacity-80"
