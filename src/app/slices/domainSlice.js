@@ -26,7 +26,9 @@ export const domainSlice = createSlice({
     },
     setAllDomains: (state, { payload }) => {
       state.domains = payload
-      state.primaryDomain = payload.find((v) => v.isPrimary)
+    },
+    setPrimaryDomain: (state, { payload }) => {
+      state.primaryDomain = payload
     },
   },
   extraReducers: (builder) => {
@@ -42,13 +44,16 @@ export const domainSlice = createSlice({
         state.selectedDomain = data[0]
       }
       state.domains = data
-      state.primaryDomain = data.find((v) => v.isPrimary)
     })
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setSelectedDomain, setSearchDomainName, setAllDomains } =
-  domainSlice.actions
+export const {
+  setSelectedDomain,
+  setSearchDomainName,
+  setAllDomains,
+  setPrimaryDomain,
+} = domainSlice.actions
 
 export default domainSlice.reducer

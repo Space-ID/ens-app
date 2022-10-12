@@ -13,7 +13,6 @@ import PendingTx from 'components/PendingTx'
 //Import graphql queries
 import { GET_REVERSE_RECORD } from 'graphql/queries'
 import { SET_NAME } from 'graphql/mutations'
-import { refetchTilUpdatedSingleForPrimaryKey } from 'utils/graphql'
 
 //Import custom functions
 import { useQuery, gql } from '@apollo/client'
@@ -22,7 +21,7 @@ import { useEditable } from 'components/hooks'
 
 //Import assets
 import DefaultAvatar from 'assets/images/default-avatar.png'
-import { setAllDomains } from 'app/slices/domainSlice'
+import { setAllDomains, setPrimaryDomain } from 'app/slices/domainSlice'
 
 export const GET_ACCOUNT = gql`
   query getAccounts @client {
@@ -90,9 +89,9 @@ export default function ProfileCard({
     if (confirmed && !pending) {
       const newDomains = domainsRef.current.map((domain) => ({
         ...domain,
-        isPrimary: domain.name === newPrimaryName.current,
       }))
       dispatch(setAllDomains(newDomains))
+      dispatch(setPrimaryDomain({ name: newPrimaryName.current }))
     }
   }, [pending, confirmed])
 

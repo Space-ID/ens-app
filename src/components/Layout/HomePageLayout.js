@@ -32,6 +32,7 @@ import { GET_REVERSE_RECORD } from 'graphql/queries'
 import {
   getDomainList,
   setAllDomains,
+  setPrimaryDomain,
   setSelectedDomain,
 } from 'app/slices/domainSlice'
 
@@ -61,6 +62,8 @@ import SearchIcon from '../Icons/SearchIcon'
 // Import custom hooks
 import useReactiveVarListeners from 'hooks/useReactiveVarListeners'
 import useDeviceSize from '../../hooks/useDeviceSize'
+import { ethers } from '../../ui'
+import SID from '@siddomains/sidjs'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -112,6 +115,17 @@ export default ({ children }) => {
   useEffect(() => {
     if (accounts) {
       dispatch(getAccounts(accounts))
+      const infura = process.env.REACT_APP_INFURA_URL
+      const provider = new ethers.providers.JsonRpcProvider(infura)
+      const sid = new SID({
+        provider,
+        sidAddress: process.env.REACT_APP_REGISTRY_ADDRESS,
+      })
+      sid.getName(accounts[0]).then((res) => {
+        if (res.name) {
+          dispatch(setPrimaryDomain({ name: res.name.replace('.bnb', '') }))
+        }
+      })
     }
   }, [accounts])
 
