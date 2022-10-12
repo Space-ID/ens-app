@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
-import { getNetworkId } from 'ui'
+import { getNetworkId, getProvider } from 'ui'
 import { useSelector, useDispatch } from 'react-redux'
 import cn from 'classnames'
 import ClickAwayListener from 'react-click-away-listener'
@@ -117,11 +117,16 @@ export default ({ children }) => {
     },
   })
 
-  useEffect(() => {
+  useEffect(async () => {
     if (accounts) {
       dispatch(getAccounts(accounts))
-      const infura = process.env.REACT_APP_INFURA_URL
-      const provider = new ethers.providers.JsonRpcProvider(infura)
+      let provider
+      try {
+        provider = await getProvider()
+      } catch (e) {
+        const infura = process.env.REACT_APP_INFURA_URL
+        provider = new ethers.providers.JsonRpcProvider(infura)
+      }
       const sid = new SID({
         provider,
         sidAddress: process.env.REACT_APP_REGISTRY_ADDRESS,
