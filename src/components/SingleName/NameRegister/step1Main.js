@@ -116,7 +116,7 @@ const Step1Main = ({
                           <a
                             className="underline"
                             style={{ color: 'white' }}
-                            href=""
+                            href="https://docs.space.id/user-tutorials-for-.bnb-domain/how-to-use-space-id-gift-card"
                             target="_blank"
                           >
                             More details here
