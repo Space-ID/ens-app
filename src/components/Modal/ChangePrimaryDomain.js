@@ -75,10 +75,7 @@ export default function ChangePrimaryDomain({
 
   useEffect(() => {
     setSelected(null)
-  }, [show])
-
-  useEffect(() => {
-    if (networkId && account)
+    if (show) {
       fetchRecords(account, networkId).then((res) => {
         const arr = res.map((item) => {
           return {
@@ -88,7 +85,8 @@ export default function ChangePrimaryDomain({
         })
         setOptions(arr)
       })
-  }, [account, networkId])
+    }
+  }, [show])
 
   return (
     <div>
