@@ -300,8 +300,10 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   if (!blockCreatedAt && checkCommitment > 0) {
     setBlockCreatedAt(checkCommitment * 1000)
   }
-  if (getBalance && getRentPrice) {
-    hasSufficientBalance = getBalance.gt(getRentPrice)
+  if (getBalance && getRentPrice && getRentPriceWithPoint) {
+    hasSufficientBalance = getBalance.gt(
+      usePoint ? getRentPriceWithPoint : getRentPrice
+    )
   }
   if (blockCreatedAt && !waitUntil) {
     setWaitUntil(blockCreatedAt + waitTime * 1000)
