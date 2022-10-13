@@ -173,10 +173,23 @@ export default function Mainbar({
   }
 
   useEffect(() => {
-    if (confirmed && !pending) {
+    let timer
+    if (!pending) {
       dispatch(getDomainList({ account, networkId }))
+      let count = 0
+      timer = window.setInterval(() => {
+        if (count <= 2) {
+          count++
+          dispatch(getDomainList({ account, networkId }))
+        } else {
+          window.clearInterval(timer)
+        }
+      }, 1000 * 10)
     }
+    return () => window.clearInterval(timer)
   }, [pending, confirmed, account, networkId])
+
+  useEffect(() => {}, [account, networkId])
 
   useEffect(() => {
     setIsRegsitrant(registrantAddress === account)
