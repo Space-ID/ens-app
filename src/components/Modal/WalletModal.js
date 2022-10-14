@@ -40,11 +40,14 @@ export default function WalletModal(props) {
   useEffect(() => {
     let userOpts = web3Modal?.getUserOptions() ?? []
     userOpts = [...userOpts]
-    if (isMobile() && userOpts[0]?.name !== injected.TRUST.name) {
-      userOpts.splice(1, 0, {
-        ...injected.TRUST,
-        id: providers.WALLETCONNECT.id,
-      })
+    if (isMobile()) {
+      const index = userOpts.findIndex((v) => v.id === injected.TRUST.id)
+      if (userOpts[index]?.name !== injected.TRUST.name) {
+        userOpts.splice(index + 1, 0, {
+          ...injected.TRUST,
+          id: providers.WALLETCONNECT.id,
+        })
+      }
     }
     if (
       userOpts.find(
