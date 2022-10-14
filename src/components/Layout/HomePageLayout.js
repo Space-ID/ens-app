@@ -301,7 +301,10 @@ export default ({ children }) => {
         </Modal>
       )}
       {showWalletModal && (
-        <WalletModal closeModal={() => dispatch(setShowWalletModal(false))} />
+        <WalletModal
+          open={showWalletModal}
+          onOpenChange={(v) => dispatch(setShowWalletModal(v))}
+        />
       )}
 
       {showRedeem && (
