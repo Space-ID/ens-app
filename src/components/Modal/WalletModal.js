@@ -40,36 +40,35 @@ export default function WalletModal(props) {
       const index = userOpts.findIndex((v) => v.id === injected.TRUST.id)
       const injectedOpts = userOpts[index]
       if (injectedOpts) {
-        if (injectedOpts.name !== injected.METAMASK.name) {
-          userOpts.splice(index + 1, 0, {
-            ...injected.METAMASK,
-            deepLink: WalletDeepLinks[injected.METAMASK.name],
-          })
-        }
-        if (injectedOpts.name !== injected.TRUST.name) {
+        if (
+          injectedOpts.name !== injected.TRUST.name &&
+          injectedOpts.name !== injected.METAMASK.name
+        ) {
           userOpts.splice(index + 1, 0, {
             ...injected.TRUST,
             deepLink: WalletDeepLinks[injected.TRUST.name],
           })
         }
+        if (
+          injectedOpts.name !== injected.METAMASK.name &&
+          injectedOpts.name !== injected.TRUST.name
+        ) {
+          userOpts.splice(index + 1, 0, {
+            ...injected.METAMASK,
+            deepLink: WalletDeepLinks[injected.METAMASK.name],
+          })
+        }
       } else {
-        userOpts.push({
-          ...injected.TRUST,
-          deepLink: WalletDeepLinks[injected.TRUST.name],
-        })
         userOpts.push({
           ...injected.METAMASK,
           deepLink: WalletDeepLinks[injected.METAMASK.name],
         })
+        userOpts.push({
+          ...injected.TRUST,
+          deepLink: WalletDeepLinks[injected.TRUST.name],
+        })
       }
-    }
-    if (
-      userOpts.find(
-        (v) =>
-          v.name === providers.WALLETCONNECT.name &&
-          v.id === providers.WALLETCONNECT.id
-      ) === undefined
-    ) {
+      userOpts = userOpts.filter((v) => v.name !== providers.WALLETCONNECT.name)
       userOpts.push(providers.WALLETCONNECT)
     }
     setOptions(userOpts)
@@ -78,7 +77,7 @@ export default function WalletModal(props) {
     if (deepLink) {
       const a = document.createElement('a')
       a.href = deepLink
-      a.target = '_blank'
+      a.target = '_self'
       document.body.appendChild(a)
       a.click()
       a.remove()
