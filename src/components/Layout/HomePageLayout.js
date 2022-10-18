@@ -136,6 +136,9 @@ export default ({ children }) => {
           dispatch(setPrimaryDomain({ name: res.name.replace('.bnb', '') }))
         }
       })
+    } else {
+      dispatch(getAccounts(undefined))
+      dispatch(setPrimaryDomain(undefined))
     }
   }, [accounts])
 
