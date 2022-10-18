@@ -11,19 +11,15 @@ const WalletBg = {
   Trust: '#3375BB',
   default: '#000000',
 }
-const mobileWallets = [
-  {
-    id: 'MetaMask',
-    link: `https://metamask.app.link/dapp/${process.env.REACT_APP_PUBLIC_URL.replace(
-      'https://',
-      ''
-    )}/`,
-  },
-  {
-    id: 'Trust',
-    link: `https://link.trustwallet.com/open_url?coin_id=20000714&url=${process.env.REACT_APP_PUBLIC_URL}`,
-  },
-]
+const WalletDeepLinks = {
+  [injected.METAMASK
+    .name]: `https://metamask.app.link/dapp/${process.env.REACT_APP_PUBLIC_URL.replace(
+    'https://',
+    ''
+  )}/`,
+  [injected.TRUST
+    .name]: `https://link.trustwallet.com/open_url?coin_id=20000714&url=${process.env.REACT_APP_PUBLIC_URL}/`,
+}
 
 const WalletLogo = {
   WalletConnect:
@@ -42,10 +38,28 @@ export default function WalletModal(props) {
     userOpts = [...userOpts]
     if (isMobile()) {
       const index = userOpts.findIndex((v) => v.id === injected.TRUST.id)
-      if (userOpts[index]?.name !== injected.TRUST.name) {
-        userOpts.splice(index + 1, 0, {
+      const injectedOpts = userOpts[index]
+      if (injectedOpts) {
+        if (injectedOpts.name !== injected.METAMASK.name) {
+          userOpts.splice(index + 1, 0, {
+            ...injected.METAMASK,
+            deepLink: WalletDeepLinks[injected.METAMASK.name],
+          })
+        }
+        if (injectedOpts.name !== injected.TRUST.name) {
+          userOpts.splice(index + 1, 0, {
+            ...injected.TRUST,
+            deepLink: WalletDeepLinks[injected.TRUST.name],
+          })
+        }
+      } else {
+        userOpts.push({
           ...injected.TRUST,
-          id: providers.WALLETCONNECT.id,
+          deepLink: WalletDeepLinks[injected.TRUST.name],
+        })
+        userOpts.push({
+          ...injected.METAMASK,
+          deepLink: WalletDeepLinks[injected.METAMASK.name],
         })
       }
     }
@@ -60,10 +74,19 @@ export default function WalletModal(props) {
     }
     setOptions(userOpts)
   }, [web3Modal])
-  const handleClick = async (id) => {
-    setWeb3ModalProvider(id)
-    connectProvider()
-    props?.onOpenChange(false)
+  const handleClick = async (id, deepLink) => {
+    if (deepLink) {
+      const a = document.createElement('a')
+      a.href = deepLink
+      a.target = '_blank'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+    } else {
+      setWeb3ModalProvider(id)
+      connectProvider()
+      props?.onOpenChange(false)
+    }
   }
   return (
     <Modal title="Select Wallet" {...props}>
@@ -71,7 +94,7 @@ export default function WalletModal(props) {
         {options.map((item) => (
           <div
             key={`${item.id}-${item.name}`}
-            onClick={() => handleClick(item.id)}
+            onClick={() => handleClick(item.id, item.deepLink)}
             className="h-[72px] rounded-2xl p-4 flex items-center cursor-pointer"
             style={{ backgroundColor: WalletBg[item.name] ?? WalletBg.default }}
           >
