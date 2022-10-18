@@ -19,7 +19,7 @@ export default function AddressBar({
   txHash,
 }) {
   return (
-    <div className="cursor-pointer group relative bg-[rgba(204,252,255,0.2)] rounded-[89px] px-[43px] py-2 text-center text-white 1200px:w-[224px]">
+    <div className="cursor-pointer group relative bg-fill-3 rounded-[89px] px-[43px] py-2 text-center text-white 1200px:w-[224px]">
       {canEdit && (
         <div
           onClick={clickHandler}

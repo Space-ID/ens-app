@@ -109,7 +109,7 @@ export default function DomainList({
 
   return (
     <div className={cn('', className)}>
-      <div className="flex items-center justify-between pr-5">
+      <div className="flex items-center justify-between">
         <Searchbar className="mr-[14px]" onChangeHandler={onChangeHandler} />
         <div className="relative h-full group">
           <BarIcon className="text-[rgba(204,252,255,0.6)] cursor-pointer h-full flex items-center" />
@@ -130,7 +130,7 @@ export default function DomainList({
         </div>
       </div>
       {domainsList.length > 0 ? (
-        <div className="mt-4 relative max-h-[calc(100vh-335px)] md:max-h-[60vh] overflow-y-auto mr-3 pr-2">
+        <div className="mt-4 relative max-h-[calc(100vh-335px)] md:max-h-[60vh] overflow-y-auto mr-[-4px] pr-1">
           {domains.map((item, index) => (
             <div
               key={item.name}

@@ -383,7 +383,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             {nameArr.join('')}
           </p>
         </div>
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col 2md:flex-row">
           {(registerState === RegisterState.confirm ||
             registerState.startsWith(RegisterState.register)) && (
             <Step1Sidebar
@@ -394,7 +394,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
               totalUsdWithPoint={registrationFeeWithPointInUsd}
             />
           )}
-          <div className="bg-fill-2 backdrop-blur-[5px] rounded-2xl md:px-[50px] p-6 space-y-6">
+          <div className="bg-fill-2 backdrop-blur-[5px] rounded-2xl 2md:px-[50px] p-6 space-y-6">
             {registerState.startsWith(RegisterState.request) && (
               <Step1Main
                 usePoint={usePoint}
