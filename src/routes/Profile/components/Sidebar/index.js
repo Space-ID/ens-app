@@ -34,12 +34,12 @@ export default function Sidebar({ className, isReadOnly }) {
   return (
     <div
       className={cn(
-        'bg-fill-3 backdrop-blur-sm rounded-3xl p-5 min-h-[calc(100vh-180px)] flex flex-col justify-between w-[360px]',
+        'bg-[rgba(204,252,255,0.2)] backdrop-blur-sm rounded-[24px] py-5 pl-5 min-h-[calc(100vh-180px)] flex flex-col justify-between max-w-[360px]',
         className
       )}
     >
       <div className="flex flex-col h-full">
-        <div className="pb-4 border-b border-fill-3">
+        <div className="pb-4 border-b border-[rgba(204,252,255,0.2)] mr-5">
           <ProfileCard
             className="pb-4"
             account={account}

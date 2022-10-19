@@ -88,22 +88,24 @@ export default function TopAddress({
       })
   }
   return (
-    <div className="flex 2md:flex-row 2md:items-stretch flex-col items-center w-full 2md:space-x-7 pb-8 border-b border-fill-3">
-      <img
-        className="rounded-[20px] drop-shadow-[0px_0px_55px_rgba(80,255,192,0.6)] max-w-[320px] w-full"
-        src={imageURL}
-        onError={nftErrorLoading}
-      />
-      <div className="flex flex-col justify-between 2md:w-full 2md:mt-0 mt-4">
-        <div className="justify-between 2md:flex">
+    <div className={cn('md:flex w-full md:space-x-7', className)}>
+      <div className="relative bg-cover md:mr-7 w-[320px] h-[320px] drop-shadow-[0px_0px_55px_rgba(80,255,192,0.6)] flex-none">
+        <img
+          className="rounded-[20px]"
+          src={imageURL}
+          onError={nftErrorLoading}
+        />
+      </div>
+      <div className="ml-0 pt-6 md:space-y-[120px] md:w-full">
+        <div className="justify-between md:flex">
           <div>
-            <p className="text-center 2md:text-left font-bold text-2xl font-semibold text-green-100">
+            <p className="text-center md:text-left font-bold text-[18px] xl:text-[24px] text-green-100">
               Registrant
             </p>
             {loadingRegistration ? (
               <AnimationSpin />
             ) : (
-              <div className="flex items-center justify-center 2md:justify-start">
+              <div className="flex items-center justify-center md:justify-start">
                 {pending ? (
                   <PendingTx
                     txHash={txHash}
@@ -120,7 +122,7 @@ export default function TopAddress({
                     className="mt-1"
                   />
                 ) : (
-                  <div className="flex text-lg text-white font-semibold items-center mt-2 break-all md:break-normal">
+                  <div className="flex text-[14px] xl:text-[18px] text-white font-semibold items-center mt-2 break-all md:break-normal">
                     <p className="text-center">
                       {registrantAddress
                         ? `${registrantAddress.substring(
@@ -147,10 +149,15 @@ export default function TopAddress({
           </div>
 
           {!pending && !loadingRegistration && (
-            <div className="flex items-center justify-center 2md:justify-start mt-4 2md:mt-0">
+            <div className="flex items-center justify-center md:justify-start">
               <button
                 disabled={pending || !isRegsitrant}
-                className="btn-primary py-2 px-6 rounded-full 2md:mr-4 font-semibold"
+                className={cn(
+                  'py-2 px-6 rounded-full md:mr-4 font-semibold',
+                  pending || !isRegsitrant
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-green-200 text-dark-100'
+                )}
                 onClick={transferRegistrantAddress}
               >
                 Transfer
@@ -159,9 +166,9 @@ export default function TopAddress({
           )}
         </div>
         <div>
-          <div className="items-center justify-between mt-8 2md:flex 2md:mt-0">
+          <div className="items-center justify-between mt-8 md:flex md:mt-0">
             <div>
-              <p className="font-bold text-2xl font-semibold text-green-100 text-center 2md:text-left">
+              <p className="font-bold text-[18px] xl:text-xl text-green-100 text-center md:text-left">
                 Expiry Date
               </p>
               {pendingExp ? (
@@ -174,11 +181,11 @@ export default function TopAddress({
                   className="mt-1"
                 />
               ) : (
-                <div className="flex text-lg text-white font-semibold items-center mt-2">
+                <div className="flex text-[14px] xl:text-[18px] text-white font-semibold items-center mt-2">
                   {/* <p>2023.04.22 at 08:00 (UTC+8:00)</p> */}
                   <p
                     className={cn(
-                      'w-full text-center 2md:text-left',
+                      'w-full text-center md:text-left',
                       isExpiresLessThanOneMonth(selectedDomain?.expires)
                         ? 'text-red-100'
                         : ''
@@ -193,17 +200,22 @@ export default function TopAddress({
                 </div>
               )}
               {isExpired(selectedDomain?.expires) && (
-                <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 2md:hidden text-center font-semibold">
+                <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 md:hidden text-center font-semibold">
                   {`Expired. Grace period ends ${gracePeriodEndStr(
                     selectedDomain?.expires
                   )}`}
                 </p>
               )}
             </div>
-            <div className="flex items-center justify-center mt-4 2md:justify-start 2md:mt-0">
+            <div className="flex items-center justify-center mt-4 md:justify-start md:mt-0">
               <button
                 disabled={pendingExp || loadingRegistration || !isRegsitrant}
-                className="btn-primary py-2 px-[28px] rounded-full 2md:mr-4 font-semibold"
+                className={cn(
+                  'py-2 px-[28px] rounded-full md:mr-4 font-semibold',
+                  pendingExp || loadingRegistration || !isRegsitrant
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-green-200 text-dark-100'
+                )}
                 onClick={extendHandler}
               >
                 Extend
@@ -211,7 +223,7 @@ export default function TopAddress({
             </div>
           </div>
           {isExpired(selectedDomain?.expires) && (
-            <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 2md:mr-4 2md:block hidden font-semibold">
+            <p className="bg-red-100 py-1 px-2.5 text-white text-base rounded-xl mt-2 md:mr-4 md:block hidden font-semibold">
               {`Expired. Grace period ends ${gracePeriodEndStr(
                 selectedDomain?.expires
               )}`}

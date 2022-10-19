@@ -5,7 +5,6 @@ import cn from 'classnames'
 
 // Import components
 import Modal from './Modal'
-import { fetchRecords } from 'api/index'
 
 const colorStyles = {
   control: (styles) => ({
@@ -66,26 +65,19 @@ export default function ChangePrimaryDomain({
   show,
   saveHandler,
   closeModal,
+  domains,
   loading,
-  account,
-  networkId,
 }) {
   const [selected, setSelected] = useState(null)
-  const [options, setOptions] = useState([])
+  const options = domains.map((item) => {
+    return {
+      value: item.name,
+      label: item.name + '.bnb',
+    }
+  })
 
   useEffect(() => {
     setSelected(null)
-    if (show) {
-      fetchRecords(account, networkId).then((res) => {
-        const arr = res.map((item) => {
-          return {
-            value: item.name,
-            label: item.name + '.bnb',
-          }
-        })
-        setOptions(arr)
-      })
-    }
   }, [show])
 
   return (

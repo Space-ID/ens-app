@@ -97,10 +97,10 @@ export default function Profile() {
   // }, [domains, selectedDomain])
 
   return (
-    <div className="my-[86px] w-full mx-auto 1.5xl:mx-16">
-      <div className="flex justify-center w-full">
+    <div className="my-[86px]">
+      <div className="flex justify-center mx-[10px] md:mx-0 px-[10px] 2xl:px-0">
         <Sidebar
-          className="mr-8 hidden 1.5xl:block"
+          className="mr-[10px] 2xl:mr-[32px] hidden lg:block"
           isReadOnly={isReadOnly}
           displayName={displayName}
           isSafeApp={isSafeApp}

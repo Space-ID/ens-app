@@ -136,9 +136,6 @@ export default ({ children }) => {
           dispatch(setPrimaryDomain({ name: res.name.replace('.bnb', '') }))
         }
       })
-    } else {
-      dispatch(getAccounts(undefined))
-      dispatch(setPrimaryDomain(undefined))
     }
   }, [accounts])
 
@@ -267,7 +264,7 @@ export default ({ children }) => {
   }
 
   return (
-    <>
+    <section className="bg-[url('assets/images/home-bg.png')] bg-cover relative min-h-[100vh] flex items-center justify-center">
       {globalError.network && (
         <Modal
           width="auto"
@@ -304,10 +301,7 @@ export default ({ children }) => {
         </Modal>
       )}
       {showWalletModal && (
-        <WalletModal
-          open={showWalletModal}
-          onOpenChange={(v) => dispatch(setShowWalletModal(v))}
-        />
+        <WalletModal closeModal={() => dispatch(setShowWalletModal(false))} />
       )}
 
       {showRedeem && (
@@ -322,49 +316,84 @@ export default ({ children }) => {
           onOpenChange={(v) => dispatch(setShowMint(v))}
         />
       )}
-      <section className="bg-[url('assets/images/home-bg.png')] bg-cover relative min-h-[100vh] flex items-center justify-center">
-        {/* Header component for mobile and desktop device */}
-        <div
-          className={cn(
-            'md:bg-transparency absolute top-0 w-full z-50',
-            isMenuOpen
-              ? 'min-h-[100vh] h-full md:h-[100px] md:min-h-[100px] menu-mobile-background'
-              : searchOpen
-              ? 'min-h-auto h-auto md:h-[100px] md:min-h-[100px] menu-mobile-background rounded-b-[24px]'
-              : 'h-[80px]'
-          )}
-        >
-          <div className="flex items-center justify-between py-5 px-7 md:px-12">
-            {/* Only showing for the desktop device */}
-            <div className="sm:flex items-center hidden">
-              <div onClick={showDrawer} className="1.5xl:hidden">
-                <HamburgerIcon className="mr-5 text-green-100" />
-              </div>
-              <Link to="/" className="h-10 text-green-100 cursor-pointer">
-                <WholeLogoIcon className="hidden lg:block w-56" />
-                <SmallLogoIcon
-                  size={40}
-                  className="text-green-100 block lg:hidden"
-                />
-              </Link>
-            </div>
 
-            {/* Only show for the mobile device */}
-            <div className="justify-between block w-full cursor-pointer sm:hidden">
-              {/* <SmallLogoIcon size={40} className="text-green-100" /> */}
-              {isMenuOpen ? (
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div onClick={menuOpen}>
-                      <HamburgerIcon className="mr-5 text-green-100" />
-                    </div>
-                    <Link to="/">
-                      <div className="flex items-center">
-                        <SmallLogoIcon size={40} className="text-green-100" />
-                      </div>
-                    </Link>
+      {/* Header component for mobile and desktop device */}
+      <div
+        className={cn(
+          'md:bg-transparency absolute top-0 w-full z-50',
+          isMenuOpen
+            ? 'min-h-[100vh] h-full md:h-[100px] md:min-h-[100px] menu-mobile-background'
+            : searchOpen
+            ? 'min-h-auto h-auto md:h-[100px] md:min-h-[100px] menu-mobile-background rounded-b-[24px]'
+            : 'h-[80px]'
+        )}
+      >
+        <div className="flex items-center justify-between py-5 px-7 md:px-12">
+          {/* Only showing for the desktop device */}
+          <Link
+            to="/"
+            className="items-center hidden w-56 h-10 text-green-100 cursor-pointer lg:flex"
+          >
+            {/* <SmallLogoIcon size={40} className="text-green-100" />
+            <div className="hidden lg:block font-semibold text-[18px] ml-[31px]">
+              <img src={LogoText} />
+            </div> */}
+            <WholeLogoIcon />
+          </Link>
+
+          <div className="items-center hidden md:flex lg:hidden">
+            <div onClick={showDrawer}>
+              <HamburgerIcon className="mr-5 text-green-100" />
+            </div>
+            <SmallLogoIcon size={40} className="text-green-100" />
+          </div>
+
+          {/* Only show for the mobile device */}
+          <div className="justify-between block w-full cursor-pointer md:hidden">
+            {/* <SmallLogoIcon size={40} className="text-green-100" /> */}
+            {isMenuOpen ? (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div onClick={menuOpen}>
+                    <HamburgerIcon className="mr-5 text-green-100" />
                   </div>
-                  {(!accounts || !accounts[0]) && (
+                  <Link to="/">
+                    <div className="flex items-center">
+                      <SmallLogoIcon size={40} className="text-green-100" />
+                    </div>
+                  </Link>
+                </div>
+                {(!accounts || !accounts[0]) && (
+                  <div className="">
+                    <button
+                      disabled={loadingWallet}
+                      className="flex items-center px-5 py-2 text-xl font-semibold bg-green-100 text-dark-100 rounded-2xl"
+                      onClick={handleConnect}
+                    >
+                      Connect{' '}
+                      {loadingWallet && (
+                        <div className="ml-2">
+                          <AnimationSpin />
+                        </div>
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center">
+                  <div onClick={menuOpen} className="mr-5">
+                    <HamburgerIcon className="font-semibold text-green-100" />
+                  </div>
+                  <Link to="/">
+                    <div className="flex items-center">
+                      <SmallLogoIcon size={40} className="text-green-100" />
+                    </div>
+                  </Link>
+                </div>
+                <div className="block md:hidden">
+                  {isReadOnly && (
                     <div className="">
                       <button
                         disabled={loadingWallet}
@@ -381,235 +410,201 @@ export default ({ children }) => {
                     </div>
                   )}
                 </div>
-              ) : (
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center">
-                    <div onClick={menuOpen} className="mr-5">
-                      <HamburgerIcon className="font-semibold text-green-100" />
-                    </div>
-                    <Link to="/">
-                      <div className="flex items-center">
-                        <SmallLogoIcon size={40} className="text-green-100" />
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="block md:hidden">
-                    {isReadOnly && (
-                      <div className="">
-                        <button
-                          disabled={loadingWallet}
-                          className="flex items-center px-5 py-2 text-xl font-semibold bg-green-100 text-dark-100 rounded-2xl"
-                          onClick={handleConnect}
-                        >
-                          Connect{' '}
-                          {loadingWallet && (
-                            <div className="ml-2">
-                              <AnimationSpin />
-                            </div>
-                          )}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
+          </div>
 
-            <div className="relative">
-              {!isSafeApp && (
-                <div className="flex items-center w-full mt-0 md:w-auto">
-                  {/* //TODO should show in the public registration */}
-                  {location.pathname !== '/' && (
-                    <Search
-                      className="mr-4 xl:w-[400px] hidden md:block"
-                      errorShowing={true}
-                      isShowSearchBtn={true}
-                      errorsStyling={true}
+          <div className="relative">
+            {!isSafeApp && (
+              <div className="flex items-center w-full mt-0 md:w-auto">
+                {/* //TODO should show in the public registration */}
+                {location.pathname !== '/' && (
+                  <Search
+                    className="mr-4 xl:w-[400px] hidden md:block"
+                    errorShowing={true}
+                    isShowSearchBtn={true}
+                    errorsStyling={true}
+                  />
+                )}
+
+                {isReadOnly && (
+                  <div className="hidden md:block">
+                    <NoAccountsDefault
+                      onClick={handleConnect}
+                      loadingWallet={loadingWallet}
+                      buttonText={isReadOnly ? 'Connect' : network}
+                      isReadOnly={isReadOnly}
                     />
-                  )}
+                  </div>
+                )}
 
-                  {isReadOnly && (
-                    <div className="hidden md:block">
-                      <NoAccountsDefault
-                        onClick={handleConnect}
-                        loadingWallet={loadingWallet}
-                        buttonText={isReadOnly ? 'Connect' : network}
-                        isReadOnly={isReadOnly}
-                      />
+                {accounts && accounts[0] && !isReadOnly && (
+                  <div className="flex items-center">
+                    <div
+                      className="hidden block"
+                      onClick={() => setSearchOpen(!searchOpen)}
+                    >
+                      <SearchIcon className="text-[rgba(204,252,255,0.6)] cursor-pointer" />
                     </div>
-                  )}
 
-                  {accounts && accounts[0] && !isReadOnly && (
-                    <div className="flex items-center">
-                      <div
-                        className="hidden block"
-                        onClick={() => setSearchOpen(!searchOpen)}
-                      >
-                        <SearchIcon className="text-[rgba(204,252,255,0.6)] cursor-pointer" />
-                      </div>
-
-                      <button
-                        className="flex items-center ml-4 cursor-pointer"
-                        onClick={() => {
-                          // if (windowDimenion.winWidth > 768) {
-                          showAvatarPopup()
-                          // }
-                        }}
-                      >
-                        {!reverseRecordLoading &&
-                        getReverseRecord &&
-                        getReverseRecord.avatar ? (
+                    <button
+                      className="flex items-center ml-4 cursor-pointer"
+                      onClick={() => {
+                        // if (windowDimenion.winWidth > 768) {
+                        showAvatarPopup()
+                        // }
+                      }}
+                    >
+                      {!reverseRecordLoading &&
+                      getReverseRecord &&
+                      getReverseRecord.avatar ? (
+                        <img
+                          src={imageUrl(
+                            getReverseRecord.avatar,
+                            displayName,
+                            network
+                          )}
+                        />
+                      ) : (
+                        <div className="w-[44px] h-[44px] rounded-full">
                           <img
-                            src={imageUrl(
-                              getReverseRecord.avatar,
-                              displayName,
-                              network
-                            )}
+                            className="rounded-full"
+                            src={avatar}
+                            onError={() => setAvatar(DefaultAvatar)}
+                            alt="default avatar"
                           />
-                        ) : (
-                          <div className="w-[44px] h-[44px] rounded-full">
-                            <img
-                              className="rounded-full"
-                              src={avatar}
-                              onError={() => setAvatar(DefaultAvatar)}
-                              alt="default avatar"
-                            />
-                          </div>
-                        )}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* DropdownMenu for the avatar popup */}
-              {accounts && accounts[0] && avatarPopup && (
-                <ClickAwayListener
-                  onClickAway={() => {
-                    setAvatarPopup(false)
-                  }}
-                >
-                  <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
-                    <div>
-                      <div className="flex items-center justify-center border-b-[2px] border-gray-800 pb-4">
-                        {!reverseRecordLoading &&
-                        getReverseRecord &&
-                        getReverseRecord.avatar ? (
-                          <img
-                            src={imageUrl(
-                              getReverseRecord.avatar,
-                              displayName,
-                              network
-                            )}
-                          />
-                        ) : (
-                          <div className="w-8 h-8 flex-grow-0 flex-shrink-0">
-                            <img
-                              className="rounded-full"
-                              src={avatar}
-                              alt="default avatar"
-                            />
-                          </div>
-                        )}
-                        <div className="ml-4 text-xl font-semibold text-white font-urbanist truncate">
-                          {primaryDomain?.name
-                            ? primaryDomain.name + '.bnb'
-                            : `${accounts[0].substring(
-                                0,
-                                6
-                              )}....${accounts[0].substring(
-                                accounts[0].length - 6,
-                                accounts[0].length
-                              )}`}
                         </div>
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* DropdownMenu for the avatar popup */}
+            {accounts && accounts[0] && avatarPopup && (
+              <ClickAwayListener
+                onClickAway={() => {
+                  setAvatarPopup(false)
+                }}
+              >
+                <div className="absolute w-[266px] h-auto bg-[#0E4549] right-0 top-[60px] rounded-[24px] p-4 z-[100]">
+                  <div>
+                    <div className="flex items-center justify-center border-b-[2px] border-gray-800 pb-4">
+                      {!reverseRecordLoading &&
+                      getReverseRecord &&
+                      getReverseRecord.avatar ? (
+                        <img
+                          src={imageUrl(
+                            getReverseRecord.avatar,
+                            displayName,
+                            network
+                          )}
+                        />
+                      ) : (
+                        <div className="w-8 h-8 flex-grow-0 flex-shrink-0">
+                          <img
+                            className="rounded-full"
+                            src={avatar}
+                            alt="default avatar"
+                          />
+                        </div>
+                      )}
+                      <div className="ml-4 text-xl font-semibold text-white font-urbanist truncate">
+                        {primaryDomain?.name
+                          ? primaryDomain.name + '.bnb'
+                          : `${accounts[0].substring(
+                              0,
+                              6
+                            )}....${accounts[0].substring(
+                              accounts[0].length - 6,
+                              accounts[0].length
+                            )}`}
                       </div>
+                    </div>
+                  </div>
+                  <div
+                    className="font-semibold text-white font-urbanist text-[18px] text-center pt-4"
+                    onClick={showAvatarPopup}
+                  >
+                    <div
+                      className="items-center justify-center hidden h-10 font-semibold cursor-pointer md:flex hover:bg-dark-200 hover:rounded-xl"
+                      onClick={moveToProfile}
+                    >
+                      Manage Account
                     </div>
                     <div
-                      className="font-semibold text-white font-urbanist text-[18px] text-center pt-4"
-                      onClick={showAvatarPopup}
+                      className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-xl md:bg-transparent hover:bg-dark-200 hover:rounded-xl"
+                      onClick={disconnectProvider}
                     >
-                      <div
-                        className="items-center justify-center hidden h-10 font-semibold cursor-pointer md:flex hover:bg-dark-200 hover:rounded-xl"
-                        onClick={moveToProfile}
-                      >
-                        Manage Account
-                      </div>
-                      <div
-                        className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-xl md:bg-transparent hover:bg-dark-200 hover:rounded-xl"
-                        onClick={disconnectProvider}
-                      >
-                        Disconnect
-                      </div>
+                      Disconnect
                     </div>
                   </div>
-                </ClickAwayListener>
-              )}
-            </div>
-          </div>
-
-          {searchOpen && (
-            <div className="py-3 px-7 pb-7">
-              <Search
-                className="mx-auto"
-                errorShowing={true}
-                isShowSearchBtn={true}
-                errorsStyling={false}
-                suggestionClassName="w-full"
-                isAbsolutePosition={false}
-                onSubmit={() => {
-                  setSearchOpen(false)
-                }}
-              />
-            </div>
-          )}
-
-          <div
-            className={cn(
-              'md:hidden',
-              isMenuOpen ? 'block mx-7 mt-3' : 'hidden'
+                </div>
+              </ClickAwayListener>
             )}
-          >
-            <ProfileCard
-              className="mb-4"
-              account={accounts?.[0]}
-              isReadOnly={isReadOnly}
-              networkId={networkId}
+          </div>
+        </div>
+
+        {searchOpen && (
+          <div className="py-3 px-7 pb-7">
+            <Search
+              className="mx-auto"
+              errorShowing={true}
+              isShowSearchBtn={true}
+              errorsStyling={false}
+              suggestionClassName="w-full"
+              isAbsolutePosition={false}
+              onSubmit={() => {
+                setSearchOpen(false)
+              }}
             />
           </div>
-          {!isReadOnly && isMenuOpen && windowDimenion.winWidth < 768 && (
-            <div className="px-7 border-t border-[rgba(204,252,255,0.2)] h-[calc(100vh-250px)]">
-              <DomainList
-                className="flex flex-col h-full mt-4"
-                domainsList={domains}
-                clickHandle={selectDomain}
-                selectedDomain={selectedDomain}
-              />
-            </div>
-          )}
-        </div>
+        )}
 
-        {/* Footer component in the home page */}
-        <div className="absolute bottom-0 left-0 flex items-center justify-center w-full py-5 h-11 md:px-8 xl:px-12 md:justify-between bg-dark-common">
-          <a className="hidden md:block" href="https://space.id">
-            <p className="text-base font-semibold leading-7 text-center text-green-100 font-urbanist">
-              About SPACE ID
-            </p>
-          </a>
-          <div className="flex items-center">
-            <a target="_blank" href="https://twitter.com/SpaceIDProtocol">
-              <TwitterIcon className="mr-2 text-green-100" />
-            </a>
-            <a target="_blank" href="https://discord.com/invite/2qrrf79K2A">
-              <DiscordIcon className="mr-2 text-green-100" />
-            </a>
-            <a target="_blank" href="https://medium.com/@SpaceID">
-              <RoundedIcon />
-            </a>
+        <div
+          className={cn('md:hidden', isMenuOpen ? 'block mx-7 mt-3' : 'hidden')}
+        >
+          <ProfileCard
+            className="mb-4"
+            account={accounts?.[0]}
+            isReadOnly={isReadOnly}
+            networkId={networkId}
+          />
+        </div>
+        {!isReadOnly && isMenuOpen && windowDimenion.winWidth < 768 && (
+          <div className="px-7 border-t border-[rgba(204,252,255,0.2)] h-[calc(100vh-250px)]">
+            <DomainList
+              className="flex flex-col h-full mt-4"
+              domainsList={domains}
+              clickHandle={selectDomain}
+              selectedDomain={selectedDomain}
+            />
           </div>
-        </div>
+        )}
+      </div>
 
-        {children}
-      </section>
-    </>
+      {/* Footer component in the home page */}
+      <div className="absolute bottom-0 left-0 flex items-center justify-center w-full py-5 h-11 md:px-8 xl:px-12 md:justify-between bg-dark-common">
+        <a className="hidden md:block" href="https://space.id">
+          <p className="text-base font-semibold leading-7 text-center text-green-100 font-urbanist">
+            About SPACE ID
+          </p>
+        </a>
+        <div className="flex items-center">
+          <a target="_blank" href="https://twitter.com/SpaceIDProtocol">
+            <TwitterIcon className="mr-2 text-green-100" />
+          </a>
+          <a target="_blank" href="https://discord.com/invite/2qrrf79K2A">
+            <DiscordIcon className="mr-2 text-green-100" />
+          </a>
+          <a target="_blank" href="https://medium.com/@SpaceID">
+            <RoundedIcon />
+          </a>
+        </div>
+      </div>
+
+      {children}
+    </section>
   )
 }

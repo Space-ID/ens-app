@@ -190,9 +190,8 @@ export default function ProfileCard({
             loading={setNameLoading}
             show={isShowChangePrimaryModal}
             saveHandler={changePrimaryDomain}
-            account={account}
-            networkId={networkId}
             closeModal={() => setIsShowChangePrimaryModal(false)}
+            domains={domains}
           />
         </div>
       </div>

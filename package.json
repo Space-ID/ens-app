@@ -84,6 +84,7 @@
     "stream": "npm:stream-browserify",
     "stream-http": "^3.2.0",
     "swiper": "^8.4.2",
+    "ua-parser-js": "^1.0.2",
     "walletlink": "2.5.0",
     "web3modal": "^1.9.9"
   },

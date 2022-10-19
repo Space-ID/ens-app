@@ -173,23 +173,10 @@ export default function Mainbar({
   }
 
   useEffect(() => {
-    let timer
-    if (!pending) {
+    if (confirmed && !pending) {
       dispatch(getDomainList({ account, networkId }))
-      let count = 0
-      timer = window.setInterval(() => {
-        if (count <= 2) {
-          count++
-          dispatch(getDomainList({ account, networkId }))
-        } else {
-          window.clearInterval(timer)
-        }
-      }, 1000 * 10)
     }
-    return () => window.clearInterval(timer)
   }, [pending, confirmed, account, networkId])
-
-  useEffect(() => {}, [account, networkId])
 
   useEffect(() => {
     setIsRegsitrant(registrantAddress === account)
@@ -290,10 +277,11 @@ export default function Mainbar({
   }
 
   return (
-    <div className="bg-fill-2 rounded-[24px] backdrop-blur-sm sm:p-10 p-6 relative mx-16 1.5xl:mx-0 w-auto 1.5xl:max-w-[1016px] flex-grow">
+    <div className="bg-[rgba(72,143,139,0.25)] rounded-[24px] backdrop-blur-sm px-5 xl:px-[40px] py-6 md:py-[40px] relative max-w-[962px] md:w-[calc(100vw-440px)] w-[calc(100vw-56px)]">
       {selectedDomain && (
         <TopAddress
           isRegsitrant={isRegsitrant}
+          className="pb-8 border-b border-[rgba(204,252,255,0.2)]"
           selectedDomain={selectedDomain}
           registrantAddress={registrantAddress}
           loadingRegistration={loadingRegistration}
