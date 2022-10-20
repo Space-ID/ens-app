@@ -1,4 +1,5 @@
 import { utils } from 'ethers'
+import SID, { namehash as sidNameHash } from '@siddomains/sidjs'
 import { interfaces } from './constants/interfaces'
 import {
   getBulkRenewalContract,
@@ -24,6 +25,8 @@ import {
   getProvider,
   getSigner,
 } from './web3'
+import { EMPTY_ADDRESS } from '../utils/records'
+import { isView } from 'core-js/internals/array-buffer-view-core'
 
 const {
   legacyRegistrar: legacyRegistrarInterfaceId,
@@ -415,13 +418,30 @@ export default class Registrar {
     return permanentRegistrarController.commit(commitment)
   }
 
-  async register(label, duration, secret, usePoint = false) {
+  async register(label, duration, secret, usePoint = false, inviter) {
     const permanentRegistrarControllerWithoutSigner =
       this.permanentRegistrarController
     const signer = await getSigner()
     const permanentRegistrarController =
       permanentRegistrarControllerWithoutSigner.connect(signer)
     const account = (await getAccount()).toLowerCase()
+    let inviterHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000000'
+    if (inviter) {
+      const provider = await getProvider()
+      const sid = new SID({
+        provider,
+        sidAddress: process.env.REACT_APP_REGISTRY_ADDRESS,
+      })
+      const name = sid.name(inviter)
+      inviterHash = name.namehash
+      const inviterAddr = await name.getAddress()
+      const reverse = await sid.getName(inviterAddr)
+      if (reverse.name !== inviter) {
+        inviterHash =
+          '0x0000000000000000000000000000000000000000000000000000000000000000'
+      }
+    }
     let price
     if (usePoint) {
       price = await this.getRentPriceWithPoint(label, duration, account)
@@ -437,6 +457,7 @@ export default class Registrar {
           account,
           duration,
           secret,
+          inviterHash,
           { value: priceWithBuffer }
         )
       })
@@ -446,6 +467,7 @@ export default class Registrar {
         account,
         duration,
         secret,
+        inviterHash,
         { value: priceWithBuffer, gasLimit }
       )
     } else {
@@ -458,6 +480,7 @@ export default class Registrar {
           resolverAddr,
           account,
           usePoint,
+          inviterHash,
           {
             value: priceWithBuffer,
           }
@@ -471,6 +494,7 @@ export default class Registrar {
         resolverAddr,
         account,
         usePoint,
+        inviterHash,
         {
           value: priceWithBuffer,
           gasLimit,

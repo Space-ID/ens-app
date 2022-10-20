@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
-import moment from 'moment'
+import { utils as ethersUtils } from 'ethers/lib/ethers'
 
 //Import Components
 import CopyIcon from 'components/Icons/CopyIcon'
@@ -11,10 +11,9 @@ import PendingTx from 'components/PendingTx'
 
 import FailedImage from 'assets/images/image-failed.png'
 
-//Import GraphQL
 import { refetchTilUpdatedSingle } from 'utils/graphql'
 
-import { getDomainNftUrl } from 'utils/utils'
+import { getDomainNftUrl, copyTextToClipboard } from 'utils/utils'
 import {
   getLocalTime,
   gracePeriodEndStr,
@@ -23,9 +22,13 @@ import {
 } from 'utils/dates'
 import Tooltip from 'components/Tooltip/index'
 import { useLazyQuery } from '@apollo/client'
-import { QUERY_POINT_BALANCE } from '../../../../graphql/queries'
-import { utils as ethersUtils } from 'ethers/lib/ethers'
-import { useAccount } from '../../../../components/QueryAccount'
+import { QUERY_POINT_BALANCE, QUERY_REFERRAL_DETAILS } from 'graphql/queries'
+import { ReferralLevelTitle } from 'routes/Referral/constants'
+import { useAccount } from 'components/QueryAccount'
+import CirclePlus from 'components/Icons/CircleUser'
+import Diamond from 'components/Icons/Diamond'
+import CircleStar from 'components/Icons/CircleStar'
+import './TopAddress.css'
 
 export default function TopAddress({
   className,
@@ -45,6 +48,8 @@ export default function TopAddress({
 }) {
   const [tooltipMessage, setTooltipMessage] = useState('Copy to clipboard')
   const [imageURL, setImageURL] = useState('')
+  const [referralNum, setReferralNum] = useState(0)
+  const [referralLevel, setReferralLevel] = useState(0)
   const account = useAccount()
   const [queryPointBalance, { data: { getPointBalance = 0 } = {} }] =
     useLazyQuery(QUERY_POINT_BALANCE, {
@@ -52,22 +57,26 @@ export default function TopAddress({
       skip: !ethersUtils.isAddress(account),
       fetchPolicy: 'network-only',
     })
-
-  async function copyTextToClipboard(text) {
-    if ('clipboard' in navigator) {
-      return await navigator.clipboard.writeText(text)
-    } else {
-      return document.execCommand('copy', true, text)
-    }
-  }
+  const [fetchReferralDetails, { data: { getReferralDetails = [] } = {} }] =
+    useLazyQuery(QUERY_REFERRAL_DETAILS, { fetchPolicy: 'network-only' })
 
   useEffect(() => {
     if (selectedDomain.name) {
       const domain = selectedDomain.name
       const url = getDomainNftUrl(domain)
       setImageURL(url)
+      fetchReferralDetails({ variables: { domain: selectedDomain.name } })
     }
   }, [selectedDomain])
+
+  useEffect(() => {
+    if (getReferralDetails.length <= 0) {
+    } else {
+      const [referralNum, level] = getReferralDetails
+      setReferralNum(referralNum.toNumber())
+      setReferralLevel(Math.min(level.toNumber(), 4))
+    }
+  }, [getReferralDetails])
 
   const nftErrorLoading = () => {
     setImageURL(FailedImage)
@@ -157,6 +166,31 @@ export default function TopAddress({
               </button>
             </div>
           )}
+        </div>
+        <div>
+          <p className="text-center 2md:text-left font-bold text-2xl font-semibold text-green-100">
+            Referral Stat
+          </p>
+          <div className="mt-2 flex">
+            <div
+              className={cn(
+                'flex items-center space-x-2 px-3 py-[6px] text-xl font-bold bg-fill-3 border-2 rounded-xl mr-2',
+                'referral-state' + referralLevel
+              )}
+            >
+              {referralLevel > 1 ? <Diamond /> : <CircleStar />}
+              <span>{ReferralLevelTitle[referralLevel]}</span>
+            </div>
+            <div
+              className={cn(
+                'flex items-center space-x-2 px-3 py-[6px] text-xl font-bold bg-fill-3 border-2 rounded-xl',
+                'referral-state' + referralLevel
+              )}
+            >
+              <CirclePlus />
+              <span>{referralNum}</span>
+            </div>
+          </div>
         </div>
         <div>
           <div className="items-center justify-between mt-8 2md:flex 2md:mt-0">

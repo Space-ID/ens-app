@@ -1,63 +1,32 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled/macro'
 
-class Info extends Component {
-  render() {
-    const { className, onClick, onMouseOver, onMouseLeave } = this.props
-
-    return (
-      <InfoContainer
-        width="18"
-        height="18"
-        className={className}
-        onClick={onClick}
-        onMouseOver={onMouseOver}
-        onMouseLeave={onMouseLeave}
-      >
-        <svg
-          width="19"
-          height="18"
-          viewBox="0 0 19 18"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9.16602 17C13.5843 17 17.166 13.4183 17.166 9C17.166 4.58172 13.5843 1 9.16602 1C4.74774 1 1.16602 4.58172 1.16602 9C1.16602 13.4183 4.74774 17 9.16602 17Z"
-            stroke="#B1B1B1"
-            strokeWidth="2"
-            strokeLinecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M9.16602 13V8"
-            stroke="#B1B1B1"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle cx="9.16602" cy="5" r="1" fill="#B1B1B1" />
-        </svg>
-      </InfoContainer>
-    )
-  }
+const Info = () => {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_4201_40514)">
+        <path
+          d="M9 0C4.02991 0 0 4.02991 0 9C0 13.9701 4.02991 18 9 18C13.9701 18 18 13.9701 18 9C18 4.02991 13.9701 0 9 0ZM9 16.4732C4.87366 16.4732 1.52679 13.1263 1.52679 9C1.52679 4.87366 4.87366 1.52679 9 1.52679C13.1263 1.52679 16.4732 4.87366 16.4732 9C16.4732 13.1263 13.1263 16.4732 9 16.4732Z"
+          fill="currentColor"
+        />
+        <path
+          d="M8.03516 5.4649C8.03516 5.72064 8.13675 5.96591 8.31759 6.14675C8.49843 6.32759 8.7437 6.42918 8.99944 6.42918C9.25519 6.42918 9.50046 6.32759 9.68129 6.14675C9.86213 5.96591 9.96373 5.72064 9.96373 5.4649C9.96373 5.20915 9.86213 4.96388 9.68129 4.78304C9.50046 4.6022 9.25519 4.50061 8.99944 4.50061C8.7437 4.50061 8.49843 4.6022 8.31759 4.78304C8.13675 4.96388 8.03516 5.20915 8.03516 5.4649ZM9.48158 7.7149H8.5173C8.42891 7.7149 8.35658 7.78722 8.35658 7.87561V13.3399C8.35658 13.4283 8.42891 13.5006 8.5173 13.5006H9.48158C9.56998 13.5006 9.6423 13.4283 9.6423 13.3399V7.87561C9.6423 7.78722 9.56998 7.7149 9.48158 7.7149Z"
+          fill="currentColor"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_4201_40514">
+          <rect width="18" height="18" fill="currentColor" />
+        </clipPath>
+      </defs>
+    </svg>
+  )
 }
-
-const InfoContainer = styled('svg')`
-  opacity: 1 !important;
-  margin-left: 0px !important;
-  margin-right: 5px;
-
-  &:hover {
-    path {
-      stroke: #47c799;
-      fill: transparent;
-    }
-    circle {
-      fill: #47c799;
-    }
-
-    background: transparent;
-  }
-`
 
 export default Info

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 import { NodeFields, SubDomainStateFields } from './fragments'
+import Referral from '../api/referral'
 
 export const GET_PUBLIC_RESOLVER = gql`
   query publicResolver {
@@ -381,5 +382,22 @@ export const QUERY_USER_GIFT_CARDS = gql`
 export const QUERY_POINT_BALANCE = gql`
   query getPointBalance($account: String) {
     getPointBalance(account: $account)
+  }
+`
+
+/* Referral */
+export const QUERY_REFERRAL_DETAILS = gql`
+  query getReferralDetails($domain: String) {
+    getReferralDetails(domain: $domain)
+  }
+`
+export const QUERY_REFERRAL_LEVEL_DETAILS = gql`
+  query getReferralLevelDetails {
+    getReferralLevelDetails
+  }
+`
+export const QUERY_REFERRAL_BALANCE = gql`
+  query getReferralBalance($account: String) {
+    getReferralBalance(account: $account)
   }
 `

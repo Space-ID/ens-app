@@ -219,6 +219,9 @@ export default ({ children }) => {
   const moveToProfile = () => {
     history.push('/profile')
   }
+  const moveToReferral = () => {
+    history.push('/referral')
+  }
 
   const showDrawer = () => {
     dispatch(toggleDrawer(true))
@@ -504,6 +507,12 @@ export default ({ children }) => {
                         onClick={moveToProfile}
                       >
                         Manage Account
+                      </div>
+                      <div
+                        className="items-center justify-center hidden h-10 font-semibold cursor-pointer md:flex hover:bg-dark-200 hover:rounded-xl"
+                        onClick={moveToReferral}
+                      >
+                        Referral
                       </div>
                       <div
                         className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-xl md:bg-transparent hover:bg-dark-200 hover:rounded-xl"

@@ -372,3 +372,11 @@ export const getDomainNftUrl = (domainName) => {
     process.env.REACT_APP_MODE === 'stg' ? 'stg' : 'mainnet'
   }/${nftId}.svg`
 }
+
+export async function copyTextToClipboard(text) {
+  if ('clipboard' in navigator) {
+    return await navigator.clipboard.writeText(text)
+  } else {
+    return document.execCommand('copy', true, text)
+  }
+}

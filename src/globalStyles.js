@@ -1,5 +1,5 @@
 import { injectGlobal } from 'emotion'
-
+// todo: emotion
 injectGlobal`
   * {
     box-sizing: border-box;
@@ -11,16 +11,12 @@ injectGlobal`
   }
 
   a {
-    color: #18E199;
+    color: #1EEFA4;
     text-decoration: none;
     transition: 0.2s;
 
     &:hover {
-      color: #379070;
+      opacity: 0.7;
     }
-
-    &:visited {
-      color: #379070
-    } 
   }
 `

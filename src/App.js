@@ -1,9 +1,12 @@
 import React, { lazy, useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Route as DefaultRoute, Switch } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { validateName } from '@siddomains/sidjs/dist/utils'
 
 const Home = lazy(() => import('./routes/Home'))
 const SingleName = lazy(() => import('./routes/SingleName'))
 const Profile = lazy(() => import('./routes/Profile'))
+const Referral = lazy(() => import('./routes/Referral'))
 const HomePageLayout = lazy(() => import('components/Layout/HomePageLayout'))
 const Error404 = lazy(() => import('components/Error/Errors'))
 
@@ -11,7 +14,8 @@ import useReactiveVarListeners from './hooks/useReactiveVarListeners'
 import { useAccount } from './components/QueryAccount'
 import { emptyAddress } from './ui'
 import ToastContainer from 'components/Toast/ToastContainer'
-import { CrossIcon } from './components/Icons'
+
+import { setInviter } from 'app/slices/referralSlice'
 
 const Route = ({
   component: Component,
@@ -38,6 +42,7 @@ const App = () => {
   useReactiveVarListeners()
   const account = useAccount()
   const accountRef = useRef(account)
+  const dispatch = useDispatch()
   // const [showAlert, setShowAlert] = useState(true)
   useEffect(() => {
     if (
@@ -50,6 +55,22 @@ const App = () => {
       accountRef.current = account
     }
   }, [account])
+
+  useEffect(() => {
+    const params = new URL(window.location).searchParams
+    let inviter = params.get('inviter')?.trim()
+    if (inviter) {
+      inviter = decodeURIComponent(inviter)
+      if (inviter.endsWith('.bnb')) {
+        try {
+          inviter = validateName(inviter)
+          dispatch(setInviter(inviter))
+        } catch (e) {
+          console.error('invalid inviter:', e)
+        }
+      }
+    }
+  }, [])
 
   return (
     <BrowserRouter basename="/">
@@ -83,6 +104,12 @@ const App = () => {
         <Route
           path="/name/:name"
           component={SingleName}
+          layout={HomePageLayout}
+        />
+        <Route
+          exact
+          path="/referral"
+          component={Referral}
           layout={HomePageLayout}
         />
         <Route path="*" component={Error404} layout={null} />

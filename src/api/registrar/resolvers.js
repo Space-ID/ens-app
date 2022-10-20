@@ -100,9 +100,15 @@ const resolvers = {
       const tx = await registrar.commit(label, secret)
       return sendHelper(tx)
     },
-    async register(_, { label, duration, secret, usePoint }) {
+    async register(_, { label, duration, secret, usePoint, inviter }) {
       const registrar = getRegistrar()
-      const tx = await registrar.register(label, duration, secret, usePoint)
+      const tx = await registrar.register(
+        label,
+        duration,
+        secret,
+        usePoint,
+        inviter
+      )
       return sendHelper(tx)
     },
     async reclaim(_, { name, address }) {

@@ -165,12 +165,14 @@ export const REGISTER = gql`
     $duration: Int
     $signature: String
     $usePoint: Boolean
+    $inviter: String
   ) {
     register(
       label: $label
       duration: $duration
       signature: $signature
       usePoint: $usePoint
+      inviter: $inviter
     )
   }
 `
@@ -220,5 +222,12 @@ export const TRANSFER_GIFT_CARD = gql`
     $amounts: [Number]
   ) {
     transferGiftCard(from: $from, to: $to, ids: $ids, amounts: $amounts)
+  }
+`
+
+/* Referral */
+export const REFERRAL_WITHDRAW = gql`
+  mutation referralWithdraw {
+    referralWithdraw
   }
 `
