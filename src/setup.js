@@ -15,7 +15,6 @@ import {
   web3ProviderReactive,
   loadingWalletReactive,
 } from './apollo/reactiveVars'
-import { setupAnalytics } from './utils/analytics'
 import { getReverseRecord } from './apollo/sideEffects'
 import { safeInfo, setupSafeApp } from './utils/safeApps'
 
@@ -135,8 +134,6 @@ export default async (reconnect) => {
     }
 
     isReadOnlyReactive(isReadOnly())
-
-    setupAnalytics()
 
     isAppReadyReactive(true)
     loadingWalletReactive(false)
