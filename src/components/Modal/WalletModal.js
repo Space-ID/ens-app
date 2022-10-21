@@ -73,7 +73,7 @@ export default function WalletModal(props) {
     }
     setOptions(userOpts)
   }, [web3Modal])
-  const handleClick = async (id, deepLink) => {
+  const handleClick = (id, deepLink) => {
     if (deepLink) {
       const a = document.createElement('a')
       a.href = deepLink

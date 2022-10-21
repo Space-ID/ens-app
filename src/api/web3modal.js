@@ -57,10 +57,12 @@ export const getWeb3Modal = () => {
 export const connect = async () => {
   try {
     web3Modal = getWeb3Modal()
-    if (web3Modal.cachedProvider) {
+    if (web3ModalProviderId) {
+      provider = await web3Modal.connectTo(web3ModalProviderId)
+    } else if (web3Modal.cachedProvider) {
       provider = await web3Modal.connect()
     } else {
-      provider = await web3Modal.connectTo(web3ModalProviderId)
+      throw new Error('wallet error')
     }
     await setupENS({
       customProvider: provider,
