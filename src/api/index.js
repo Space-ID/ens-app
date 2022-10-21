@@ -21,3 +21,11 @@ export function fetchDomainList(account, networkId) {
   }
   return instance.post('/listname', params)
 }
+
+export function fetchRecords(account, networkId) {
+  const params = {
+    ChainID: networkId,
+    Address: account,
+  }
+  return instance.get('/records', { params })
+}

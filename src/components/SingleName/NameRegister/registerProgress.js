@@ -63,7 +63,7 @@ const RegisterProgress = ({ state }) => {
   }, [state])
 
   return (
-    <div className="md:w-[928px] w-full mt-[32px]">
+    <div className="2md:w-[928px] w-full mt-[32px]">
       <div className="relative w-full h-5 rounded-[10px] overflow-hidden">
         <div className="absolute w-full h-full bg-[#CCFCFF]/20" />
         <div

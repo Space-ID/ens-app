@@ -38,7 +38,9 @@ export const domainSlice = createSlice({
         const name = state.selectedDomain.name
         const temp = data.find((v) => v.name === name)
         if (temp) {
-          state.selectedDomain = temp
+          Object.keys(temp).forEach((k) => {
+            state.selectedDomain[k] = temp[k]
+          })
         }
       } else {
         state.selectedDomain = data[0]

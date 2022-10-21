@@ -67,12 +67,12 @@ const Step1Main = ({
     <>
       <div className="flex flex-col font-semibold text-white">
         <div>
-          <div className="font-bold text-center md:text-2xl text-xl">
+          <div className="font-bold text-center 2md:text-2xl text-xl">
             Step 1: Request to Register
           </div>
-          <div className="mt-4 mb-[24px] flex flex-col space-y-3 md:text-base text-sm font-semibold text-white">
+          <div className="mt-4 mb-[24px] flex flex-col space-y-3 2md:text-base text-sm font-semibold text-white">
             <div className="flex flex-col justify-center space-y-2 w-full">
-              <div className="flex md:flex-row flex-col md:items-center justify-between md:space-x-6 md:space-y-0 space-y-2">
+              <div className="flex 2md:flex-row flex-col 2md:items-center justify-between 2md:space-x-6 2md:space-y-0 space-y-2">
                 <div className="flex items-center justify-between flex-1 bg-fill-2 rounded-2xl px-4 py-1">
                   <span>Registration Year</span>
                   <Years
@@ -82,13 +82,13 @@ const Step1Main = ({
                   />
                 </div>
                 <Price
-                  className="w-[116px] text-right ml-auto md:pr-4 pr-2"
+                  className="w-[116px] text-right ml-auto 2md:pr-4 pr-2"
                   price={ethVal}
                   loading={loading}
                   ethUsdPrice={ethUsdPrice}
                 />
               </div>
-              <div className="flex md:flex-row flex-col md:items-center justify-between md:space-x-6 md:space-y-0 space-y-2">
+              <div className="flex 2md:flex-row flex-col 2md:items-center justify-between 2md:space-x-6 2md:space-y-0 space-y-2">
                 <div className="flex items-center justify-between flex-1 bg-fill-2 rounded-2xl px-4 py-1">
                   <div
                     className={cn(
@@ -128,7 +128,7 @@ const Step1Main = ({
                     </Tooltip>
                   </div>
                   <div className="flex justify-between space-x-3">
-                    <span className="md:text-sm text-xs text-green-600">
+                    <span className="2md:text-sm text-xs text-green-600">
                       Balance: {getPointBalance}
                     </span>
                     <button
@@ -140,24 +140,24 @@ const Step1Main = ({
                     </button>
                   </div>
                 </div>
-                <div className="w-[116px] text-right ml-auto md:pr-4 pr-2">
+                <div className="w-[116px] text-right ml-auto 2md:pr-4 pr-2">
                   {usePoint &&
                     `- ${(registrationFee - registrationFeeWithPoint).toFixed(
                       3
                     )} BNB`}
                 </div>
               </div>
-              <div className="flex flex-row items-center justify-between md:px-4 px-2">
+              <div className="flex flex-row items-center justify-between 2md:px-4 px-2">
                 <span className="font-normal">Estimated Gas Fee</span>
                 <span className="w-[116px] text-right ml-auto">{`${registerGasFast.toFixed(
                   3
                 )} BNB`}</span>
               </div>
             </div>
-            <div className="divider md:pr-4 pr-0 s-divider s-divider-h"></div>
-            <div className="flex items-center justify-between md:px-4 px-2 text-right">
+            <div className="divider 2md:pr-4 pr-0 s-divider s-divider-h"></div>
+            <div className="flex items-center justify-between 2md:px-4 px-2 text-right">
               <span>Total</span>
-              <div className="flex items-end text-xl font-bold md:space-x-4 space-x-2">
+              <div className="flex items-end text-xl font-bold 2md:space-x-4 space-x-2">
                 <div className="font-normal text-sm text-green-600">
                   {`USD $${
                     usePoint

@@ -10,10 +10,10 @@ const Step2Main = ({ onRegister, state, onRetry }) => {
   }
   return (
     <div className="flex flex-col items-center font-semibold text-white">
-      <div className="font-bold text-center md:text-2xl text-xl">
+      <div className="font-bold text-center 2md:text-2xl text-xl">
         Step 2: Complete Registration
       </div>
-      <div className="text-center text-sm mt-3 md:mt-4 md:w-[640px] w-[312px]">
+      <div className="text-center text-sm mt-3 2md:mt-4 md:w-[640px] w-[312px]">
         Confirm the registration, perform payment and complete the registration.
         Please note that if the second transaction is not processed within 7
         days after the first, the registration will be forfeited and has to be
