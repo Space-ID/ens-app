@@ -49,8 +49,6 @@ import { globalErrorReactive } from 'apollo/reactiveVars'
 // Import assets
 import DefaultAvatar from 'assets/images/default-avatar.png'
 
-import { chainsInfo } from 'utils/constants'
-
 // Import custom functions
 import { disconnectProvider } from 'utils/providerUtils'
 import { EMPTY_ADDRESS } from 'utils/records'
@@ -67,6 +65,7 @@ import GiftCardRedeemModal from '../Modal/GiftCardRedeemModal'
 import GiftCardModal from '../Modal/GiftCardModal'
 import { ethers } from '../../ui'
 import SID from '@siddomains/sidjs'
+import { switchToBscChain } from '../../api/web3modal'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -214,35 +213,7 @@ export default ({ children }) => {
   }
 
   const changeToBSCChain = async () => {
-    const chainID = process.env.REACT_APP_NETWORK_CHAIN_ID
-    let chain = chainsInfo.filter((item) => item.chainId.toString() === chainID)
-    if (chain && chain.length > 0) {
-      chain = chain[0]
-      try {
-        await window.ethereum?.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: `0x${chain.chainId.toString(16)}` }],
-        })
-      } catch (err) {
-        if (err.code === 4902) {
-          try {
-            await window.ethereum?.request({
-              method: 'wallet_addEthereumChain',
-              params: [
-                {
-                  chainId: `0x${chain.chainId.toString(16)}`,
-                  chainName: chain.chainName,
-                  rpcUrls: [chain.rpc],
-                },
-              ],
-            })
-          } catch (addError) {
-            console.log(addError)
-          }
-        }
-      }
-    }
-    window.location.reload()
+    switchToBscChain()
   }
 
   const moveToProfile = () => {
