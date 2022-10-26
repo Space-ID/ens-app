@@ -95,7 +95,7 @@
     "start:test": "REACT_APP_STAGE=local yarn start",
     "start:test:ipfs": "REACT_APP_STAGE=local yarn start:ipfs",
     "build": "CI=false env-cmd -f .env yarn react-serve build",
-    "build:prd": "CI=false env-cmd -f .env.prod yarn react-serve build",
+    "build:alpha": "CI=false env-cmd -f .env.alpha yarn react-serve build",
     "build:stg": "CI=false env-cmd -f .env.stg yarn react-serve build",
     "build:css": "postcss src/index.css -o  src/style/main.css",
     "build:watch": "postcss src/index.css -o  src/style/main.css --watch",

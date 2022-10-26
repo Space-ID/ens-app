@@ -20,7 +20,9 @@ export const chainsInfo = [
     name: 'BNB',
     chainName: 'BSC MAINNET',
     rpc: 'https://bsc-dataseed.binance.org',
-    isSupport: process.env.REACT_APP_MODE === 'production',
+    isSupport:
+      process.env.REACT_APP_MODE === 'production' ||
+      process.env.REACT_APP_MODE === 'alpha',
   },
   { chainId: 57, name: 'syscoin', isSupport: false },
   { chainId: 60, name: 'gochain', isSupport: false },
@@ -34,7 +36,7 @@ export const chainsInfo = [
     name: 'BNB',
     chainName: 'BSC TESTNET',
     rpc: 'https://bsc-testnet.nodereal.io/v1/c9bc598b84b14e62b11c0a1b74b37cbd',
-    isSupport: process.env.REACT_APP_MODE !== 'production',
+    isSupport: process.env.REACT_APP_MODE === 'stg',
   },
   { chainId: 100, name: 'xdai', isSupport: false },
   { chainId: 106, name: 'velas', isSupport: false },

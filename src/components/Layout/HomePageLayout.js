@@ -282,9 +282,9 @@ export default ({ children }) => {
             </div>
             <div className="mt-4 font-semibold text-center text-white text-urbanist md:w-[auto] w-[300px]">
               Please change your dapp browser to Binance Smart Chain{' '}
-              {process.env.REACT_APP_MODE === 'production' ? null : (
+              {process.env.REACT_APP_MODE === 'stg' ? (
                 <span>Testnet</span>
-              )}
+              ) : null}
               {'  '}to continue.
             </div>
             {window.ethereum !== undefined && (
@@ -294,9 +294,9 @@ export default ({ children }) => {
                   className="leading-[26px] text-dark-common border-none mt-9 bg-primary rounded-full text-[18px] font-urbanist py-2 px-9 font-semibold normal-case"
                 >
                   Switch to BSC{' '}
-                  {process.env.REACT_APP_MODE === 'production' ? null : (
+                  {process.env.REACT_APP_MODE === 'stg' ? (
                     <span className="ml-1">Testnet</span>
-                  )}
+                  ) : null}
                 </Button>
               </div>
             )}

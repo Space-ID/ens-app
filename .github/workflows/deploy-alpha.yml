@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '16'
       - run: yarn install
-      - run: yarn run build:prd
+      - run: yarn run build:alpha
 
       - name: Deploy
         uses: reggionick/s3-deploy@v3
