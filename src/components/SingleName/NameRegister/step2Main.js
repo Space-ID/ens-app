@@ -1,12 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import cn from 'classnames'
 import { useHistory } from 'react-router'
 import { RegisterState } from './constant'
 import AnimationSpin from '../../AnimationSpin'
-const Step2Main = ({ onRegister, state, onRetry }) => {
+import { setSelectedDomain } from '../../../app/slices/domainSlice'
+
+const Step2Main = ({ onRegister, state, onRetry, domain }) => {
   const history = useHistory()
+  const dispatch = useDispatch()
   const handleRegister = () => {
     onRegister()
+  }
+  const handleMange = () => {
+    dispatch(setSelectedDomain({ name: domain.label }))
+    history.push('/profile')
   }
   return (
     <div className="flex flex-col items-center font-semibold text-white">
@@ -74,9 +82,7 @@ const Step2Main = ({ onRegister, state, onRetry }) => {
                 : 'bg-gray-800 text-white'
             )}
             disabled={state !== RegisterState.registerSuccess}
-            onClick={() => {
-              history.push('/profile')
-            }}
+            onClick={handleMange}
           >
             Manage Profile
           </button>

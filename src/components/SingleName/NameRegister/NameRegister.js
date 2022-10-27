@@ -427,6 +427,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                 state={registerState}
                 onRegister={handleRegister}
                 onRetry={handleRetry}
+                domain={domain}
               />
             )}
           </div>
