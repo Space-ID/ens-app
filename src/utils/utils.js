@@ -370,5 +370,5 @@ export const getDomainNftUrl = (domainName) => {
   let nftId = Web3.utils.toBN(label).toString()
   return `https://meta.image.space.id/image/${
     process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
-  }/${nftId}.svg`
+  }/${nftId}.svg?v=1.0`
 }
