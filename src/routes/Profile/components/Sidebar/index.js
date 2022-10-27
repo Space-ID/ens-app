@@ -12,6 +12,8 @@ import DomainList from './DomainList'
 
 import { setSelectedDomain } from 'app/slices/domainSlice'
 
+const SELECT_KEY = 'selected-domain'
+
 export default function Sidebar({ className, isReadOnly }) {
   const [networkId, setNetworkID] = useState('')
 
@@ -30,6 +32,20 @@ export default function Sidebar({ className, isReadOnly }) {
   const selectDomain = async (domain) => {
     dispatch(setSelectedDomain(domain))
   }
+
+  useEffect(() => {
+    if (selectedDomain) {
+      window.sessionStorage.setItem(SELECT_KEY, JSON.stringify(selectedDomain))
+    }
+  }, [selectedDomain])
+  useEffect(() => {
+    if (!selectedDomain) {
+      const temp = window.sessionStorage.getItem(SELECT_KEY)
+      if (temp) {
+        dispatch(setSelectedDomain(JSON.parse(temp)))
+      }
+    }
+  }, [])
 
   return (
     <div
