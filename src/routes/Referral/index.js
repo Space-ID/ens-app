@@ -125,7 +125,7 @@ export default function ReferralPage() {
         open={openQrModal}
         onOpenChange={(v) => setOpenQrModal(v)}
       ></ReferralQrModal>
-      <div className="grid grid-cols-1 gap-6 font-semibold text-white referral">
+      <div className="grid grid-cols-1 gap-6 font-semibold text-white referral my-[86px]">
         {/*title*/}
         <div>
           <p className="text-primary text-6xl font-bold">

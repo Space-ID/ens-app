@@ -257,7 +257,7 @@ const GiftCardRedeemModal = (props) => {
                 <button
                   disabled={totalPoints <= 0 || queryLoading}
                   className={cn(
-                    'btn btn-primary rounded-2xl w-[160px] h-[42px] text-lg text-black font-semibold',
+                    'btn btn-primary py-2 rounded-2xl w-[160px] h-[42px] text-lg text-black font-semibold',
                     loading && 'loading'
                   )}
                   onClick={handleRedeem}
@@ -298,7 +298,7 @@ const GiftCardRedeemModal = (props) => {
                     queryLoading
                   }
                   className={cn(
-                    'btn btn-primary rounded-2xl w-[160px] h-[42px] text-lg text-black font-semibold',
+                    'btn btn-primary py-2 rounded-2xl w-[160px] h-[42px] text-lg text-black font-semibold',
                     loading && 'loading'
                   )}
                   onClick={handleTransfer}

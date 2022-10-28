@@ -17,6 +17,8 @@ import ToastContainer from 'components/Toast/ToastContainer'
 
 import { setInviter } from 'app/slices/referralSlice'
 
+const INVITER_KEY = 'inviter'
+
 const Route = ({
   component: Component,
   layout: Layout = HomePageLayout,
@@ -58,13 +60,16 @@ const App = () => {
 
   useEffect(() => {
     const params = new URL(window.location).searchParams
-    let inviter = params.get('inviter')?.trim()
+    let inviter =
+      params.get('inviter')?.trim() ||
+      window.sessionStorage.getItem(INVITER_KEY)
     if (inviter) {
       inviter = decodeURIComponent(inviter)
       if (inviter.endsWith('.bnb')) {
         try {
           inviter = validateName(inviter)
           dispatch(setInviter(inviter))
+          window.sessionStorage.setItem(INVITER_KEY, inviter)
         } catch (e) {
           console.error('invalid inviter:', e)
         }

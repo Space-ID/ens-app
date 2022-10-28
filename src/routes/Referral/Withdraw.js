@@ -19,13 +19,13 @@ export default function Withdraw() {
     },
     onCompleted(res) {
       setLoading(false)
-      setBalance(0)
+      setBalance((0).toFixed(3))
     },
   })
 
   const { data: { getReferralBalance } = {} } = useQuery(
     QUERY_REFERRAL_BALANCE,
-    { variables: { account } }
+    { variables: { account }, fetchPolicy: 'network-only' }
   )
 
   const onWithDraw = () => {
@@ -65,7 +65,7 @@ export default function Withdraw() {
           'btn btn-primary text-base font-bold rounded-full px-6 py-2',
           loading ? 'loading' : ''
         )}
-        disabled={balance <= -1}
+        disabled={balance <= 0}
         onClick={onWithDraw}
       >
         Withdraw
