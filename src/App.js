@@ -53,26 +53,25 @@ const App = () => {
 
   return (
     <BrowserRouter basename="/">
-      {/*{showAlert && (*/}
-      {/*  <div className="text-center bg-red-100 text-white text-2xl p-2 px-6 flex items-center justify-between">*/}
-      {/*    <div className="flex-1">*/}
-      {/*      BNB Chain is temporarily suspended, please see{' '}*/}
-      {/*      <a*/}
-      {/*        href="https://twitter.com/bnbchain/status/1578148078636650496"*/}
-      {/*        target="_blank"*/}
-      {/*        className="text-white visited:text-white underline"*/}
-      {/*      >*/}
-      {/*        {' '}*/}
-      {/*        here{' '}*/}
-      {/*      </a>{' '}*/}
-      {/*      for additional info. Please wait to register, extend and transfer*/}
-      {/*      domains until the chain is restored.*/}
-      {/*    </div>*/}
-      {/*    <div className="flex-none" onClick={() => setShowAlert(false)}>*/}
-      {/*      <CrossIcon className="text-white cursor-pointer" size={11} />*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*)}*/}
+      <div
+        className="text-white text-base p-2 px-16 sm:px-7 font-bold break-all"
+        style={{
+          background: 'linear-gradient(90deg, #FF7A00 0%, #3300FF 100%)',
+        }}
+      >
+        Oct 28th 12 AM — Nov 2nd 12 AM ET 👻 👻 👻 Limited Halloween Edition
+        skins through domain registration or extension. 🎃 🎃 🎃{' '}
+        <a
+          className="text-primary visited:text-primary"
+          href="https://blog.space.id/spooky-halloween-skins-are-in-your-area-4fc3fd98987d"
+          target="_blank"
+        >
+          Read more ↗
+        </a>
+        {/*<div className="flex-none" onClick={() => setShowAlert(false)}>*/}
+        {/*  <CrossIcon className="text-white cursor-pointer" size={11} />*/}
+        {/*</div>*/}
+      </div>
       <Switch>
         <Route exact path="/" component={Home} layout={HomePageLayout} />
         <Route
