@@ -39,8 +39,8 @@ export default function Withdraw() {
   }, [getReferralBalance])
 
   return (
-    <div className="flex items-center justify-between pl-8 pr-6 px-4 py-4 rounded-3xl bg-boxBg">
-      <div className="flex items-center space-x-8">
+    <div className="flex items-center justify-between sm:flex-row flex-col sm:pl-8 sm:pr-6 px-4 py-4 sm:space-y-0 space-y-3 rounded-3xl bg-boxBg">
+      <div className="flex items-center sm:flex-row flex-col sm:space-x-8 space-x-0 sm:space-y-0 space-y-3">
         <div className="flex items-center space-x-2 text-xl">
           <span>Earnings</span>
           <Tooltip

@@ -11,8 +11,6 @@
 
 .referral-content {
   position: relative;
-  width: 560px;
-  height: 308px;
   border: solid 2px transparent;
   border-radius: 20px;
   overflow: visible;
@@ -32,6 +30,9 @@
   color: #1eefa4;
   text-align: left;
   text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 /*none*/
 .referral-none .referral-bg {
@@ -70,13 +71,13 @@
   background: linear-gradient(270deg, #1eefa4 0%, #009acb 100%);
 }
 .referral-level1 .referral-text {
-  background-color: #1eefa4;
-  background-image: linear-gradient(180deg, #1eefa4 19.06%, #19c084 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+  color: #1eefa4;
+  /*background-image: linear-gradient(180deg, #1eefa4 19.06%, #19c084 100%);*/
+  /*background-clip: text;*/
+  /*-webkit-background-clip: text;*/
+  /*-moz-background-clip: text;*/
+  /*-webkit-text-fill-color: transparent;*/
+  /*-moz-text-fill-color: transparent;*/
 }
 
 /*premium 1*/
@@ -98,13 +99,13 @@
   background: linear-gradient(270deg, #f6f6f6 0%, #009acb 100%);
 }
 .referral-level2 .referral-text {
-  background-color: #1eefa4;
-  background-image: linear-gradient(180deg, #f5f5f5 19.06%, #c6c6c6 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+  color: #f5f5f5;
+  /*background-image: linear-gradient(180deg, #f5f5f5 19.06%, #c6c6c6 100%);*/
+  /*background-clip: text;*/
+  /*-webkit-background-clip: text;*/
+  /*-moz-background-clip: text;*/
+  /*-webkit-text-fill-color: transparent;*/
+  /*-moz-text-fill-color: transparent;*/
 }
 /*premium 2*/
 .referral-level3 .referral-bg {
@@ -125,13 +126,13 @@
   background: linear-gradient(270deg, #ffcc17 0%, #009acb 100%);
 }
 .referral-level3 .referral-text {
-  background-color: #1eefa4;
-  background-image: linear-gradient(180deg, #fcff63 19.06%, #998b0c 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+  color: #fcff63;
+  /*background-image: linear-gradient(180deg, #fcff63 19.06%, #998b0c 100%);*/
+  /*background-clip: text;*/
+  /*-webkit-background-clip: text;*/
+  /*-moz-background-clip: text;*/
+  /*-webkit-text-fill-color: transparent;*/
+  /*-moz-text-fill-color: transparent;*/
 }
 /*premium 3*/
 .referral-level4 .referral-bg {
@@ -152,13 +153,40 @@
   background: linear-gradient(270deg, #efefcd 0%, #009acb 100%);
 }
 .referral-level4 .referral-text {
-  background-color: #1eefa4;
-  background-image: linear-gradient(180deg, #efefcd 19.06%, #6b7340 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+  color: #efefcd;
+  /*background-image: linear-gradient(180deg, #efefcd 19.06%, #6b7340 100%);*/
+  /*background-clip: text;*/
+  /*-webkit-background-clip: text;*/
+  /*-moz-background-clip: text;*/
+  /*-webkit-text-fill-color: transparent;*/
+  /*-moz-text-fill-color: transparent;*/
+}
+/*partner*/
+.referral-level-p .referral-bg {
+  background-image: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.2)
+    ),
+    url('../../assets/images/referral/referral-level-p.png');
+}
+.referral-level-p .referral-content {
+  background: linear-gradient(90deg, #071a2f 0%, rgba(7, 26, 47, 0) 75.8%),
+    url('../../assets/images/referral/referral-level-p.png'), #0e4549;
+  background-clip: padding-box;
+  background-size: 100% 100%;
+}
+.referral-level-p .referral-content:before {
+  background: linear-gradient(270deg, #4b3dff 0%, #009acb 100%);
+}
+.referral-level-p .referral-text {
+  color: #6297ff;
+  /*background-image: linear-gradient(180deg, #efefcd 19.06%, #6b7340 100%);*/
+  /*background-clip: text;*/
+  /*-webkit-background-clip: text;*/
+  /*-moz-background-clip: text;*/
+  /*-webkit-text-fill-color: transparent;*/
+  /*-moz-text-fill-color: transparent;*/
 }
 
 .referral .radial-progress {
@@ -208,4 +236,24 @@
 }
 .btn-twitter {
   background-color: #2980e8 !important;
+}
+
+@media (max-width: 429px) {
+  .referral-bg {
+    background-size: auto 100%;
+    background-position: center;
+  }
+  .referral-content,
+  .referral-none .referral-content:before {
+    background-size: auto 100% !important;
+    background-repeat: no-repeat !important;
+    background-position-x: -135px !important;
+  }
+  .referral-text {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+  }
 }

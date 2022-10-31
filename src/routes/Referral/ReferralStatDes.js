@@ -1,25 +1,33 @@
-import React from 'react'
-
-export default function ReferralStatDes() {
+import React, { useEffect } from 'react'
+import { ReferralLevelTitle } from './constants'
+// todo: partner
+export default function ReferralStatDes({ levelDetails }) {
   return (
     <div className="text-sm text-white px-1">
       <p className="font-semibold">Referral Level</p>
       <ul className="">
         <li>
           <span className="mx-2">•</span>Set Primary Name to get{' '}
-          <span className="font-semibold">Regular</span> (5% earning)
+          <span className="font-semibold">{ReferralLevelTitle[1]}</span> (
+          <span>{levelDetails[1].rate}</span> earning)
         </li>
         <li>
-          <span className="mx-2">•</span>50 invitees to get{' '}
-          <span className="font-semibold">Premium I</span> (8% earning)
+          <span className="mx-2">•</span>
+          {levelDetails[2].limit} invitees to get{' '}
+          <span className="font-semibold">{ReferralLevelTitle[2]}</span> (
+          <span>{levelDetails[2].rate}</span> earning)
         </li>
         <li>
-          <span className="mx-2">•</span>300 invitees to get{' '}
-          <span className="font-semibold">Premium II</span> (12% earning)
+          <span className="mx-2">•</span>
+          {levelDetails[3].limit} invitees to get{' '}
+          <span className="font-semibold">{ReferralLevelTitle[3]}</span> (
+          <span>{levelDetails[3].rate}</span> earning)
         </li>
         <li>
-          <span className="mx-2">•</span>1000 invitees to get{' '}
-          <span className="font-semibold">Premium III</span> (15% earning)
+          <span className="mx-2">•</span>
+          {levelDetails[4].limit} invitees to get{' '}
+          <span className="font-semibold">{ReferralLevelTitle[4]}</span> (
+          <span>{levelDetails[4].rate}</span> earning)
         </li>
       </ul>
     </div>

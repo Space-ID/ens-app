@@ -387,17 +387,17 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
             {nameArr.join('')}
           </p>
         </div>
-        <div className="text-xl font-semibold text-green-600">
+        <div className="text-xl font-semibold text-green-600 max-w-full w-full overflow-hidden flex justify-center">
           {inviter || savedInviter ? (
             <>
-              - Invitation from{' '}
-              <span className="text-[#F1DD23]">{`${
+              <span className="flex-shrink-0">- Invitation from&nbsp;</span>
+              <span className="text-[#F1DD23] truncate sm:max-w-fit max-w-[232px]">{`${
                 registerState === RegisterState.confirm ||
                 registerState.startsWith(RegisterState.register)
                   ? savedInviter
                   : inviter ?? ''
-              }`}</span>{' '}
-              -
+              }`}</span>
+              <span className="flex-shrink-0">&nbsp;-</span>
             </>
           ) : (
             <span className="select-none">&nbsp;</span>

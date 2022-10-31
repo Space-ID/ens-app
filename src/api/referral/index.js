@@ -14,6 +14,14 @@ const resolvers = {
       const instance = getReferral()
       return instance.getReferralLevelDetails()
     },
+    async getPartnerReferralLevelDetails(_, { domain }) {
+      const instance = getReferral()
+      return instance.getPartnerReferralLevelDetails(domain)
+    },
+    async isPartner(_, { domain }) {
+      const instance = getReferral()
+      return instance.isPartner(domain)
+    },
   },
   Mutation: {
     async referralWithdraw() {

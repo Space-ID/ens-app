@@ -396,8 +396,18 @@ export const QUERY_REFERRAL_LEVEL_DETAILS = gql`
     getReferralLevelDetails
   }
 `
+export const QUERY_PARTNER_REFERRAL_LEVEL_DETAILS = gql`
+  query getPartnerReferralLevelDetails($domain: String) {
+    getPartnerReferralLevelDetails(domain: $domain)
+  }
+`
 export const QUERY_REFERRAL_BALANCE = gql`
   query getReferralBalance($account: String) {
     getReferralBalance(account: $account)
+  }
+`
+export const QUERY_IS_PARTNER = gql`
+  query isPartner($domain: String) {
+    isPartner(domain: $domain)
   }
 `

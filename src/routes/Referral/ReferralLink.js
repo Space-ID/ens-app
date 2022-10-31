@@ -19,7 +19,7 @@ function ReferralLink({ inviteUrl }) {
     }
   }, [message])
   return (
-    <div className="flex items-center justify-between text-green-600 flex-1 bg-fill-2 px-4 py-2 rounded-full border-[1px] border-primary overflow-hidden">
+    <div className="flex items-center justify-between text-green-600 w-full flex-1 bg-fill-2 px-4 py-2 rounded-full border-[1px] border-primary overflow-hidden">
       <span className="text-base text-white truncate">{inviteUrl}</span>
       <Tooltip
         title={<div>{message}</div>}

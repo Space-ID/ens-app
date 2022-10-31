@@ -6,6 +6,7 @@ import { utils as ethersUtils } from 'ethers/lib/ethers'
 import CopyIcon from 'components/Icons/CopyIcon'
 
 //Import Assets
+import iconPartner from 'assets/images/referral/referral-icon-partner.svg'
 import AnimationSpin from 'components/AnimationSpin'
 import PendingTx from 'components/PendingTx'
 
@@ -21,8 +22,12 @@ import {
   isExpiresLessThanOneMonth,
 } from 'utils/dates'
 import Tooltip from 'components/Tooltip/index'
-import { useLazyQuery } from '@apollo/client'
-import { QUERY_POINT_BALANCE, QUERY_REFERRAL_DETAILS } from 'graphql/queries'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import {
+  QUERY_IS_PARTNER,
+  QUERY_POINT_BALANCE,
+  QUERY_REFERRAL_DETAILS,
+} from 'graphql/queries'
 import { ReferralLevelTitle } from 'routes/Referral/constants'
 import { useAccount } from 'components/QueryAccount'
 import CirclePlus from 'components/Icons/CircleUser'
@@ -59,6 +64,10 @@ export default function TopAddress({
     })
   const [fetchReferralDetails, { data: { getReferralDetails = [] } = {} }] =
     useLazyQuery(QUERY_REFERRAL_DETAILS, { fetchPolicy: 'network-only' })
+  const { data: { isPartner = false } = {} } = useQuery(QUERY_IS_PARTNER, {
+    variables: { domain: selectedDomain?.name },
+    fetchPolicy: 'no-cache',
+  })
 
   useEffect(() => {
     if (selectedDomain.name) {
@@ -167,8 +176,8 @@ export default function TopAddress({
             </div>
           )}
         </div>
-        <div>
-          <p className="text-center 2md:text-left font-bold text-2xl font-semibold text-green-100">
+        <div className="flex flex-col 2md:items-stretch items-center">
+          <p className="text-center 2md:text-left font-bold text-2xl font-semibold text-green-100 mt-8 2md:mt-0">
             Referral Stat
           </p>
           <div className="mt-2 flex">
@@ -179,7 +188,9 @@ export default function TopAddress({
               )}
             >
               {referralLevel > 1 ? <Diamond /> : <CircleStar />}
-              <span>{ReferralLevelTitle[referralLevel]}</span>
+              <span>
+                {isPartner ? 'Partner' : ReferralLevelTitle[referralLevel]}
+              </span>
             </div>
             <div
               className={cn(
