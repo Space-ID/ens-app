@@ -509,7 +509,7 @@ export default ({ children }) => {
                         Manage Account
                       </div>
                       <div
-                        className="items-center justify-center hidden h-10 font-semibold cursor-pointer md:flex hover:bg-dark-200 hover:rounded-xl"
+                        className="flex items-center justify-center h-10 font-semibold cursor-pointer hover:bg-dark-200 hover:rounded-xl"
                         onClick={moveToReferral}
                       >
                         Referral

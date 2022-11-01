@@ -6,7 +6,6 @@ import { utils as ethersUtils } from 'ethers/lib/ethers'
 import CopyIcon from 'components/Icons/CopyIcon'
 
 //Import Assets
-import iconPartner from 'assets/images/referral/referral-icon-partner.svg'
 import AnimationSpin from 'components/AnimationSpin'
 import PendingTx from 'components/PendingTx'
 
@@ -33,6 +32,7 @@ import { useAccount } from 'components/QueryAccount'
 import CirclePlus from 'components/Icons/CircleUser'
 import Diamond from 'components/Icons/Diamond'
 import CircleStar from 'components/Icons/CircleStar'
+import Heart from 'components/Icons/Heart'
 import './TopAddress.css'
 
 export default function TopAddress({
@@ -79,13 +79,15 @@ export default function TopAddress({
   }, [selectedDomain])
 
   useEffect(() => {
-    if (getReferralDetails.length <= 0) {
+    if (isPartner) {
+      setReferralLevel('p')
+    } else if (getReferralDetails.length <= 0) {
     } else {
       const [referralNum, level] = getReferralDetails
       setReferralNum(referralNum.toNumber())
       setReferralLevel(Math.min(level.toNumber(), 4))
     }
-  }, [getReferralDetails])
+  }, [getReferralDetails, isPartner])
 
   const nftErrorLoading = () => {
     setImageURL(FailedImage)
@@ -187,7 +189,17 @@ export default function TopAddress({
                 'referral-state' + referralLevel
               )}
             >
-              {referralLevel > 1 ? <Diamond /> : <CircleStar />}
+              {isPartner ? (
+                <Heart />
+              ) : referralLevel > 1 ? (
+                <div className="flex space-x-1">
+                  <Diamond />
+                  {referralLevel > 2 && <Diamond />}
+                  {referralLevel > 3 && <Diamond />}
+                </div>
+              ) : (
+                <CircleStar />
+              )}
               <span>
                 {isPartner ? 'Partner' : ReferralLevelTitle[referralLevel]}
               </span>

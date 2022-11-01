@@ -42,7 +42,7 @@ export default function Withdraw() {
     <div className="flex items-center justify-between sm:flex-row flex-col sm:pl-8 sm:pr-6 px-4 py-4 sm:space-y-0 space-y-3 rounded-3xl bg-boxBg">
       <div className="flex items-center sm:flex-row flex-col sm:space-x-8 space-x-0 sm:space-y-0 space-y-3">
         <div className="flex items-center space-x-2 text-xl">
-          <span>Earnings</span>
+          <span>Commision</span>
           <Tooltip
             color="#2980E8"
             side="bottom"
@@ -50,8 +50,8 @@ export default function Withdraw() {
             offset={5}
             title={
               <p className="text-sm text-white w-[275px] text-center">
-                All the earnings from domains that have been set as primary name
-                and used for referral program will be cumulated here.
+                All cumulated earnings from registrations using your primary
+                domain name’s referral link will be shown here.
               </p>
             }
           >

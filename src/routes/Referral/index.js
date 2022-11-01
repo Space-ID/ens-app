@@ -127,14 +127,16 @@ export default function ReferralPage() {
     }
   }, [referralOpt.key, primaryDomain])
   useEffect(() => {
-    if (isPartner) {
-      setReferralOpt(PartnerReferralOpt)
-    } else if (getReferralDetails.length > 0) {
+    if (getReferralDetails.length > 0) {
       const [referralNum, level] = getReferralDetails
-      const temp = Math.min(level.toNumber(), ReferralOpts.length - 1)
-      setReferralOpt(ReferralOpts[temp])
       setReferralNum(referralNum.toNumber())
-      setReferralLevel(temp)
+      if (isPartner) {
+        setReferralOpt(PartnerReferralOpt)
+      } else {
+        const temp = Math.min(level.toNumber(), ReferralOpts.length - 1)
+        setReferralOpt(ReferralOpts[temp])
+        setReferralLevel(temp)
+      }
     }
   }, [getReferralDetails, isPartner])
   useEffect(() => {
@@ -150,17 +152,19 @@ export default function ReferralPage() {
     <>
       <ReferralQrModal
         inviteUrl={inviteUrl}
+        domain={primaryDomain?.name + '.bnb'}
         open={openQrModal}
         onOpenChange={(v) => setOpenQrModal(v)}
+        referralOpt={referralOpt}
       ></ReferralQrModal>
       <div className="grid grid-cols-1 gap-6 font-semibold text-white referral my-[86px] px-7">
         {/*title*/}
         <div>
           <p className="text-primary text-6xl font-bold">
-            Refer Friends and Earn Reward
+            Refer Friends and Earn Rewards
           </p>
           <p className="text-green-600 text-sm">
-            Invite your friends to register for .bnb domain via the referral
+            Invite your friends to register for a .bnb domain via the referral
             link of your primary name, and get rewarded with BNB.{' '}
             <a href="" target="_blank" className="text-primary">
               Referral program rules ↗
@@ -181,8 +185,8 @@ export default function ReferralPage() {
                 <div className="mr-auto font-bold text-left w-full">
                   <p className="text-6xl font-bold referral-text">
                     {disabled ? (
-                      <span className="text-3xl text-left inline-block w-[263px]">
-                        Set primary name to join referral program
+                      <span className="text-3xl text-left inline-block sm:w-[325px] w-[220px] overflow-hidden whitespace-normal">
+                        Set your primary name to join the referral program
                       </span>
                     ) : (
                       primaryDomain?.name + '.bnb'
@@ -239,7 +243,7 @@ export default function ReferralPage() {
                       className="btn btn-secondary px-4 py-2 rounded-full text-base btn-twitter"
                       style={{ padding: '12px 8pxs', backgroundColor: 'unset' }}
                       disabled={disabled}
-                      title="space id"
+                      title={`🪪 Call me by my #Web3 .bnb name “${primaryDomain?.name}.bnb”! @SpaceIDProtocol \n Register yours: \n`}
                       url={inviteUrl}
                     >
                       <TwitterIcon className="text-white mr-1" />
