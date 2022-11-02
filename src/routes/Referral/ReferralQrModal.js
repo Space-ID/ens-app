@@ -3,10 +3,11 @@ import cn from 'classnames'
 import { Title } from '@radix-ui/react-dialog'
 import Qrious from 'qrious'
 import { toPng } from 'html-to-image'
+import { isMobile } from 'utils/utils'
 import ReferralLink from './ReferralLink'
 import DownloadIcon from '../../components/Icons/DownloadIcon'
 import Modal from '../../components/Modal'
-
+const mobile = isMobile()
 function ReferralQrModal(props) {
   const {
     open,
@@ -45,6 +46,7 @@ function ReferralQrModal(props) {
     })
       .then((res) => {
         const a = document.createElement('a')
+        setQrCode(res)
         a.href = res
         a.download = 'Referral Invitation.png'
         a.click()
@@ -92,10 +94,10 @@ function ReferralQrModal(props) {
                 alt=""
               />
             </div>
-            <p className="text-sm text-green-600 w-[196px] absolute bottom-4 left-5 font-normal">
+            <p className="sm:text-sm text-[10px] leading-[16px] text-green-600 sm:w-[196px] w-[140px] absolute bottom-4 left-5 font-normal">
               Incubated by <span className="font-semibold">Binance Labs</span>,{' '}
-              <span class="text-primary font-semibold">.bnb</span> Domain Name
-              Service by <span className="font-semibold">SPACE ID</span>{' '}
+              <span className="text-primary font-semibold">.bnb</span> Domain
+              Name Service by <span className="font-semibold">SPACE ID</span>{' '}
               provides the standard BNB Chain identifier.
             </p>
           </div>
@@ -111,6 +113,11 @@ function ReferralQrModal(props) {
             <DownloadIcon className="mr-1" />
             Downlaod Image
           </button>
+          {mobile && (
+            <p className="text-green-600 sm:text-base text-xs font-semibold text-center">
+              Open this page in your browser to download the poster
+            </p>
+          )}
         </div>
       </>
     </Modal>

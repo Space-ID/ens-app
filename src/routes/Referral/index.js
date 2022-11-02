@@ -178,8 +178,8 @@ export default function ReferralPage() {
             `referral-${referralOpt.key}`
           )}
         >
-          <div className="referral-bg"></div>
-          <div className="flex items-stretch sm:flex-row flex-col p-6 backdrop-blur-[10px]">
+          <div className="referral-bg rounded-3xl"></div>
+          <div className="flex items-stretch sm:flex-row flex-col p-6 backdrop-blur-[10px] rounded-3xl">
             <div className="sm:mr-6 overflow-hidden sm:mb-0 mb-9">
               <div className="flex flex-col justify-between p-5 referral-content sm:w-[560px] h-[308px]">
                 <div className="mr-auto font-bold text-left w-full">

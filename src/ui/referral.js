@@ -8,7 +8,7 @@ class Referral {
       throw new Error('Provider is required for GiftCard')
     }
     this.referralController = getReferralContract({
-      address: process.env.REACT_APP_GIFT_REFERRAL,
+      address: process.env.REACT_APP_REFERRAL,
       provider,
     })
   }
