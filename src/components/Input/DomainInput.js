@@ -25,9 +25,8 @@ export default function DomainInput(props) {
 
   const resolveDomain = async (domain) => {
     setDomainState(DOMAIN_STATE.loading)
-    const param = domain.endsWith('.bnb') ? domain : domain + '.bnb'
     try {
-      const addr = await sid.name(param).getAddress()
+      const addr = await sid.name(domain).getAddress()
       if (isEmptyAddress(addr)) {
         throw 'not found'
       }
