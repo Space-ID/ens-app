@@ -369,6 +369,6 @@ export const getDomainNftUrl = (domainName) => {
   let label = keccak256(Buffer.from(domainName)).toString('hex')
   let nftId = Web3.utils.toBN(label).toString()
   return `https://meta.image.space.id/image/${
-    process.env.REACT_APP_MODE === 'production' ? 'mainnet' : 'stg'
-  }/${nftId}.svg?v=1.0`
+    process.env.REACT_APP_MODE === 'stg' ? 'stg' : 'mainnet'
+  }/${nftId}.svg`
 }

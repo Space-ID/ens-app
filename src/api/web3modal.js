@@ -1,5 +1,7 @@
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
+import { get } from 'lodash'
+import { chainsInfo } from 'utils/constants'
 
 import { getNetwork, getNetworkId, isReadOnly } from '../ui'
 import { setup as setupENS } from '../apollo/mutations/ens'
@@ -10,12 +12,33 @@ import {
   web3ProviderReactive,
 } from '../apollo/reactiveVars'
 
+import { ConnectToOkx, OkxProvider } from './wallet/okx'
+
 const INFURA_ID =
   window.location.host === 'app.ens.domains'
     ? '90f210707d3c450f847659dc9a3436ea'
     : '58a380d3ecd545b2b5b3dad5d2b18bf0'
 
 const PORTIS_ID = '57e5d6ca-e408-4925-99c4-e7da3bdb8bf5'
+
+const walletInfo = {
+  bitkeep: {
+    id: 'bitkeep',
+    inject: 'bitkeep.ethereum',
+    homePage: 'https://bitkeep.com/en/download',
+    check: 'isBitKeep',
+  },
+  injected: {
+    id: 'injected',
+    inject: 'ethereum',
+  },
+  [OkxProvider.id]: {
+    id: OkxProvider.id,
+    inject: 'okxwallet',
+    homePage: 'https://www.okx.com/web3',
+    check: 'isOkxWallet',
+  },
+}
 
 let provider
 const option = {
@@ -37,6 +60,17 @@ const option = {
         },
         network: 'binance',
       },
+    },
+    'custom-okx': {
+      display: {
+        ...OkxProvider,
+        description: 'Connect to your OKX provider account',
+      },
+      package: OkxProvider,
+      options: {
+        apiKey: 'EXAMPLE_PROVIDER_API_KEY',
+      },
+      connector: ConnectToOkx,
     },
   },
 }
@@ -61,6 +95,7 @@ export const connect = async () => {
       provider = await web3Modal.connectTo(web3ModalProviderId)
     } else if (web3Modal.cachedProvider) {
       provider = await web3Modal.connect()
+      WalletConnectProvider = web3Modal.cachedProvider
     } else {
       throw new Error('wallet error')
     }
@@ -101,4 +136,46 @@ export const disconnect = async function () {
 
 export const setWeb3Modal = (x) => {
   web3Modal = x
+}
+
+export const checkWalletInstall = (id, openHomePage = false) => {
+  const info = walletInfo[id]
+  if (info && get(window, walletInfo[id].inject)) {
+    return true
+  } else if (info && openHomePage) {
+    window.open(info.homePage, '_blank')
+  }
+  return false
+}
+
+export const switchToBscChain = async () => {
+  const chainID = process.env.REACT_APP_NETWORK_CHAIN_ID
+  let chain = chainsInfo.filter((item) => item.chainId.toString() === chainID)
+  if (provider && chain && chain.length > 0) {
+    chain = chain[0]
+    try {
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${chain.chainId.toString(16)}` }],
+      })
+    } catch (err) {
+      if (err.code === 4902) {
+        try {
+          await provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: `0x${chain.chainId.toString(16)}`,
+                chainName: chain.chainName,
+                rpcUrls: [chain.rpc],
+              },
+            ],
+          })
+        } catch (addError) {
+          console.log(addError)
+        }
+      }
+    }
+  }
+  window.location.reload()
 }

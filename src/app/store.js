@@ -17,5 +17,5 @@ export const store = configureStore({
     staging: stagingSlice,
     giftCard: giftCardSlice,
   },
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: process.env.NODE_ENV === 'stg',
 })
