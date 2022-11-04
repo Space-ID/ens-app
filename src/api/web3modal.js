@@ -95,7 +95,7 @@ export const connect = async () => {
       provider = await web3Modal.connectTo(web3ModalProviderId)
     } else if (web3Modal.cachedProvider) {
       provider = await web3Modal.connect()
-      WalletConnectProvider = web3Modal.cachedProvider
+      setWeb3ModalProvider(web3Modal.cachedProvider)
     } else {
       throw new Error('wallet error')
     }
