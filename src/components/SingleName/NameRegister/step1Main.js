@@ -16,20 +16,16 @@ import CheckCircle from '../../Icons/CheckCircle'
 import { QUERY_POINT_BALANCE } from '../../../graphql/queries'
 import HelpInfo from '../../Icons/HelpInfo'
 import Tooltip from '../../Tooltip/index'
+import PremiumPrice from './premiumPrice'
 
 const Step1Main = ({
   years,
   setYears,
   usePoint,
   setUsePoint,
-  ethUsdPriceLoading,
   ethUsdPrice,
-  ethUsdPremiumPrice,
   loading,
   price,
-  premiumOnlyPrice,
-  gasPrice,
-  underPremium,
   connectHandler,
   onRequest,
   refetchRent,
@@ -38,7 +34,11 @@ const Step1Main = ({
   registrationFeeInUsd,
   registrationFeeWithPoint,
   registrationFeeWithPointInUsd,
+  premiumFee,
+  premiumFeeWithPoint,
   registerGasFast,
+  showPremium,
+  expiryTime,
 }) => {
   const account = useAccount()
   const dispatch = useDispatch()
@@ -70,6 +70,9 @@ const Step1Main = ({
           <div className="font-bold text-center 2md:text-2xl text-xl">
             Step 1: Request to Register
           </div>
+          {showPremium && (
+            <PremiumPrice expiryTime={expiryTime} ethUsdPrice={ethUsdPrice} />
+          )}
           <div className="mt-4 mb-[24px] flex flex-col space-y-3 2md:text-base text-sm font-semibold text-white">
             <div className="flex flex-col justify-center space-y-2 w-full">
               <div className="flex 2md:flex-row flex-col 2md:items-center justify-between 2md:space-x-6 2md:space-y-0 space-y-2">
@@ -88,6 +91,16 @@ const Step1Main = ({
                   ethUsdPrice={ethUsdPrice}
                 />
               </div>
+              {showPremium && (
+                <div className="flex 2md:flex-row flex-col 2md:items-center justify-between 2md:space-x-6 2md:space-y-0 space-y-2">
+                  <div className="bg-fill-2 rounded-2xl px-4 py-1 flex-1">
+                    Premium Fee
+                  </div>
+                  <div className="w-[116px] text-right ml-auto 2md:pr-4 pr-2">
+                    {premiumFee.toFixed(3)} BNB
+                  </div>
+                </div>
+              )}
               <div className="flex 2md:flex-row flex-col 2md:items-center justify-between 2md:space-x-6 2md:space-y-0 space-y-2">
                 <div className="flex items-center justify-between flex-1 bg-fill-2 rounded-2xl px-4 py-1">
                   <div
@@ -142,9 +155,10 @@ const Step1Main = ({
                 </div>
                 <div className="w-[116px] text-right ml-auto 2md:pr-4 pr-2">
                   {usePoint &&
-                    `- ${(registrationFee - registrationFeeWithPoint).toFixed(
-                      3
-                    )} BNB`}
+                    `- ${registrationFee
+                      .sub(registrationFeeWithPoint)
+                      .add(premiumFee.sub(premiumFeeWithPoint))
+                      .toFixed(3)} BNB`}
                 </div>
               </div>
               <div className="flex flex-row items-center justify-between 2md:px-4 px-2">
@@ -168,8 +182,10 @@ const Step1Main = ({
                 <div className="divider divider-horizontal s-divider w-[1px] my-1"></div>
                 <div className="text-primary">
                   {usePoint
-                    ? registrationFeeWithPoint.toFixed(3)
-                    : registrationFee.toFixed(3)}
+                    ? registrationFeeWithPoint
+                        .add(premiumFeeWithPoint)
+                        .toFixed(3)
+                    : registrationFee.add(premiumFee).toFixed(3)}
                   BNB
                 </div>
               </div>

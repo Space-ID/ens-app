@@ -97,6 +97,7 @@ export const connect = async () => {
     })
     return provider
   } catch (e) {
+    console.error(e)
     web3Modal = undefined
     if (e !== 'Modal closed by user') {
       throw e

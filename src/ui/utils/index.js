@@ -129,8 +129,9 @@ const parseSearchTerm = (term, validTld) => {
 // Add 10% buffer to handle price fructuation.
 // Any unused value will be sent back by the smart contract.
 function getBufferedPrice(price) {
-  let p = price[0]
-  return p.mul(110).div(100) // FIXME, we did not transfer back in the contract now
+  let p = price[0],
+    premium = price[1]
+  return p.add(premium).mul(110).div(100) // FIXME, we did not transfer back in the contract now
 }
 
 const emptyAddress = '0x0000000000000000000000000000000000000000'
