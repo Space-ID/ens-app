@@ -46,7 +46,6 @@ function ReferralQrModal(props) {
     })
       .then((res) => {
         const a = document.createElement('a')
-        setQrCode(res)
         a.href = res
         a.download = 'Referral Invitation.png'
         a.click()
