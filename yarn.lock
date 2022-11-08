@@ -14152,6 +14152,11 @@ is-typedarray@1.0.0, is-typedarray@^1.0.0, is-typedarray@~1.0.0:
   resolved "https://registry.npmjs.org/is-typedarray/-/is-typedarray-1.0.0.tgz"
   integrity sha512-cyA56iCMHAh5CdzjJIa4aohJyeO1YbwLi3Jc35MmRU6poroFjIGZzUzupGiRPOjgHg9TLu43xbpwXk523fMxKA==
 
+is-ua-webview@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-ua-webview/-/is-ua-webview-1.1.0.tgz#0830e5f164ff9c78e9a6c8df5ce5e7ce404c59e6"
+  integrity sha512-DXvpf4ouWLwxCp6+DNJ2UBTBAJbH6oCqxgpH8rRMDnA0HntfMYMKUJjiCKCJGGnoFwK7i942zCbLU0SfAjvrbg==
+
 is-unicode-supported@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/is-unicode-supported/-/is-unicode-supported-0.1.0.tgz"

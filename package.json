@@ -53,6 +53,7 @@
     "idempotent-babel-polyfill": "^7.4.4",
     "install": "^0.13.0",
     "ipfs-http-client": "^40.1.0",
+    "is-ua-webview": "^1.1.0",
     "js-sha3": "^0.8.0",
     "keccak256": "^1.0.6",
     "lodash": "^4.17.21",

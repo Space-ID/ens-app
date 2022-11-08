@@ -3,11 +3,13 @@ import cn from 'classnames'
 import { Title } from '@radix-ui/react-dialog'
 import Qrious from 'qrious'
 import { toPng } from 'html-to-image'
+import isWebview from 'is-ua-webview'
 import { isMobile } from 'utils/utils'
 import ReferralLink from './ReferralLink'
 import DownloadIcon from '../../components/Icons/DownloadIcon'
 import Modal from '../../components/Modal'
 const mobile = isMobile()
+const webview = isWebview(window.navigator.userAgent)
 function ReferralQrModal(props) {
   const {
     open,
@@ -101,20 +103,22 @@ function ReferralQrModal(props) {
             </p>
           </div>
           <ReferralLink inviteUrl={inviteUrl} />
-          <button
-            className={cn(
-              'btn btn-primary px-5 py-3 rounded-full w-full text-base font-semibold',
-              loading ? 'loading' : ''
-            )}
-            onClick={downloadQrCode}
-            disabled={!qrRef.current || !qrCode}
-          >
-            <DownloadIcon className="mr-1" />
-            Downlaod Image
-          </button>
+          {!webview && (
+            <button
+              className={cn(
+                'btn btn-primary px-5 py-3 rounded-full w-full text-base font-semibold',
+                loading ? 'loading' : ''
+              )}
+              onClick={downloadQrCode}
+              disabled={!qrRef.current || !qrCode}
+            >
+              <DownloadIcon className="mr-1" />
+              Downlaod Image
+            </button>
+          )}
           {mobile && (
             <p className="text-green-600 sm:text-base text-xs font-semibold text-center">
-              Open this page in your browser to download the poster
+              Open this page in your browser to download the image
             </p>
           )}
         </div>
