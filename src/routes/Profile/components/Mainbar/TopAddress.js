@@ -201,7 +201,7 @@ export default function TopAddress({
                 <CircleStar />
               )}
               <span>
-                {isPartner ? 'Partner' : ReferralLevelTitle[referralLevel]}
+                {isPartner ? 'VIP' : ReferralLevelTitle[referralLevel]}
               </span>
             </div>
             <div

@@ -33,7 +33,7 @@ import { ReferralLevelTitle } from './constants'
 
 const PartnerReferralOpt = {
   key: 'level-p',
-  title: 'Partner',
+  title: 'VIP',
   icons: [iconPartner],
   rate: '-',
   limit: 0,
