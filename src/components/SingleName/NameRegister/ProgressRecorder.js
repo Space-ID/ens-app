@@ -58,6 +58,9 @@ const ProgressRecorder = ({
   now,
   usePoint,
   setUsePoint,
+  inviter,
+  savedInviter,
+  setSavedInviter,
 }) => {
   const stepIndex = Object.keys(states).indexOf(step)
   const label = `${networkId}-${domain.label}`
@@ -110,6 +113,9 @@ const ProgressRecorder = ({
   if (savedStep && usePoint === undefined && savedStep.usePoint !== undefined) {
     setUsePoint(savedStep.usePoint)
   }
+  if (!savedInviter && savedStep && savedStep.inviter) {
+    setSavedInviter(savedStep.inviter)
+  }
   // todo change step
   switch (step) {
     case RegisterState.request: // init state
@@ -147,6 +153,7 @@ const ProgressRecorder = ({
         secondsPassed,
         commitmentExpirationDate,
         usePoint,
+        inviter,
       })
       if (!timerRunning) {
         setTimerRunning(true)

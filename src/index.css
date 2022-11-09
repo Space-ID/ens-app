@@ -161,6 +161,8 @@ input[type='number'] {
   transition-property: none;
   border: none;
   animation: none;
+  height: auto;
+  min-height: fit-content;
   --btn-focus-scale: 1;
   --animation-btn: 0;
   --animation-input: 0;
@@ -172,6 +174,7 @@ input[type='number'] {
   @apply text-white;
 }
 .btn-primary:disabled,
+.btn-secondary:disabled,
 .btn-disabled {
   @apply bg-gray-800;
   @apply text-white;

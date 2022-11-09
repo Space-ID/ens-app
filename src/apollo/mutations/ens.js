@@ -4,7 +4,8 @@ import { isENSReadyReactive } from '../reactiveVars'
 let ens = {},
   registrar = {},
   ensRegistryAddress = undefined,
-  giftCard = {}
+  giftCard = {},
+  referral = {}
 
 export async function setup({
   enforceReadOnly,
@@ -28,11 +29,13 @@ export async function setup({
       registrar: registrarInstance,
       providerObject,
       giftCard: giftCardInstance,
+      referral: referralInstance,
     } = await setupENS(option)
     ens = ensInstance
     registrar = registrarInstance
     ensRegistryAddress = ensAddress
     giftCard = giftCardInstance
+    referral = referralInstance
     isENSReadyReactive(true)
     return { ens, registrar, providerObject }
   } catch (err) {
@@ -46,6 +49,9 @@ export function getRegistrar() {
 
 export function getGiftCard() {
   return giftCard
+}
+export function getReferral() {
+  return referral
 }
 
 export function getEnsAddress() {

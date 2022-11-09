@@ -20,6 +20,9 @@ export default function Tooltip(props) {
             style={{ backgroundColor: color }}
             side={side}
             sideOffset={offset}
+            onPointerDownOutside={(event) => {
+              event.preventDefault()
+            }}
           >
             <TooltipPrimitive.Arrow fill={color} />
             {title}

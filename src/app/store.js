@@ -4,8 +4,8 @@ import errorSlice from './slices/errorSlice'
 import uiSlice from './slices/uiSlice'
 import domainSlice from './slices/domainSlice'
 import registerSlice from './slices/registerSlice'
-import stagingSlice from './slices/stagingSlice'
 import giftCardSlice from './slices/giftCardSlice'
+import referralSlice from './slices/referralSlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,8 +14,8 @@ export const store = configureStore({
     ui: uiSlice,
     domain: domainSlice,
     register: registerSlice,
-    staging: stagingSlice,
     giftCard: giftCardSlice,
+    referral: referralSlice,
   },
   devTools: process.env.NODE_ENV === 'stg',
 })

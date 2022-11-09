@@ -136,7 +136,7 @@ const GiftCardModal = (props) => {
             <button
               disabled={loadingPrice || mintFeeInUsd <= 0}
               className={cn(
-                'btn btn-primary rounded-2xl w-[160px] h-[42px] text-lg text-black font-semibold',
+                'btn btn-primary py-2 rounded-2xl w-[160px] h-[42px] text-lg text-black font-semibold',
                 mintLoading && 'loading'
               )}
               onClick={handleMint}

@@ -22,7 +22,6 @@ export default () => {
     (state) => state.domain.searchingDomainName
   )
   const account = useAccount()
-
   const { data } = useQuery(HOME_DATA, {
     variables: {
       address: account,

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import moment from 'moment'
 import { toArray, last } from 'lodash'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import EthVal from 'ethval'
 
@@ -61,8 +61,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [showInsufficientModal, setShowInsufficientModal] = useState(false)
   const [signature, setSignature] = useState([])
   const [usePoint, setUsePoint] = useState(undefined)
-
   const [nameArr, setNameArr] = useState([])
+  const inviter = useSelector((state) => state.referral.inviter)
+  const [savedInviter, setSavedInviter] = useState('')
 
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
@@ -214,6 +215,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     now,
     usePoint,
     setUsePoint,
+    inviter,
+    savedInviter,
+    setSavedInviter,
   })
 
   useInterval(
@@ -366,10 +370,10 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
       duration,
       secret,
       usePoint,
+      inviter: savedInviter,
     }
     mutationRegister({ variables })
   }
-
   return (
     <>
       {showInsufficientModal && (
@@ -377,11 +381,27 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
           closeModal={() => setShowInsufficientModal(false)}
         />
       )}
-      <div className="flex flex-col items-center mx-auto">
-        <div className="flex justify-center mb-8">
+      <div className="flex flex-col items-center mx-auto space-y-3">
+        <div className="flex justify-center">
           <p className="md:max-w-[928px] max-w-[360px] md:min-w-[320px] w-auto whitespace-nowrap overflow-hidden break-words font-bold text-xl md:text-[28px] text-green-100 py-2 border-4 border-green-100 rounded-[22px] text-center px-6">
             {nameArr.join('')}
           </p>
+        </div>
+        <div className="text-xl font-semibold text-green-600 max-w-full w-full overflow-hidden flex justify-center">
+          {inviter || savedInviter ? (
+            <>
+              <span className="flex-shrink-0">- Invitation from&nbsp;</span>
+              <span className="text-[#F1DD23] truncate sm:max-w-fit max-w-[232px]">{`${
+                registerState === RegisterState.confirm ||
+                registerState.startsWith(RegisterState.register)
+                  ? savedInviter
+                  : inviter ?? ''
+              }`}</span>
+              <span className="flex-shrink-0">&nbsp;-</span>
+            </>
+          ) : (
+            <span className="select-none">&nbsp;</span>
+          )}
         </div>
         <div className="flex flex-col 2md:flex-row">
           {(registerState === RegisterState.confirm ||

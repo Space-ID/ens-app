@@ -3,7 +3,7 @@ import {
   BaseRegistrarImplementation as permanentRegistrarContract,
   BulkRenewal as bulkRenewalContract,
   SID as ensContract,
-  BNBRegistrarControllerV8 as permanentRegistrarControllerContract,
+  BNBRegistrarControllerV9 as permanentRegistrarControllerContract,
   DNSRegistrar as dnsRegistrarContract,
   Resolver as resolverContract,
   ReverseRegistrar as reverseRegistrarContract,
@@ -12,6 +12,7 @@ import {
   SidGiftCardRegistrar as giftCardRegistrar,
   SidGiftCardController as giftCardController,
   SidGiftCardLedger as giftCardLedger,
+  ReferralHub as referralContract,
 } from '@siddomains/sid-contracts'
 
 import { abi as oldResolverContract } from '@ensdomains/contracts/abis/ens-022/PublicResolver.json'
@@ -79,6 +80,9 @@ function getGiftCardRegistrar({ address, provider }) {
 function getGiftCardLedger({ address, provider }) {
   return new Contract(address, giftCardLedger, provider)
 }
+function getReferralContract({ address, provider }) {
+  return new Contract(address, referralContract, provider)
+}
 
 export {
   getTestRegistrarContract,
@@ -97,4 +101,5 @@ export {
   getGiftCardRegistrar,
   getGiftCardController,
   getGiftCardLedger,
+  getReferralContract,
 }

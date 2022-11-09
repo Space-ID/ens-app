@@ -29,7 +29,7 @@ import { isEmptyAddress } from 'utils/records'
 import { usePrevious } from '../../../../utils/utils'
 
 //Import GraphQL
-import { refetchTilUpdatedSingle } from 'utils/graphql'
+import { copyTextToClipboard } from 'utils/utils'
 
 import useTransaction from 'hooks/useTransaction'
 
@@ -216,14 +216,6 @@ export default function MainBoard({
     dataTextRecords,
     setInitialRecords
   )
-
-  async function copyTextToClipboard(text) {
-    if ('clipboard' in navigator) {
-      return await navigator.clipboard.writeText(text)
-    } else {
-      return document.execCommand('copy', true, text)
-    }
-  }
 
   useEffect(() => {
     if (updatedRecords.length > 0) {
