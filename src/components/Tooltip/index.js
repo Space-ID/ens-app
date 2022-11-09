@@ -33,7 +33,7 @@ export default function Tooltip(props) {
             side={side}
             sideOffset={offset}
             onPointerDownOutside={(event) => {
-              event.preventDefault()
+              if (!hideWhenClick) event.preventDefault()
             }}
             {...other}
           >

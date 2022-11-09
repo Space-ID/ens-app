@@ -446,10 +446,12 @@ export default ({ children }) => {
                           <div className="w-[44px] h-[44px] rounded-full">
                             <NewFeatureToolTip>
                               <img
-                                className="rounded-full"
+                                width={44}
+                                height={44}
+                                className="rounded-full bg-fill-3 overflow-hidden"
                                 src={avatar}
                                 onError={() => setAvatar(DefaultAvatar)}
-                                alt="default avatar"
+                                alt=""
                               />
                             </NewFeatureToolTip>
                           </div>
