@@ -1,0 +1,12 @@
+.dot-badge {
+  position: relative;
+}
+.dot-badge:after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #ff3333;
+  right: -10px;
+}
