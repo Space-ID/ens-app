@@ -26,6 +26,7 @@ import Modal from 'components/Modal/Modal'
 import WalletModal from 'components/Modal/WalletModal'
 import { Search } from 'components/SearchName/SearchInHeader'
 import ProfileCard from 'routes/Profile/components/Sidebar/ProfileCard'
+import NewFeatureBadge from 'components/Badge/NewFeatureBadge'
 
 // Import graphql quires
 import { GET_REVERSE_RECORD } from 'graphql/queries'
@@ -66,6 +67,7 @@ import GiftCardModal from '../Modal/GiftCardModal'
 import { ethers } from '../../ui'
 import SID from '@siddomains/sidjs'
 import { switchToBscChain } from '../../api/web3modal'
+import NewFeatureToolTip from '../Tooltip/NewFeatureToolTip'
 
 export const HOME_DATA = gql`
   query getHomeData($address: string) @client {
@@ -442,12 +444,14 @@ export default ({ children }) => {
                           />
                         ) : (
                           <div className="w-[44px] h-[44px] rounded-full">
-                            <img
-                              className="rounded-full"
-                              src={avatar}
-                              onError={() => setAvatar(DefaultAvatar)}
-                              alt="default avatar"
-                            />
+                            <NewFeatureToolTip>
+                              <img
+                                className="rounded-full"
+                                src={avatar}
+                                onError={() => setAvatar(DefaultAvatar)}
+                                alt="default avatar"
+                              />
+                            </NewFeatureToolTip>
                           </div>
                         )}
                       </button>
@@ -512,7 +516,9 @@ export default ({ children }) => {
                         className="flex items-center justify-center h-10 font-semibold cursor-pointer hover:bg-dark-200 hover:rounded-xl"
                         onClick={moveToReferral}
                       >
-                        Referral
+                        <NewFeatureBadge id="feat-referral">
+                          Referral
+                        </NewFeatureBadge>
                       </div>
                       <div
                         className="h-10 flex items-center justify-center cursor-pointer bg-[rgba(67,140,136,0.25)] rounded-xl md:bg-transparent hover:bg-dark-200 hover:rounded-xl"
