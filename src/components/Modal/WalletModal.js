@@ -93,8 +93,8 @@ export default function WalletModal(props) {
           ...injected.METAMASK,
           deepLink: WalletDeepLinks[injected.METAMASK.name],
         })
-        userOpts.find((v) => v.name === OkxProvider.name).id =
-          providers.WALLETCONNECT.id
+        // hide okx
+        userOpts = userOpts.filter((v) => v.name !== OkxProvider.name)
       }
       userOpts = userOpts.filter((v) => v.name !== providers.WALLETCONNECT.name)
       userOpts.push(providers.WALLETCONNECT)
