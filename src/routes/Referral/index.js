@@ -73,12 +73,12 @@ const ReferralOpts = [
   v.title = ReferralLevelTitle[i]
   return v
 })
-const ReferralLevelLimit = [0, 0, 0, 0]
 
 export default function ReferralPage() {
   const [referralOpt, setReferralOpt] = useState(ReferralOpts[0])
   const [referralNum, setReferralNum] = useState(0)
   const [referralLevel, setReferralLevel] = useState(0)
+  const [referralLevelLimit, setReferralLevelLimit] = useState([0, 0, 0, 0])
   const primaryDomain = useSelector((state) => state.domain.primaryDomain)
   const [disabled, setDisabled] = useState(true)
   const [inviteUrl, setInviteUrl] = useState('-')
@@ -141,11 +141,13 @@ export default function ReferralPage() {
   }, [getReferralDetails, isPartner])
   useEffect(() => {
     if (getReferralLevelDetails.length === 5) {
+      const newLimit = [0, 0, 0, 0]
       for (let i = 1; i < ReferralOpts.length; i++) {
         ReferralOpts[i].limit = getReferralLevelDetails[i][0].toNumber()
         ReferralOpts[i].rate = getReferralLevelDetails[i][1].toNumber() + '%'
-        ReferralLevelLimit[i - 1] = ReferralOpts[i].limit
+        newLimit[i - 1] = ReferralOpts[i].limit
       }
+      setReferralLevelLimit(newLimit)
     }
   }, [getReferralLevelDetails])
   return (
@@ -166,7 +168,11 @@ export default function ReferralPage() {
           <p className="text-green-600 text-sm">
             Invite your friends to register for a .bnb domain via the referral
             link of your primary name, and get rewarded with BNB.{' '}
-            <a href="" target="_blank" className="text-primary">
+            <a
+              href="https://docs.space.id/user-tutorials/join-space-id-referral-program"
+              target="_blank"
+              className="text-primary"
+            >
               Referral program rules ↗
             </a>
           </p>
@@ -280,7 +286,7 @@ export default function ReferralPage() {
               <LevelProgress
                 current={referralNum}
                 level={referralLevel}
-                list={ReferralLevelLimit}
+                list={referralLevelLimit}
                 isPartner={isPartner}
               />
             </div>

@@ -80,6 +80,8 @@ export default function TopAddress({
 
   useEffect(() => {
     if (isPartner) {
+      const [referralNum] = getReferralDetails
+      setReferralNum(referralNum.toNumber())
       setReferralLevel('p')
     } else if (getReferralDetails.length <= 0) {
     } else {
