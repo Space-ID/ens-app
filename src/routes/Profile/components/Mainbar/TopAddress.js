@@ -79,11 +79,13 @@ export default function TopAddress({
   }, [selectedDomain])
 
   useEffect(() => {
+    if (getReferralDetails.length <= 0) {
+      return
+    }
     if (isPartner) {
       const [referralNum] = getReferralDetails
-      setReferralNum(referralNum.toNumber())
+      setReferralNum(referralNum?.toNumber() ?? 0)
       setReferralLevel('p')
-    } else if (getReferralDetails.length <= 0) {
     } else {
       const [referralNum, level] = getReferralDetails
       setReferralNum(referralNum.toNumber())
