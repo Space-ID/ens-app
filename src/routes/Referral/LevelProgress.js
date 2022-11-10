@@ -14,7 +14,7 @@ const LevelProgress = ({ current = 0, level, list, isPartner }) => {
         setProgress(`${(temp + (100 / 3) * (level - 1)).toFixed(2)}%`)
       }
     }
-  }, [current, level, isPartner, list[list.length - 1]])
+  }, [current, level, isPartner, list])
   return (
     <div>
       <div className="mb-2">
