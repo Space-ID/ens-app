@@ -29,3 +29,12 @@ export function fetchRecords(account, networkId) {
   }
   return instance.get('/records', { params })
 }
+
+export function fetchReferralHistory(address, lastId = 0) {
+  const params = {
+    address,
+    lastId,
+    pageSize: 100,
+  }
+  return instance.get('/moneyrecords', { params })
+}

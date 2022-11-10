@@ -308,3 +308,15 @@
 .btn-twitter {
   background-color: #2980e8 !important;
 }
+.referral-commission-amount {
+  @apply text-primary;
+}
+.referral-commission-amount:before {
+  content: '+';
+}
+.referral-withdraw-amount {
+  @apply text-error;
+}
+.referral-withdraw-amount:before {
+  content: '-';
+}
