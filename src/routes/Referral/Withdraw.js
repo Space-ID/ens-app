@@ -42,8 +42,8 @@ export default function Withdraw() {
 
   return (
     <>
-      <div className="flex items-center sm:flex-row flex-col sm:pl-8 sm:pr-6 px-4 py-4 sm:space-y-0 space-y-3 rounded-3xl bg-boxBg">
-        <div className="flex items-center sm:flex-row flex-col sm:space-x-8 space-x-0 sm:space-y-0 space-y-3 mr-auto">
+      <div className="flex items-center sm:flex-row flex-col sm:pl-8 sm:pr-6 px-4 py-4 sm:space-x-4 sm:space-y-0 space-y-3 rounded-3xl bg-boxBg">
+        <div className="flex items-center sm:flex-row flex-col sm:space-x-8 space-x-0 sm:space-y-0 space-y-3 flex-1">
           <div className="flex items-center space-x-2 text-xl">
             <span>Commision</span>
             <Tooltip
@@ -61,14 +61,18 @@ export default function Withdraw() {
               <Info />
             </Tooltip>
           </div>
-          <p className="text-4xl font-bold">{balance} BNB</p>
+          <div className="flex-1 flex items-center justify-between">
+            <p className="text-4xl font-bold mr-3 sm:ml-0 ml-8">
+              {balance} BNB
+            </p>
+            <button onClick={() => setShowList(true)}>
+              <WithdrawListIcon />
+            </button>
+          </div>
         </div>
-        <button onClick={() => setShowList(true)}>
-          <WithdrawListIcon />
-        </button>
         <button
           className={cn(
-            'btn btn-primary text-base font-bold rounded-full px-6 py-2 ml-4',
+            'btn btn-primary text-base font-bold rounded-full px-6 py-2',
             loading ? 'loading' : ''
           )}
           disabled={balance <= 0}
