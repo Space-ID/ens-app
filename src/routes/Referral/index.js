@@ -110,10 +110,10 @@ export default function ReferralPage() {
   }, [isPartner, getPartnerReferralLevelDetails])
 
   useEffect(() => {
-    if (primaryDomain?.name) {
+    if (primaryDomain?.name && getReferralLevelDetails.length === 5) {
       fetchReferralDetails({ variables: { domain: primaryDomain?.name } })
     }
-  }, [primaryDomain])
+  }, [primaryDomain, getReferralLevelDetails])
 
   useEffect(() => {
     if (referralOpt.key === 'none') {
