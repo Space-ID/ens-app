@@ -173,6 +173,17 @@ input[type='number'] {
 .btn-secondary {
   @apply text-white;
 }
+.btn-icon {
+  @apply bg-transparent;
+  @apply p-0;
+}
+.btn-icon:hover {
+  @apply bg-transparent;
+  @apply opacity-80;
+}
+.btn-icon:disabled {
+  @apply bg-transparent;
+}
 .btn-primary:disabled,
 .btn-secondary:disabled,
 .btn-disabled {

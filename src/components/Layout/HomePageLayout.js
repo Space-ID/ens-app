@@ -53,8 +53,8 @@ import DefaultAvatar from 'assets/images/default-avatar.png'
 // Import custom functions
 import { disconnectProvider } from 'utils/providerUtils'
 import { EMPTY_ADDRESS } from 'utils/records'
-import { getDomainNftUrl } from 'utils/utils'
 import { GET_ERRORS } from 'graphql/queries'
+import { fetchDomainMetaData } from 'api'
 
 //Import Assets
 import SearchIcon from '../Icons/SearchIcon'
@@ -151,7 +151,9 @@ export default ({ children }) => {
 
   useEffect(() => {
     if (primaryDomain?.name) {
-      setAvatar(getDomainNftUrl(primaryDomain.name))
+      fetchDomainMetaData(primaryDomain.name).then((res) => {
+        setAvatar(res.image)
+      })
     } else {
       setAvatar(DefaultAvatar)
     }

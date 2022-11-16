@@ -14,13 +14,14 @@ import { SET_NAME } from 'graphql/mutations'
 
 //Import custom functions
 import { useQuery, gql } from '@apollo/client'
-import { convertToETHAddressDisplayFormat, getDomainNftUrl } from 'utils/utils'
+import { convertToETHAddressDisplayFormat } from 'utils/utils'
 import { useEditable } from 'components/hooks'
 
 //Import assets
 import DefaultAvatar from 'assets/images/default-avatar.png'
 import { setAllDomains, setPrimaryDomain } from 'app/slices/domainSlice'
 import { setShowRedeem, setShowMint } from 'app/slices/giftCardSlice'
+import { fetchDomainMetaData } from 'api'
 
 export const GET_ACCOUNT = gql`
   query getAccounts @client {
@@ -83,7 +84,9 @@ export default function ProfileCard({
   }, [domains])
   useEffect(() => {
     if (primaryDomain?.name) {
-      setAvatar(getDomainNftUrl(primaryDomain.name))
+      fetchDomainMetaData(primaryDomain.name).then((res) => {
+        setAvatar(res?.image)
+      })
     } else {
       setAvatar(DefaultAvatar)
     }

@@ -20275,13 +20275,6 @@ react-testing-library@^3.0.2:
     dom-testing-library "^2.3.1"
     wait-for-expect "^0.5.0"
 
-react-tooltip@^3.9.2:
-  version "3.11.6"
-  resolved "https://registry.npmjs.org/react-tooltip/-/react-tooltip-3.11.6.tgz"
-  integrity sha512-nTc1yHHaPCHHURvMpf/VNF17pIZiU4zwUGFJBUVr1fZkezFC7E0VPMMVrCfDjt+IpwTHICyzlyx+1FiQ7lw5LQ==
-  dependencies:
-    prop-types "^15.6.0"
-
 react-transition-group-plus@^0.5.3:
   version "0.5.3"
   resolved "https://registry.npmjs.org/react-transition-group-plus/-/react-transition-group-plus-0.5.3.tgz"

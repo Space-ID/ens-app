@@ -147,9 +147,7 @@ const getCoins = (updatedRecords) =>
 
 const getInitialRecords = (domain, dataAddresses, dataTextRecords) => {
   const initialTextRecords = getInitialTextRecords(dataTextRecords, domain)
-  var initialCoins = getInitialCoins(dataAddresses)
-
-  initialCoins[0].key = 'EVM'
+  let initialCoins = getInitialCoins(dataAddresses)
   const initialContent = getInitialContent(domain)
 
   return [...initialTextRecords, ...initialCoins, initialContent]

@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import cn from 'classnames'
 import { utils as ethersUtils } from 'ethers/lib/ethers'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { fetchDomainMetaData, fetchSkins } from 'api'
 
 //Import Components
 import CopyIcon from 'components/Icons/CopyIcon'
@@ -13,7 +16,11 @@ import FailedImage from 'assets/images/image-failed.png'
 
 import { refetchTilUpdatedSingle } from 'utils/graphql'
 
-import { getDomainNftUrl, copyTextToClipboard } from 'utils/utils'
+import {
+  copyTextToClipboard,
+  getDomainNftUrl,
+  getSkinIdFromUrl,
+} from 'utils/utils'
 import {
   getLocalTime,
   gracePeriodEndStr,
@@ -27,12 +34,15 @@ import {
   QUERY_POINT_BALANCE,
   QUERY_REFERRAL_DETAILS,
 } from 'graphql/queries'
+import { setPrimaryDomain } from 'app/slices/domainSlice'
 import { ReferralLevelTitle } from 'routes/Referral/constants'
 import { useAccount } from 'components/QueryAccount'
 import CirclePlus from 'components/Icons/CircleUser'
 import Diamond from 'components/Icons/Diamond'
 import CircleStar from 'components/Icons/CircleStar'
 import Heart from 'components/Icons/Heart'
+import EditIcon from 'components/Icons/EditIcon'
+import SkinManageModal from './SkinManageModal'
 import './TopAddress.css'
 
 export default function TopAddress({
@@ -55,7 +65,15 @@ export default function TopAddress({
   const [imageURL, setImageURL] = useState('')
   const [referralNum, setReferralNum] = useState(0)
   const [referralLevel, setReferralLevel] = useState(0)
+  const [skinModal, setSkinModal] = useState(false)
+  const [skinList, setSkinList] = useState([])
+  const [currentSkinId, setCurrentSkinId] = useState(undefined)
+  const [currentSkinName, setCurentSkinName] = useState('Common')
+  const primaryDomain = useSelector((state) => state.domain.primaryDomain)
+  const selectDomainName = useRef()
   const account = useAccount()
+  const dispatch = useDispatch()
+
   const [queryPointBalance, { data: { getPointBalance = 0 } = {} }] =
     useLazyQuery(QUERY_POINT_BALANCE, {
       variables: { account },
@@ -69,14 +87,49 @@ export default function TopAddress({
     fetchPolicy: 'no-cache',
   })
 
+  const handleImageChange = (v) => {
+    setCurentSkinName(v.label)
+    setCurrentSkinId(v.value)
+    const url = getDomainNftUrl(selectedDomain?.name, v.value)
+    setImageURL(url)
+    if (selectedDomain?.name === primaryDomain?.name) {
+      dispatch(setPrimaryDomain({ ...primaryDomain }))
+    }
+  }
+
   useEffect(() => {
     if (selectedDomain.name) {
+      setSkinList([])
+      setImageURL('')
       const domain = selectedDomain.name
-      const url = getDomainNftUrl(domain)
-      setImageURL(url)
-      fetchReferralDetails({ variables: { domain: selectedDomain.name } })
+      selectDomainName.current = domain
+      fetchSkins(domain + '.bnb').then((res) => {
+        if (domain === selectDomainName.current) {
+          setSkinList(res)
+        }
+      })
+      fetchDomainMetaData(selectedDomain.name).then((res) => {
+        if (domain === selectDomainName.current) {
+          const url = res?.image
+          setImageURL(url)
+          const id = getSkinIdFromUrl(url)
+          setCurrentSkinId(id)
+        }
+      })
+      fetchReferralDetails({ variables: { domain } })
     }
   }, [selectedDomain])
+  useEffect(() => {
+    if (currentSkinId === undefined && skinList.length <= 0) {
+      setCurentSkinName('Common')
+    } else if (currentSkinId === undefined && skinList.length > 0) {
+      const temp = skinList.find((v) => v.name === 'Common')
+      setCurentSkinName(temp?.name ?? 'Common')
+      setCurrentSkinId(temp?.id)
+    } else {
+      setCurentSkinName(skinList.find((v) => v.id === currentSkinId)?.name)
+    }
+  }, [currentSkinId, skinList])
 
   useEffect(() => {
     if (getReferralDetails.length <= 0) {
@@ -94,14 +147,15 @@ export default function TopAddress({
   }, [getReferralDetails, isPartner])
 
   const nftErrorLoading = () => {
-    setImageURL(FailedImage)
+    if (imageURL) {
+      setImageURL(FailedImage)
+    }
   }
 
   const handleCopyRegistrantAddress = (e) => {
     e.preventDefault()
     copyTextToClipboard(registrantAddress)
       .then(() => {
-        // alert('copied')
         setTooltipMessage('Copied')
         setTimeout(() => {
           setTooltipMessage('Copy to clipboard')
@@ -113,12 +167,31 @@ export default function TopAddress({
   }
   return (
     <div className="flex 2md:flex-row 2md:items-stretch flex-col items-center w-full 2md:space-x-7 pb-8 border-b border-fill-3">
-      <img
-        className="rounded-[20px] drop-shadow-[0px_0px_55px_rgba(80,255,192,0.6)] max-w-[320px] w-full"
-        src={imageURL}
-        onError={nftErrorLoading}
-      />
-      <div className="flex flex-col justify-between 2md:w-full 2md:mt-0 mt-4">
+      <div className="md:w-[320px] w-[310px] flex-shrink-0">
+        <div className="relative md:max-w-[320px] max-w-[310px] md:h-[320px] h-[310px] bg-fill-2 rounded-[20px] drop-shadow-[0px_0px_55px_rgba(80,255,192,0.6)] overflow-hidden">
+          <img src={imageURL} onError={nftErrorLoading} />
+          <AnimationSpin
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10"
+            size={48}
+          />
+        </div>
+        <div className="relative mt-3">
+          <p className="text-center text-white text-lg font-semibold px-7 truncate">
+            <span className="text-primary">Skin: </span>
+            <span className="capitalize">{currentSkinName}</span>
+          </p>
+          {!pending && isRegsitrant && (
+            <button
+              className="btn btn-icon absolute right-0 top-0 text-white"
+              disabled={skinList.length <= 0}
+              onClick={() => setSkinModal(true)}
+            >
+              <EditIcon />
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col justify-between 2md:w-full 2md:mt-0 mt-4 mb-[38px]">
         <div className="justify-between 2md:flex">
           <div>
             <p className="text-center 2md:text-left font-bold text-2xl font-semibold text-green-100">
@@ -280,6 +353,15 @@ export default function TopAddress({
           )}
         </div>
       </div>
+      <SkinManageModal
+        selectedDomain={selectedDomain}
+        curImg={imageURL}
+        skinList={skinList}
+        open={skinModal}
+        onOpenChange={setSkinModal}
+        currentId={currentSkinId}
+        onImageChange={handleImageChange}
+      />
     </div>
   )
 }

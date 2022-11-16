@@ -2,8 +2,6 @@ import { validate } from '@ensdomains/ens-validation'
 import { normalize } from '@ensdomains/eth-ens-namehash'
 import keccak256 from 'keccak256'
 import Web3 from 'web3'
-export { isMobile } from 'web3modal'
-
 import {
   emptyAddress as _emptyAddress,
   getEnsStartBlock as _ensStartBlock,
@@ -20,6 +18,8 @@ import { useEffect, useRef } from 'react'
 import { saveName } from '../api/labels'
 import { globalErrorReactive } from '../apollo/reactiveVars'
 import { EMPTY_ADDRESS } from './records'
+
+export { isMobile } from 'web3modal'
 
 // From https://github.com/0xProject/0x-monorepo/blob/development/packages/utils/src/address_utils.ts
 
@@ -365,12 +365,25 @@ export const validateDomain = (value) => {
   return true
 }
 
-export const getDomainNftUrl = (domainName) => {
+export const getTokenId = (domainName) => {
   let label = keccak256(Buffer.from(domainName)).toString('hex')
-  let nftId = Web3.utils.toBN(label).toString()
+  return Web3.utils.toBN(label).toString()
+}
+
+export const getDomainNftUrl = (domainName, skinId) => {
+  let nftId = getTokenId(domainName)
   return `https://meta.image.space.id/image/${
     process.env.REACT_APP_MODE === 'stg' ? 'stg' : 'mainnet'
-  }/${nftId}.svg`
+  }/${nftId}${skinId !== undefined && skinId > 4 ? '_' + skinId : ''}.svg`
+}
+
+export const getSkinIdFromUrl = (url) => {
+  if (!url) return undefined
+  const res = /_(\d+)\.svg$/.exec(url)
+  if (res && res.length >= 2) {
+    return Number(res[1])
+  }
+  return undefined
 }
 
 export async function copyTextToClipboard(text) {
