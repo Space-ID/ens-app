@@ -48,6 +48,7 @@ const App = () => {
   // const [showAlert, setShowAlert] = useState(true)
   useEffect(() => {
     if (
+      accountRef.current &&
       accountRef.current !== emptyAddress &&
       account !== emptyAddress &&
       accountRef.current !== account
