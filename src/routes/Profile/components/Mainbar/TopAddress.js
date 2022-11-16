@@ -68,7 +68,7 @@ export default function TopAddress({
   const [skinModal, setSkinModal] = useState(false)
   const [skinList, setSkinList] = useState([])
   const [currentSkinId, setCurrentSkinId] = useState(undefined)
-  const [currentSkinName, setCurentSkinName] = useState('Common')
+  const [currentSkinName, setCurentSkinName] = useState('Default')
   const primaryDomain = useSelector((state) => state.domain.primaryDomain)
   const selectDomainName = useRef()
   const account = useAccount()
@@ -121,10 +121,10 @@ export default function TopAddress({
   }, [selectedDomain])
   useEffect(() => {
     if (currentSkinId === undefined && skinList.length <= 0) {
-      setCurentSkinName('Common')
+      setCurentSkinName('Default')
     } else if (currentSkinId === undefined && skinList.length > 0) {
-      const temp = skinList.find((v) => v.name === 'Common')
-      setCurentSkinName(temp?.name ?? 'Common')
+      const temp = skinList.find((v) => v.name === 'Default')
+      setCurentSkinName(temp?.name ?? 'Default')
       setCurrentSkinId(temp?.id)
     } else {
       setCurentSkinName(skinList.find((v) => v.id === currentSkinId)?.name)
