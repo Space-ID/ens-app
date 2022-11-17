@@ -98,7 +98,10 @@ export default () => {
             <div className="py-6 md:w-auto w-1/2">
               <p>{statisticData.partnersNum}</p>
               <p className="text-sm font-semibold mt-1">
-                <a href="https://docs.space.id/overview/integration-partners">
+                <a
+                  href="https://docs.space.id/overview/integration-partners"
+                  target="_blank"
+                >
                   Eco-system Partners ↗
                 </a>
               </p>
