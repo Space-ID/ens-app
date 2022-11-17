@@ -50,7 +50,7 @@ const App = () => {
     if (
       accountRef.current !== emptyAddress &&
       account !== emptyAddress &&
-      accountRef !== account
+      accountRef.current !== account
     ) {
       window.location.reload()
     } else {
