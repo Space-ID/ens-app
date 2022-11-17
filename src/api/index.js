@@ -64,3 +64,7 @@ export function fetchDomainMetaData(domainName) {
   const url = `${process.env.REACT_APP_META_DATA_URL}${tokenId}`
   return instance.get(url)
 }
+
+export function fetchStatisticData() {
+  return instance.get('/statisticdata')
+}
