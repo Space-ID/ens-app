@@ -124,9 +124,9 @@ export const WalletConnect = {
 
 export const supportedWallets = [
   MetaMask,
-  WalletConnect,
-  BitKeep,
-  OKX,
-  Coinbase,
   Trust,
+  OKX,
+  BitKeep,
+  Coinbase,
+  WalletConnect,
 ]
