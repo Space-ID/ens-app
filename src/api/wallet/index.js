@@ -1,11 +1,11 @@
 import { injected, providers, isMobile } from 'web3modal'
 import { OkxProvider } from './okx'
-import metaMask from './logo/metaMask.png'
-import trust from './logo/trust.png'
-import walletConnect from './logo/walletConnect.png'
-import bitkeep from './logo/bitkeep.png'
-import okx from './logo/okx.png'
-import coinbase from './logo/coinbase.png'
+import metaMask from './logo/metaMask.svg'
+import trust from './logo/trust.svg'
+import walletConnect from './logo/walletConnect.svg'
+import bitkeep from './logo/bitkeep.svg'
+import okx from './logo/okx.svg'
+import coinbase from './logo/coinbase.svg'
 
 const getInjectedTrueFlags = () =>
   Object.keys(window.ethereum).filter(
