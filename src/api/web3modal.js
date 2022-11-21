@@ -1,6 +1,6 @@
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { get } from 'lodash'
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
 import { chainsInfo } from 'utils/constants'
 
 import { getNetwork, getNetworkId, isReadOnly } from '../ui'
@@ -21,24 +21,7 @@ const INFURA_ID =
 
 const PORTIS_ID = '57e5d6ca-e408-4925-99c4-e7da3bdb8bf5'
 
-const walletInfo = {
-  bitkeep: {
-    id: 'bitkeep',
-    inject: 'bitkeep.ethereum',
-    homePage: 'https://bitkeep.com/en/download',
-    check: 'isBitKeep',
-  },
-  injected: {
-    id: 'injected',
-    inject: 'ethereum',
-  },
-  [OkxProvider.id]: {
-    id: OkxProvider.id,
-    inject: 'okxwallet',
-    homePage: 'https://www.okx.com/web3',
-    check: 'isOkxWallet',
-  },
-}
+const BSC_RPC = 'https://bsc-dataseed.binance.org/'
 
 let provider
 const option = {
@@ -56,9 +39,17 @@ const option = {
       package: WalletConnectProvider,
       options: {
         rpc: {
-          56: 'https://bsc-dataseed.binance.org/',
+          56: BSC_RPC,
         },
         network: 'binance',
+      },
+    },
+    coinbasewallet: {
+      package: CoinbaseWalletSDK,
+      options: {
+        appName: 'Space ID',
+        rpc: BSC_RPC,
+        chainId: 56,
       },
     },
     'custom-okx': {
@@ -136,16 +127,6 @@ export const disconnect = async function () {
 
 export const setWeb3Modal = (x) => {
   web3Modal = x
-}
-
-export const checkWalletInstall = (id, openHomePage = false) => {
-  const info = walletInfo[id]
-  if (info && get(window, walletInfo[id].inject)) {
-    return true
-  } else if (info && openHomePage) {
-    window.open(info.homePage, '_blank')
-  }
-  return false
 }
 
 export const switchToBscChain = async () => {

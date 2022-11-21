@@ -7,6 +7,7 @@
     "@0xproject/utils": "^2.0.2",
     "@apollo/client": "^3.4.4",
     "@buidlhub/buidlhub-ens-notifications": "^1.0.3",
+    "@coinbase/wallet-sdk": "^3.6.0",
     "@craco/craco": "^6.4.5",
     "@emotion/core": "^10.0.9",
     "@emotion/styled": "^10.0.9",
