@@ -42,6 +42,7 @@ module.exports = {
       alert: '#F9AF60',
       purple: '#6852F5',
       white: '#ffffff',
+      black: '#000000',
       darkButton: '#134757',
       blue: {
         100: '#2980E8',
