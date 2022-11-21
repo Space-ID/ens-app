@@ -103,17 +103,6 @@ export default function Mainbar({
     },
   })
 
-  const {
-    data: { getRentPrice: getPremiumPrice } = {},
-    loading: getPremiumPriceLoading,
-  } = useQuery(GET_RENT_PRICE, {
-    variables: {
-      duration: 0,
-      label: selectedDomain?.name,
-      commitmentTimerRunning: false,
-    },
-  })
-
   const [
     loadEthUSDPriceData,
     { loading: ethUsdPriceLoading, data: ethUsdPriceData = {} },
@@ -364,12 +353,11 @@ export default function Mainbar({
         }}
         ethUsdPriceLoading={ethUsdPriceLoading}
         ethUsdPrice={ethUsdPrice}
-        price={getRentPrice}
-        priceWithPoint={getRentPriceWithPoint}
+        price={getRentPrice?.rentPrice}
+        priceWithPoint={getRentPriceWithPoint?.rentPrice}
         rentPriceLoading={rentPriceLoading}
         gasPrice={gasPrice}
         ethUsdPremiumPrice={currentPremium}
-        premiumOnlyPrice={getPremiumPrice}
         extendHandler={extendExpiryDate}
         refetchRent={refetchRent}
       />

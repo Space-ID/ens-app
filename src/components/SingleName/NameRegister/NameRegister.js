@@ -41,7 +41,7 @@ import { TOGAL_GAS_WEI } from '../../../constants/gas'
 import { minYear, RegisterState } from './constant'
 import InsufficientBalanceModal from '../../Modal/InsufficientBalanceModal'
 
-const NameRegister = ({ domain, waitTime, registrationOpen }) => {
+const NameRegister = ({ domain, waitTime, registrationOpen, showPremium }) => {
   const [secret, setSecret] = useState(false)
   const { networkId } = useNetworkInfo()
   const account = useAccount()
@@ -64,7 +64,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   const [nameArr, setNameArr] = useState([])
   const inviter = useSelector((state) => state.referral.inviter)
   const [savedInviter, setSavedInviter] = useState('')
-
   const handleYearChange = useCallback((v) => {
     const n = Number(v)
     if (Number.isNaN(n) || n < minYear) {
@@ -278,27 +277,33 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     },
   })
   // rent price duration 0
-  const {
-    data: { getRentPrice: getPremiumPrice } = {},
-    loading: getPremiumPriceLoading,
-  } = useQuery(GET_RENT_PRICE, {
-    variables: {
-      duration: 0,
-      label: domain.label,
-      commitmentTimerRunning,
-    },
-  })
-  const ethVal = new EthVal(`${getRentPrice || 0}`).toEth()
+  // const {
+  //   data: { getRentPrice: getPremiumPrice } = {},
+  //   loading: getPremiumPriceLoading,
+  // } = useQuery(GET_RENT_PRICE, {
+  //   variables: {
+  //     duration: 0,
+  //     label: domain.label,
+  //     commitmentTimerRunning,
+  //   },
+  // })
+  const ethVal = new EthVal(`${getRentPrice?.rentPrice || 0}`).toEth()
   const ethValWithPoint = new EthVal(
-    `${getRentPriceWithPoint || getRentPrice || 0}`
+    `${getRentPriceWithPoint?.rentPrice || getRentPrice?.rentPrice || 0}`
   ).toEth()
   const registerGasFast = new EthVal(`${TOGAL_GAS_WEI * gasPrice.fast}`).toEth()
   const registrationFee = ethVal.add(registerGasFast)
   const registrationFeeWithPoint = ethValWithPoint.add(registerGasFast)
-  const registrationFeeInUsd = registrationFee.mul(ethUsdPrice ?? 0)
-  const registrationFeeWithPointInUsd = registrationFeeWithPoint.mul(
-    ethUsdPrice ?? 0
-  )
+  const premiumFee = new EthVal(`${getRentPrice?.premium || 0}`).toEth()
+  const premiumFeeWithPoint = new EthVal(
+    `${getRentPriceWithPoint?.premium || 0}`
+  ).toEth()
+  const registrationFeeInUsd = registrationFee
+    .mul(ethUsdPrice ?? 0)
+    .add(premiumFee.mul(ethUsdPrice ?? 0))
+  const registrationFeeWithPointInUsd = registrationFeeWithPoint
+    .mul(ethUsdPrice ?? 0)
+    .add(premiumFeeWithPoint.mul(ethUsdPrice ?? 0))
 
   let hasSufficientBalance
   if (!blockCreatedAt && checkCommitment > 0) {
@@ -306,19 +311,19 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
   }
   if (getBalance && getRentPrice && getRentPriceWithPoint) {
     hasSufficientBalance = getBalance.gt(
-      usePoint ? getRentPriceWithPoint : getRentPrice
+      usePoint ? getRentPriceWithPoint.rentPrice : getRentPrice.rentPrice
     )
   }
   if (blockCreatedAt && !waitUntil) {
     setWaitUntil(blockCreatedAt + waitTime * 1000)
   }
 
-  const oneMonthInSeconds = 2419200
-  const twentyEightDaysInYears = oneMonthInSeconds / yearInSeconds
+  // const oneMonthInSeconds = 2419200
+  // const twentyEightDaysInYears = oneMonthInSeconds / yearInSeconds
 
-  const expiryDate = moment(domain.expiryTime)
-  const oracle = new PremiumPriceOracle(expiryDate, getPriceCurve)
-  const { releasedDate, zeroPremiumDate } = oracle
+  // const expiryDate = moment(domain.expiryTime)
+  // const oracle = new PremiumPriceOracle(expiryDate, getPriceCurve)
+  // const { releasedDate, zeroPremiumDate } = oracle
 
   if (!registrationOpen) return <NotAvailable domain={domain} />
 
@@ -326,14 +331,14 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
     return <Loader withWrap={true} large />
   }
 
-  if (!targetDate) {
-    setTargetDate(zeroPremiumDate)
-  }
+  // if (!targetDate) {
+  //   setTargetDate(zeroPremiumDate)
+  // }
 
-  if (block) {
-    currentPremium = oracle.getTargetAmountByDaysPast(oracle.getDaysPast(now))
-    underPremium = now.isBetween(releasedDate, zeroPremiumDate)
-  }
+  // if (block) {
+  //   currentPremium = oracle.getTargetAmountByDaysPast(oracle.getDaysPast(now))
+  //   underPremium = now.isBetween(releasedDate, zeroPremiumDate)
+  // }
 
   const refetchRent = () => {
     refetchRentPriceWithPoint()
@@ -410,6 +415,8 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
               usePoint={usePoint}
               price={registrationFee}
               priceWithPoint={registrationFeeWithPoint}
+              premiumFee={premiumFee}
+              premiumFeeWithPoint={premiumFeeWithPoint}
               totalUsd={registrationFeeInUsd}
               totalUsdWithPoint={registrationFeeWithPointInUsd}
             />
@@ -427,8 +434,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                 ethUsdPremiumPrice={currentPremium}
                 ethUsdPrice={ethUsdPrice}
                 loading={rentPriceLoading}
-                price={getRentPrice}
-                premiumOnlyPrice={getPremiumPrice}
+                price={getRentPrice?.rentPrice}
                 underPremium={underPremium}
                 connectHandler={connectHandler}
                 signature={signature}
@@ -437,8 +443,12 @@ const NameRegister = ({ domain, waitTime, registrationOpen }) => {
                 registrationFeeInUsd={registrationFeeInUsd}
                 registrationFeeWithPoint={registrationFeeWithPoint}
                 registrationFeeWithPointInUsd={registrationFeeWithPointInUsd}
+                premiumFee={premiumFee}
+                premiumFeeWithPoint={premiumFeeWithPoint}
                 onRequest={handleRequest}
                 refetchRent={refetchRent}
+                showPremium={showPremium}
+                expiryTime={domain.expiryTime}
               />
             )}
             {(registerState === RegisterState.confirm ||
