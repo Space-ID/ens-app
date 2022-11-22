@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
+import moment from 'moment'
 import { gql } from '@apollo/client'
 import { useQuery } from '@apollo/client'
 import { EMPTY_ADDRESS } from '../../utils/records'
 import NameDetails from './NameDetails'
-import DNSNameRegister from './DNSNameRegister'
-import ShortName from './ShortName'
-import { isOwnerOfParentDomain } from '../../utils/utils'
 
 function isRegistrationOpen(available, parent) {
   return parent === 'bnb' && available
+}
+function isShowPremium(available, expiryTime) {
+  if (expiryTime && available) {
+    const start = moment(expiryTime).add(90, 'd')
+    const now = moment()
+    return start.isSameOrBefore(now) && start.add(21, 'd').isSameOrAfter(now)
+  }
+  return false
 }
 
 function isDNSRegistrationOpen(domain) {
@@ -57,55 +63,23 @@ function Name({ details: domain, name, pathname, type, refetch }) {
   } = useQuery(NAME_QUERY)
 
   const account = accounts?.[0]
-  const isOwner = isOwnerOfDomain(domain, account)
-  const isOwnerOfParent = isOwnerOfParentDomain(domain, account)
-  const isDeedOwner = domain.deedOwner === account
-  const isRegistrant = !domain.available && domain.registrant === account
-
   const registrationOpen = isRegistrationOpen(domain.available, domain.parent)
+  const showPremium = isShowPremium(domain.available, domain.expiryTime)
   const preferredTab = registrationOpen ? 'register' : 'details'
-
-  let ownerType,
-    registrarAddress = domain.parentOwner
-  if (isDeedOwner || isRegistrant) {
-    ownerType = 'Registrant'
-  } else if (isOwner) {
-    ownerType = 'Controller'
-  }
-  let containerState
-  if (isDNSRegistrationOpen(domain)) {
-    containerState = 'Open'
-  } else {
-    containerState = isOwner ? 'Yours' : domain.state
-  }
 
   return (
     <div className="font-urbanist">
       <div className="h-full min-h-[100vh] flex items-center justify-center py-[84px]">
-        {isDNSRegistrationOpen(domain) ? (
-          <DNSNameRegister
-            domain={domain}
-            registrarAddress={registrarAddress}
-            pathname={pathname}
-            refetch={refetch}
-            account={account}
-            readOnly={account === EMPTY_ADDRESS}
-          />
-        ) : type === 'short' && domain.owner === EMPTY_ADDRESS ? ( // check it's short and hasn't been claimed already
-          <ShortName name={name} />
-        ) : (
-          <NameDetails
-            tab={preferredTab}
-            domain={domain}
-            pathname={pathname}
-            name={name}
-            isOwner={isOwner}
-            isOwnerOfParent={isOwnerOfParent}
-            refetch={refetch}
-            account={account}
-            registrationOpen={registrationOpen}
-          />
-        )}
+        <NameDetails
+          tab={preferredTab}
+          domain={domain}
+          pathname={pathname}
+          name={name}
+          refetch={refetch}
+          account={account}
+          registrationOpen={registrationOpen}
+          showPremium={showPremium}
+        />
       </div>
     </div>
   )

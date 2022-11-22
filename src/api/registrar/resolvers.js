@@ -25,7 +25,10 @@ const resolvers = {
     async getRentPrice(_, { label, duration }) {
       const registrar = getRegistrar()
       const rentPrice = await registrar.getRentPrice(label, duration)
-      return rentPrice[0]
+      return {
+        rentPrice: rentPrice[0],
+        premium: rentPrice[1],
+      }
     },
     async getRentPriceWithPoint(_, { label, duration, account }) {
       const registrar = getRegistrar()
@@ -34,7 +37,10 @@ const resolvers = {
         duration,
         account
       )
-      return rentPrice[0]
+      return {
+        rentPrice: rentPrice[0],
+        premium: rentPrice[1],
+      }
     },
     async getEligibleCount(_, { account }) {
       const registrar = getRegistrar()

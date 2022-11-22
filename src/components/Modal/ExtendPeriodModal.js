@@ -164,7 +164,7 @@ export default function ExtendPeriodModal(props) {
         </div>
         <button
           className={cn(
-            'btn btn-primary rounded-2xl w-[160px] h-[42px] text-lg text-black font-semibold'
+            'btn btn-primary rounded-2xl w-[160px] h-[42px] px-[10px] py-2 text-lg text-black font-semibold'
           )}
           disabled={parseFloat(years) < 0.000001}
           onClick={() => {
