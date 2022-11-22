@@ -64,16 +64,6 @@ function Name({ details: domain, name, pathname, type, refetch }) {
 
   const account = accounts?.[0]
   const registrationOpen = isRegistrationOpen(domain.available, domain.parent)
-  // todo test
-  if (process.env.REACT_APP_MODE === 'stg') {
-    const url = new URL(window.location.href)
-    const params = new URLSearchParams(url.search)
-    const expire = params.get('expire')
-    if (expire) {
-      domain.expiryTime = moment(Number(expire)).toDate()
-    }
-  }
-  // end
   const showPremium = isShowPremium(domain.available, domain.expiryTime)
   const preferredTab = registrationOpen ? 'register' : 'details'
 
