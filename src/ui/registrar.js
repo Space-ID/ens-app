@@ -336,7 +336,7 @@ export default class Registrar {
   async getEthPrice() {
     const contractAddress =
       process.env.REACT_APP_MAIN_APP === 'true'
-        ? '0x0567f2323251f0aab15c8dfb1967e4e8a7d42aee'
+        ? '0xC5A35FC58EFDC4B88DDCA51AcACd2E8F593504bE'
         : await this.getAddress('bnb-usd.data.bnb') // get price oracle addr
     const oracle = await this.getOracle(contractAddress)
     return (await oracle.latestAnswer()).toNumber() / 100000000
