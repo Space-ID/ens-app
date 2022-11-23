@@ -51,10 +51,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen, showPremium }) => {
   const [years, setYears] = useState(minYear)
   const [secondsPassed, setSecondsPassed] = useState(0)
   const [timerRunning, setTimerRunning] = useState(false)
-  const [commitmentTimerRunning, setCommitmentTimerRunning] = useState(false)
+  const [commitmentPollInterval, setCommitmentPollInterval] = useState(0)
   const [blockCreatedAt, setBlockCreatedAt] = useState(null)
   const [waitUntil, setWaitUntil] = useState(null)
-  const [targetDate, setTargetDate] = useState(false)
   const [commitmentExpirationDate, setCommitmentExpirationDate] =
     useState(false)
   const [transactionHash, setTransactionHash] = useState('')
@@ -79,8 +78,6 @@ const NameRegister = ({ domain, waitTime, registrationOpen, showPremium }) => {
     loading: ethUsdPriceLoading,
   } = useQuery(GET_ETH_PRICE)
 
-  // get price curve
-  const { data: { getPriceCurve } = {} } = useQuery(GET_PRICE_CURVE)
   // get gas price
   const { loading: gasPriceLoading, price: gasPrice } = useGasPrice()
   // latest block
@@ -103,7 +100,7 @@ const NameRegister = ({ domain, waitTime, registrationOpen, showPremium }) => {
   const [mutationCommit] = useMutation(COMMIT, {
     onCompleted: (data) => {
       if (data?.commit) {
-        setCommitmentTimerRunning(true)
+        setCommitmentPollInterval(1000)
       } else {
         setRegisterState(RegisterState.request)
       }
@@ -186,9 +183,9 @@ const NameRegister = ({ domain, waitTime, registrationOpen, showPremium }) => {
       variables: {
         label: domain.label,
         secret,
-        commitmentTimerRunning,
       },
       fetchPolicy: 'no-cache',
+      pollInterval: commitmentPollInterval,
     }
   )
 
@@ -236,19 +233,14 @@ const NameRegister = ({ domain, waitTime, registrationOpen, showPremium }) => {
     },
     timerRunning ? 1000 : null
   )
-  useInterval(
-    () => {
-      if (checkCommitment > 0) {
-        // incrementStep() todo: confirm?
-        setRegisterState(RegisterState.requestSuccess)
-        setTimerRunning(true) // start confirm timer
-        setCommitmentTimerRunning(false)
-      } else {
-        setCommitmentTimerRunning(new Date()) // force refresh?
-      }
-    },
-    commitmentTimerRunning ? 1000 : null
-  )
+  useEffect(() => {
+    if (checkCommitment > 0) {
+      // incrementStep() todo: confirm?
+      setRegisterState(RegisterState.requestSuccess)
+      setTimerRunning(true) // start confirm timer
+      setCommitmentPollInterval(0)
+    }
+  }, [checkCommitment])
 
   const duration = calculateDuration(years)
 
@@ -259,34 +251,22 @@ const NameRegister = ({ domain, waitTime, registrationOpen, showPremium }) => {
       variables: {
         duration,
         label: domain.label,
-        commitmentTimerRunning,
       },
+      pollInterval: commitmentPollInterval,
     }
   )
   // rent price with point
   const {
     data: { getRentPriceWithPoint } = {},
-    loading: rentPriceWithPointLoading,
     refetch: refetchRentPriceWithPoint,
   } = useQuery(GET_RENT_PRICE_WITH_POINT, {
     variables: {
       duration,
       label: domain.label,
       account,
-      commitmentTimerRunning,
     },
+    pollInterval: commitmentPollInterval,
   })
-  // rent price duration 0
-  // const {
-  //   data: { getRentPrice: getPremiumPrice } = {},
-  //   loading: getPremiumPriceLoading,
-  // } = useQuery(GET_RENT_PRICE, {
-  //   variables: {
-  //     duration: 0,
-  //     label: domain.label,
-  //     commitmentTimerRunning,
-  //   },
-  // })
   const ethVal = new EthVal(`${getRentPrice?.rentPrice || 0}`).toEth()
   const ethValWithPoint = new EthVal(
     `${getRentPriceWithPoint?.rentPrice || getRentPrice?.rentPrice || 0}`

@@ -105,7 +105,7 @@ export default function TopAddress({
       selectDomainName.current = domain
       fetchSkins(domain + '.bnb').then((res) => {
         if (domain === selectDomainName.current) {
-          setSkinList(res)
+          setSkinList(res ?? [])
         }
       })
       fetchDomainMetaData(selectedDomain.name).then((res) => {
