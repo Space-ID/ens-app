@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import {
   getGiftCardRegistrar,
   getGiftCardController,
@@ -71,7 +72,7 @@ class GiftCard {
     const singer = await getSigner()
     const ctlWithSinger = this.giftCardController.connect(singer)
     const price = await this.getMintPrice(ids, amounts)
-    const priceWithBuffer = getBufferedPrice([price])
+    const priceWithBuffer = getBufferedPrice([price, BigNumber.from(0)])
     return ctlWithSinger.batchRegister(ids, amounts, {
       value: priceWithBuffer,
     })
