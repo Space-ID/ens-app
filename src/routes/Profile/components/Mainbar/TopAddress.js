@@ -183,7 +183,7 @@ export default function TopAddress({
           {!pending && isRegsitrant && (
             <button
               className="btn btn-icon absolute right-0 top-0 text-white"
-              disabled={skinList.length <= 0}
+              disabled={skinList.length <= 1}
               onClick={() => setSkinModal(true)}
             >
               <EditIcon />
