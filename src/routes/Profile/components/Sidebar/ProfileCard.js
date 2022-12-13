@@ -161,12 +161,12 @@ export default function ProfileCard({
                 <div className="flex items-center mt-[5px] justify-between">
                   {!primaryDomain ? (
                     <button
-                      className="px-2 text-xs font-semibold text-white rounded-full bg-dark-400"
+                      className="btn btn-primary text-sm font-semibold rounded-xl py-2 px-8"
                       onClick={() => {
                         setIsShowChangePrimaryModal(true)
                       }}
                     >
-                      Add Primary domain
+                      Set Your Primary Name
                     </button>
                   ) : (
                     <div className="flex justify-between w-full">
