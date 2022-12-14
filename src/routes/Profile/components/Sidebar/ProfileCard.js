@@ -110,7 +110,7 @@ export default function ProfileCard({
     >
       <div className="flex items-center">
         {account ? (
-          <div className="mr-4 flex-none w-[64px] h-[64px]">
+          <div className="mr-[14px] flex-none w-[64px] h-[64px]">
             {!reverseRecordLoading &&
             getReverseRecord &&
             getReverseRecord.avatar ? (
