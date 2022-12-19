@@ -279,7 +279,7 @@ export default function Mainbar({
   }
 
   return (
-    <div className="bg-fill-2 rounded-[24px] backdrop-blur-sm sm:p-10 p-6 relative sm:mx-16 mx-7 1.5xl:mx-0 w-auto 1.5xl:max-w-[1016px] flex-grow">
+    <div className="bg-fill-2 rounded-[24px] backdrop-blur-sm sm:p-10 p-6 relative sm:mx-16 mx-7 2md:mx-0 w-auto 1.5xl:max-w-[1016px] flex-grow">
       {selectedDomain && (
         <TopAddress
           isRegsitrant={isRegsitrant}
