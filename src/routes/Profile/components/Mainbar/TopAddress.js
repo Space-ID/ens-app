@@ -166,7 +166,7 @@ export default function TopAddress({
       })
   }
   return (
-    <div className="flex 2md:flex-row 2md:items-stretch flex-col items-center w-full 2md:space-x-7 pb-8 border-b border-fill-3">
+    <div className="flex xl:flex-row xl:items-stretch flex-col items-center w-full xl:space-x-7 pb-8 border-b border-fill-3">
       <div className="md:w-[320px] w-[310px] flex-shrink-0">
         <div className="relative md:max-w-[320px] max-w-[310px] md:h-[320px] h-[310px] bg-fill-2 rounded-[20px] drop-shadow-[0px_0px_55px_rgba(80,255,192,0.6)] overflow-hidden">
           <img src={imageURL} onError={nftErrorLoading} />
@@ -191,7 +191,7 @@ export default function TopAddress({
           )}
         </div>
       </div>
-      <div className="flex flex-col justify-between 2md:w-full 2md:mt-0 mt-4 mb-[38px]">
+      <div className="flex flex-col justify-between xl:h-auto 2md:h-[320px] h-auto 2md:w-full 2md:mt-0 mt-4 mb-[38px]">
         <div className="justify-between 2md:flex">
           <div>
             <p className="text-center 2md:text-left font-bold text-2xl font-semibold text-green-100">

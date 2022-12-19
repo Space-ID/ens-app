@@ -315,14 +315,14 @@ export default ({ children }) => {
           <div className="flex items-center justify-between py-5 px-7 md:px-12">
             {/* Only showing for the desktop device */}
             <div className="sm:flex items-center hidden">
-              <div onClick={showDrawer} className="1.5xl:hidden">
+              <div onClick={showDrawer} className="2md:hidden">
                 <HamburgerIcon className="mr-5 text-green-100" />
               </div>
               <Link to="/" className="h-10 text-green-100 cursor-pointer">
-                <WholeLogoIcon className="hidden lg:block w-56" />
+                <WholeLogoIcon className="hidden 2md:block w-56" />
                 <SmallLogoIcon
                   size={40}
-                  className="text-green-100 block lg:hidden"
+                  className="text-green-100 block 2md:hidden"
                 />
               </Link>
             </div>

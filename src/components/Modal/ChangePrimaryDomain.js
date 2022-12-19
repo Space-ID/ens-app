@@ -57,6 +57,13 @@ export default function ChangePrimaryDomain({
               You can only have one Primary SPACE ID Name per SPACE ID account
               and can change it at any time.
             </div>
+            <a
+              href="https://docs.space.id/user-tutorials/manage-your-registered-.bnb-domains#set-primary-space-id-name"
+              target="_blank"
+              className="text-primary mt-5 block"
+            >
+              Read more in SPACE ID Docs ↗{' '}
+            </a>
             <div className="mt-5">
               <div className="text-base font-semibold text-white font-urbanist">
                 Select one Space ID Name
