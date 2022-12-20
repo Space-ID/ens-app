@@ -78,7 +78,7 @@ export default function ChangePrimaryDomain({
               </div>
             </div>
             <div className="mt-5 text-gray-700">
-              * Only SPACE ID names that point to your SPACE ID acount can be
+              * Only SPACE ID names that point to your SPACE ID account can be
               set as you Primary SPACE ID Name.
             </div>
           </div>
