@@ -1,6 +1,7 @@
 // index 650:0,160:1,5:2,
 const urlPrefix =
-  'https://meta-image-space-id.s3.us-west-2.amazonaws.com/image/giftcard/GiftCard_Small_'
+  'https://meta.image.space.id/image/giftcard/GiftCard_Christmas_Small_'
+// 'https://meta-image-space-id.s3.us-west-2.amazonaws.com/image/giftcard/GiftCard_Small_'
 export const noGiftCardUlr = `${urlPrefix}-1.png`
 export const GiftCards = [
   {
