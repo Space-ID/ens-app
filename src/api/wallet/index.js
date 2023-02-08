@@ -24,6 +24,7 @@ export const MetaMask = {
   )}/`,
   homePage: 'https://metamask.io/download/',
   check() {
+    if (isMobile()) return true
     if (window.ethereum && !window.ethereum.overrideIsMetaMask) {
       if (isMobile() && window.bitkeep !== undefined) {
         return false
