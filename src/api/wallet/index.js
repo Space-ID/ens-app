@@ -32,6 +32,12 @@ export const MetaMask = {
       if (flags.length === 1 && flags[0] === 'isMetaMask') {
         return true
       }
+      if (
+        flags.length === 3 &&
+        flags.sort().join() === 'isDfox,isMetaMask,isTokenPocket'
+      ) {
+        return true
+      }
     }
     return false
   },
