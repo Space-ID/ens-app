@@ -24,12 +24,19 @@ export const MetaMask = {
   )}/`,
   homePage: 'https://metamask.io/download/',
   check() {
+    if (isMobile()) return true
     if (window.ethereum && !window.ethereum.overrideIsMetaMask) {
       if (isMobile() && window.bitkeep !== undefined) {
         return false
       }
       const flags = getInjectedTrueFlags()
       if (flags.length === 1 && flags[0] === 'isMetaMask') {
+        return true
+      }
+      if (
+        flags.length === 3 &&
+        flags.sort().join() === 'isDfox,isMetaMask,isTokenPocket'
+      ) {
         return true
       }
     }
