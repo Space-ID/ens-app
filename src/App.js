@@ -2,6 +2,7 @@ import React, { lazy, useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Route as DefaultRoute, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { validateName } from '@siddomains/sidjs/dist/utils'
+import { CrossIcon } from 'components/Icons'
 
 const Home = lazy(() => import('./routes/Home'))
 const SingleName = lazy(() => import('./routes/SingleName'))
@@ -45,7 +46,7 @@ const App = () => {
   const account = useAccount()
   const accountRef = useRef(account)
   const dispatch = useDispatch()
-  // const [showAlert, setShowAlert] = useState(true)
+  const [showAlert, setShowAlert] = useState(true)
   useEffect(() => {
     if (
       accountRef.current &&
@@ -80,25 +81,31 @@ const App = () => {
 
   return (
     <BrowserRouter basename="/">
-      {/*<div*/}
-      {/*  className="text-white text-base p-2 px-16 sm:px-7 font-bold break-all"*/}
-      {/*  style={{*/}
-      {/*    background: 'linear-gradient(90deg, #FF7A00 0%, #3300FF 100%)',*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  Oct 28th 12 AM — Nov 2nd 12 AM ET 👻 👻 👻 Limited Halloween Edition*/}
-      {/*  skins through domain registration or extension. 🎃 🎃 🎃{' '}*/}
-      {/*  <a*/}
-      {/*    className="text-primary visited:text-primary"*/}
-      {/*    href="https://blog.space.id/spooky-halloween-skins-are-in-your-area-4fc3fd98987d"*/}
-      {/*    target="_blank"*/}
-      {/*  >*/}
-      {/*    Read more ↗*/}
-      {/*  </a>*/}
-      {/*<div className="flex-none" onClick={() => setShowAlert(false)}>*/}
-      {/*  <CrossIcon className="text-white cursor-pointer" size={11} />*/}
-      {/*</div>*/}
-      {/*</div>*/}
+      {showAlert && (
+        <div
+          className="flex items-center gap-2 text-white text-base p-2 md:px-16 px-2 font-bold break-all"
+          style={{
+            background: 'linear-gradient(90deg, #FF7A00 0%, #3300FF 100%)',
+          }}
+        >
+          <p className="flex-1 text-center">
+            <span>
+              SPACE ID 2.0 Beta Version is now open to all! ⭐️⭐️⭐️{' '}
+            </span>
+            <a
+              className="text-primary visited:text-primary"
+              href="https://beta.space.id"
+              target="_blank"
+            >
+              Read more ↗
+            </a>
+          </p>
+          <div className="flex-none" onClick={() => setShowAlert(false)}>
+            <CrossIcon className="text-white cursor-pointer" size={11} />
+          </div>
+        </div>
+      )}
+
       <Switch>
         <Route exact path="/" component={Home} layout={HomePageLayout} />
         <Route
