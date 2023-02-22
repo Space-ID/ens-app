@@ -66,7 +66,7 @@ export const Trust = {
 
 export const BitKeep = {
   id: providers.BITKEEPWALLET.id,
-  name: providers.BITKEEPWALLET.name,
+  name: 'BitKeep Wallet', //providers.BITKEEPWALLET.name,
   logo: bitkeep,
   color: 'white',
   bgColor: '#7524F9',
