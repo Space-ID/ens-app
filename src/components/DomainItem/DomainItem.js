@@ -25,7 +25,7 @@ const Container = styled.div`
   background-color: white;
   border-radius: 20px;
   box-shadow: 3px 4px 20px 0 rgba(144, 171, 191, 0.42);
-  padding: ${p => (p.hasInvalidCharacter ? '20' : '0')}px;
+  padding: ${(p) => (p.hasInvalidCharacter ? '20' : '0')}px;
   padding-left: 0px;
 `
 
@@ -96,7 +96,7 @@ const DomainName = styled('div')`
 
   `}
 
-  color: ${p => {
+  color: ${(p) => {
     switch (p.state) {
       case 'Yours':
       case 'Owned':
@@ -179,7 +179,7 @@ const Domain = ({
   checkedBoxes = {},
   setCheckedBoxes,
   setSelectAll,
-  hasInvalidCharacter
+  hasInvalidCharacter,
 }) => {
   const mediumBP = useMediaMax('medium')
   if (loading) {
@@ -209,9 +209,9 @@ const Domain = ({
     >
       {hasInvalidCharacter && (
         <WarningContainer>
-          <WarningImg src={warningImage} onClick={e => e.preventDefault()} />
+          <WarningImg src={warningImage} onClick={(e) => e.preventDefault()} />
           <span>
-            <span onClick={e => e.preventDefault()}>
+            <span onClick={(e) => e.preventDefault()}>
               This name is invalid.{' '}
             </span>
             <a href="https://docs.ens.domains/frequently-asked-questions#what-about-foreign-characters-what-about-upper-case-letters-is-any-unicode-character-valid">
@@ -221,7 +221,7 @@ const Domain = ({
         </WarningContainer>
       )}
       <DomainContainer
-        to={`/name/${domain.name}`}
+        to={`/app/name/${domain.name}`}
         className={className}
         percentDone={percentDone}
         data-testid={`domain-${domain.name}`}
@@ -244,13 +244,13 @@ const Domain = ({
                 <Checkbox
                   testid={`checkbox-${domain.name}`}
                   checked={checkedBoxes[domain.name]}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault()
                     setCheckedBoxes &&
-                      setCheckedBoxes(prevState => {
+                      setCheckedBoxes((prevState) => {
                         return {
                           ...prevState,
-                          [domain.name]: !prevState[domain.name]
+                          [domain.name]: !prevState[domain.name],
                         }
                       })
                     if (checkedBoxes[domain.name]) {

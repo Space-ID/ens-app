@@ -211,7 +211,7 @@ export default function ReferralPage() {
                     )}
                     {disabled ? (
                       <Link
-                        to="/profile"
+                        to="/app/profile"
                         className="text-green-600 cursor-pointer font-semibold"
                       >
                         Back to account page ↗{' '}

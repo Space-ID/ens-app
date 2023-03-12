@@ -18,6 +18,10 @@ body {
     #020d17 100%
   );
 }
+:root {
+  --swiper-pagination-color: #1eefa4;
+  --swiper-pagination-bullet-inactive-color: rgba(204, 252, 255, 0.2);
+}
 
 /* width */
 ::-webkit-scrollbar {
@@ -232,4 +236,29 @@ input[type='number'] {
   @apply outline-none;
   @apply text-base;
   @apply placeholder-gray-800;
+}
+.landing-bg {
+  background-color: rgb(3, 13, 23);
+  background-image: url('./assets/images/bnb_bg.png');
+}
+.landing-linear-secondary {
+  background: linear-gradient(180deg, #1eefa4 19.06%, #19c084 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.landing-linear-big {
+  background: linear-gradient(270deg, #1eefa4 -2.16%, #009acb 99.83%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.landing-title {
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(180deg, #1eefa4 52.17%, #19c084 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

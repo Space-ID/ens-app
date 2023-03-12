@@ -211,7 +211,7 @@ export default ({ children }) => {
   const selectDomain = async (domain, index) => {
     dispatch(setSelectedDomain(domain))
     if (windowDimenion.winWidth < 768) {
-      history.push('/profile')
+      history.push('/app/profile')
       setIsMenuOpen(false)
     }
   }
@@ -221,10 +221,10 @@ export default ({ children }) => {
   }
 
   const moveToProfile = () => {
-    history.push('/profile')
+    history.push('/app/profile')
   }
   const moveToReferral = () => {
-    history.push('/referral')
+    history.push('/app/referral')
   }
 
   const showDrawer = () => {

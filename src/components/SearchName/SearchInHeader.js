@@ -34,9 +34,9 @@ function Search({
     setShowPopup(false)
     if (result.Owner) {
       dispatch(setSelectedDomain({ ...result, expires: result.Expires }))
-      history.push(`/profile`)
+      history.push(`/app/profile`)
     } else {
-      history.push(`/name/${result.name}.bnb/register`)
+      history.push(`/app/name/${result.name}.bnb/register`)
     }
     onSubmit()
   }

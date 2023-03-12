@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { validateName } from '@siddomains/sidjs/dist/utils'
 import { CrossIcon } from 'components/Icons'
 
+const LandingPage = lazy(() => import('./routes/LandingPage'))
 const Home = lazy(() => import('./routes/Home'))
 const SingleName = lazy(() => import('./routes/SingleName'))
 const Profile = lazy(() => import('./routes/Profile'))
@@ -107,21 +108,22 @@ const App = () => {
       )}
 
       <Switch>
-        <Route exact path="/" component={Home} layout={HomePageLayout} />
+        <DefaultRoute exact path="/" component={LandingPage} />
+        <Route exact path="/app" component={Home} layout={HomePageLayout} />
         <Route
           exact
-          path="/profile"
+          path="/app/profile"
           component={Profile}
           layout={HomePageLayout}
         />
         <Route
-          path="/name/:name"
+          path="/app/name/:name"
           component={SingleName}
           layout={HomePageLayout}
         />
         <Route
           exact
-          path="/referral"
+          path="/app/referral"
           component={Referral}
           layout={HomePageLayout}
         />
