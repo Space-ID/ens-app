@@ -41,14 +41,14 @@ function getDetailsActive(domain, pathname, tab) {
   const { name } = domain
   if (domain.parent !== 'eth') {
     return (
-      pathname !== `/name/${name}/register` &&
-      pathname !== `/name/${name}/subdomains`
+      pathname !== `/app/name/${name}/register` &&
+      pathname !== `/app/name/${name}/subdomains`
     )
   } else {
     return (
-      (tab === 'details' || pathname === `/name/${name}/details`) &&
-      (pathname !== `/name/${name}/register` &&
-        pathname !== `/name/${name}/subdomains`)
+      (tab === 'details' || pathname === `/app/name/${name}/details`) &&
+      pathname !== `/app/name/${name}/register` &&
+      pathname !== `/app/name/${name}/subdomains`
     )
   }
 }
@@ -61,11 +61,12 @@ const Tabs = ({ domain, pathname, parent, tab }) => {
         {parent === 'bnb' && (
           <TabLink
             active={
-              (tab === 'register' || pathname === `/name/${name}/register`) &&
-              (pathname !== `/name/${name}/details` &&
-                pathname !== `/name/${name}/subdomains`)
+              (tab === 'register' ||
+                pathname === `/app/name/${name}/register`) &&
+              pathname !== `/app/name/${name}/details` &&
+              pathname !== `/app/name/${name}/subdomains`
             }
-            to={`/name/${name}/register`}
+            to={`/app/name/${name}/register`}
           >
             {t('singleName.tabs.register')}
           </TabLink>
@@ -73,13 +74,13 @@ const Tabs = ({ domain, pathname, parent, tab }) => {
 
         <TabLink
           active={getDetailsActive(domain, pathname, tab)}
-          to={`/name/${name}/details`}
+          to={`/app/name/${name}/details`}
         >
           {t('singleName.tabs.details')}
         </TabLink>
         <TabLink
-          active={pathname === `/name/${name}/subdomains`}
-          to={`/name/${name}/subdomains`}
+          active={pathname === `/app/name/${name}/subdomains`}
+          to={`/app/name/${name}/subdomains`}
         >
           {t('singleName.tabs.subdomains')}
         </TabLink>

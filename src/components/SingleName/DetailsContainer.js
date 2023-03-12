@@ -14,7 +14,7 @@ import {
   RENEW,
   SET_OWNER,
   SET_REGISTRANT,
-  SET_SUBNODE_OWNER
+  SET_SUBNODE_OWNER,
 } from '../../graphql/mutations'
 import { SingleNameBlockies } from '../Blockies'
 import You from '../Icons/You'
@@ -64,7 +64,7 @@ const ButtonContainer = styled('div')`
 `
 
 const ExpirationDetailsValue = styled(DetailsValue)`
-  color: ${p => (p.isExpired ? 'red' : null)};
+  color: ${(p) => (p.isExpired ? 'red' : null)};
 `
 
 const AddressLink = styled(DefaultAddressLink)`
@@ -106,7 +106,7 @@ const EtherScanLinkContainer = styled('span')`
 `
 
 const LinkToLearnMore = styled('a')`
-  margin-right: ${props => (props.outOfSync ? '' : '')};
+  margin-right: ${(props) => (props.outOfSync ? '' : '')};
   font-size: 14px;
   letter-spacing: 0.58px;
   text-align: center;
@@ -126,24 +126,24 @@ const DNSOwnerError = styled('span')`
 `
 
 const OwnerFields = styled('div')`
-  background: ${props => (props.outOfSync ? '#fef7e9' : '')};
-  padding: ${props => (props.outOfSync ? '1.5em' : '0')};
-  margin-bottom: ${props => (props.outOfSync ? '1.5em' : '0')};
+  background: ${(props) => (props.outOfSync ? '#fef7e9' : '')};
+  padding: ${(props) => (props.outOfSync ? '1.5em' : '0')};
+  margin-bottom: ${(props) => (props.outOfSync ? '1.5em' : '0')};
 `
 
 const DomainOwnerAddress = styled('span')`
-  color: ${props => (props.outOfSync ? '#CACACA' : '')};
+  color: ${(props) => (props.outOfSync ? '#CACACA' : '')};
 `
 
 const GracePeriodWarningContainer = styled('div')`
   font-family: 'Urbanist';
-  background: ${p => (p.isExpired ? '#ff926f' : '#fef7e9')};
+  background: ${(p) => (p.isExpired ? '#ff926f' : '#fef7e9')};
   padding: 10px 20px;
   margin: 5px 0px;
 `
 
 const GracePeriodText = styled('span')`
-  color: ${p => (p.isExpired ? 'white' : '#cacaca')};
+  color: ${(p) => (p.isExpired ? 'white' : '#cacaca')};
   margin-left: 0.5em;
 `
 
@@ -152,7 +152,7 @@ const GracePeriodDate = styled('span')`
 `
 
 const Expiration = styled('span')`
-  color: ${p => (p.isExpired ? 'white' : '#f5a623')};
+  color: ${(p) => (p.isExpired ? 'white' : '#f5a623')};
   font-weight: bold;
 `
 
@@ -197,7 +197,7 @@ function DetailsContainer({
   loadingIsMigrated,
   refetchIsMigrated,
   isParentMigratedToNewRegistry,
-  loadingIsParentMigrated
+  loadingIsParentMigrated,
 }) {
   const { t } = useTranslation()
   const isExpired = domain.expiryTime < new Date()
@@ -235,7 +235,7 @@ function DetailsContainer({
         <DetailsItem uneditable>
           <DetailsKey>{t('c.parent')}</DetailsKey>
           <DetailsValue>
-            <Link to={`/name/${domainParent}`} aria-label={t('c.parent')}>
+            <Link to={`/app/name/${domainParent}`} aria-label={t('c.parent')}>
               {domainParent}
             </Link>
           </DetailsValue>
@@ -436,10 +436,10 @@ function DetailsContainer({
                     onClick={() => {
                       setLoading(true)
                       refetch()
-                        .then(dd => {
+                        .then((dd) => {
                           setLoading(false)
                         })
-                        .catch(err => {
+                        .catch((err) => {
                           console.log('failed to refetch', err)
                         })
                     }}

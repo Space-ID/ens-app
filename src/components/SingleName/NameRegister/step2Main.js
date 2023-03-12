@@ -14,7 +14,7 @@ const Step2Main = ({ onRegister, state, onRetry, domain }) => {
   }
   const handleMange = () => {
     dispatch(setSelectedDomain({ name: domain.label }))
-    history.push('/profile')
+    history.push('/app/profile')
   }
   return (
     <div className="flex flex-col items-center font-semibold text-white">
