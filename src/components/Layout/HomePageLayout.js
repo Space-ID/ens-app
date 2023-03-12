@@ -397,14 +397,15 @@ export default ({ children }) => {
               {!isSafeApp && (
                 <div className="flex items-center w-full mt-0 md:w-auto">
                   {/* //TODO should show in the public registration */}
-                  {location.pathname !== '/' && (
-                    <Search
-                      className="mr-4 xl:w-[400px] hidden md:block"
-                      errorShowing={true}
-                      isShowSearchBtn={true}
-                      errorsStyling={true}
-                    />
-                  )}
+                  {location.pathname !== '/' &&
+                    location.pathname !== '/app' && (
+                      <Search
+                        className="mr-4 xl:w-[400px] hidden md:block"
+                        errorShowing={true}
+                        isShowSearchBtn={true}
+                        errorsStyling={true}
+                      />
+                    )}
 
                   {isReadOnly && (
                     <div className="hidden md:block">

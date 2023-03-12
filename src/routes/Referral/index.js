@@ -122,7 +122,7 @@ export default function ReferralPage() {
     } else {
       setDisabled(false)
       setInviteUrl(
-        `https://${window.location.host}?inviter=${primaryDomain?.name}.bnb`
+        `https://${window.location.host}/app?inviter=${primaryDomain?.name}.bnb`
       )
     }
   }, [referralOpt.key, primaryDomain])
