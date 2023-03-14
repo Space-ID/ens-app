@@ -122,7 +122,7 @@ export default function ReferralPage() {
     } else {
       setDisabled(false)
       setInviteUrl(
-        `https://${window.location.host}?inviter=${primaryDomain?.name}.bnb`
+        `https://${window.location.host}/app?inviter=${primaryDomain?.name}.bnb`
       )
     }
   }, [referralOpt.key, primaryDomain])
@@ -211,7 +211,7 @@ export default function ReferralPage() {
                     )}
                     {disabled ? (
                       <Link
-                        to="/profile"
+                        to="/app/profile"
                         className="text-green-600 cursor-pointer font-semibold"
                       >
                         Back to account page ↗{' '}

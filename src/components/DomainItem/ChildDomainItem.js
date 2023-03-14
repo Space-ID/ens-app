@@ -198,7 +198,7 @@ export default function ChildDomainItem({
             warning={isMigrated === false ? true : false}
             isInvalid={hasInvalidCharacter}
             key={name}
-            to={`/name/${name}`}
+            to={`/app/name/${name}`}
           >
             {showBlockies && smallBP && (
               <SingleNameBlockies imageSize={24} address={owner} />
