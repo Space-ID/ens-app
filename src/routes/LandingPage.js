@@ -24,7 +24,7 @@ const footerLinks = [
     subs: [
       // { href: '#', text: 'About Us' },
       { href: '/app', text: '.bnb Name Service' },
-      { href: 'https://app.space.id/', text: 'Registration' },
+      { href: 'https://bnb.space.id/app', text: 'Registration' },
     ],
   },
   {
