@@ -7,18 +7,11 @@ const TrackingID = {
 }
 
 function isProduction() {
-  return window.location.host === 'app.space.id'
+  return process.env.REACT_APP_MODE === 'production'
 }
 
 function isDev() {
-  console.log(
-    "window.location.host === 'localhost:3000'",
-    window.location.host === 'localhost:3000'
-  )
-  return (
-    window.location.host === 'app.stg.space.id' ||
-    window.location.host === 'localhost:3000'
-  )
+  return process.env.REACT_APP_MODE !== 'production'
 }
 
 async function isMainnet() {
