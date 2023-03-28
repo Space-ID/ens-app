@@ -113,7 +113,7 @@ function ReferralQrModal(props) {
               disabled={!qrRef.current || !qrCode}
             >
               <DownloadIcon className="mr-1" />
-              Downlaod Image
+              Download Image
             </button>
           )}
           {mobile && (

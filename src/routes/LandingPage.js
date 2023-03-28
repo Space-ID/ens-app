@@ -192,19 +192,19 @@ const LandingPageHeader = () => {
                   </li>
                 </ul>
               </div>
-              <Link
-                to="/app"
+              <a
+                href="https://space.id/tld/bnb"
                 className="btn btn-primary items-center justify-center w-[140px] !min-h-[40px] rounded-2xl border-none font-bold !text-lg !text-black !hover:text-black !active:text-black !focus:text-black"
               >
-                App
-              </Link>
+                Get .bnb
+              </a>
             </div>
-            <Link
-              to="/app"
+            <a
+              href="https://space.id/tld/bnb"
               className="md:hidden btn btn-primary items-center justify-center w-[75px] !min-h-[40px] rounded-2xl border-none font-bold !text-lg !text-black !hover:text-black !active:text-black !focus:text-black"
             >
-              App
-            </Link>
+              Get .bnb
+            </a>
           </div>
         </div>
       </div>

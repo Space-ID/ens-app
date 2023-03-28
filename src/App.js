@@ -109,24 +109,24 @@ const App = () => {
 
       <Switch>
         <DefaultRoute exact path="/" component={LandingPage} />
-        <Route exact path="/app" component={Home} layout={HomePageLayout} />
-        <Route
-          exact
-          path="/app/profile"
-          component={Profile}
-          layout={HomePageLayout}
-        />
-        <Route
-          path="/app/name/:name"
-          component={SingleName}
-          layout={HomePageLayout}
-        />
-        <Route
-          exact
-          path="/app/referral"
-          component={Referral}
-          layout={HomePageLayout}
-        />
+        {/*<Route exact path="/app" component={Home} layout={HomePageLayout} />*/}
+        {/*<Route*/}
+        {/*  exact*/}
+        {/*  path="/app/profile"*/}
+        {/*  component={Profile}*/}
+        {/*  layout={HomePageLayout}*/}
+        {/*/>*/}
+        {/*<Route*/}
+        {/*  path="/app/name/:name"*/}
+        {/*  component={SingleName}*/}
+        {/*  layout={HomePageLayout}*/}
+        {/*/>*/}
+        {/*<Route*/}
+        {/*  exact*/}
+        {/*  path="/app/referral"*/}
+        {/*  component={Referral}*/}
+        {/*  layout={HomePageLayout}*/}
+        {/*/>*/}
         <Route path="*" component={Error404} layout={null} />
       </Switch>
       <ToastContainer />
