@@ -47,7 +47,7 @@ const App = () => {
   const account = useAccount()
   const accountRef = useRef(account)
   const dispatch = useDispatch()
-  const [showAlert, setShowAlert] = useState(true)
+  const [showAlert, setShowAlert] = useState(false)
   useEffect(() => {
     if (
       accountRef.current &&
