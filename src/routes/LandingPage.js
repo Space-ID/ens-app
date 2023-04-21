@@ -470,8 +470,8 @@ const LandingPage = () => {
               <div className="landing-linear-big font-bold xl:text-[40px] lg:text-[36px] lg:leading-[56px] md:text-[28px] md:leading-[40px] text-[20px] leading-[28px] text-center">
                 Register .bnb Domain
               </div>
-              <Link
-                to="/app"
+              <a
+                href="https://space.id/tld/bnb"
                 className="mt-6 md:h-[72px] h-[52px] xl:w-[450px] lg:w-[405px] md:w-[300px] w-full max-w-80 flex items-center justify-center backdrop-blur-sm md:rounded-[28px] rounded-[20px] font-bold cursor-pointer text-[20px] leading-[28px] md:text-[28px] md:leading-[40px] text-black "
                 style={{
                   backgroundImage:
@@ -479,7 +479,7 @@ const LandingPage = () => {
                 }}
               >
                 Launch App
-              </Link>
+              </a>
             </div>
           </div>
         </div>
