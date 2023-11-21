@@ -193,14 +193,14 @@ const LandingPageHeader = () => {
                 </ul>
               </div>
               <a
-                href="https://space.id/tld/bnb"
+                href="https://space.id/tld/1"
                 className="btn btn-primary items-center justify-center w-[140px] !min-h-[40px] rounded-2xl border-none font-bold !text-lg !text-black !hover:text-black !active:text-black !focus:text-black"
               >
                 Get .bnb
               </a>
             </div>
             <a
-              href="https://space.id/tld/bnb"
+              href="https://space.id/tld/1"
               className="md:hidden btn btn-primary items-center justify-center w-[75px] !min-h-[40px] rounded-2xl border-none font-bold !text-lg !text-black !hover:text-black !active:text-black !focus:text-black"
             >
               Get .bnb
