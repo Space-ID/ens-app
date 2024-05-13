@@ -23,3 +23,5 @@ export const GiftCardFaceIds = Object.values(GiftCards).map((v) => v.id)
 export const GiftCardFaceValues = Object.values(GiftCards).map(
   (v) => v.faceValue
 )
+
+export const BNB_TLD_LINK = 'https://space.id/tld/1'

@@ -17,14 +17,15 @@ import bnbBanner from 'assets/images/bnb_banner.png'
 import bnbDesc from 'assets/images/bnb_desc.png'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import { BNB_TLD_LINK } from '../constants'
 
 const footerLinks = [
   {
     title: 'Get Started',
     subs: [
       // { href: '#', text: 'About Us' },
-      { href: '/app', text: '.bnb Name Service' },
-      { href: 'https://bnb.space.id/app', text: 'Registration' },
+      { href: BNB_TLD_LINK, text: '.bnb Name Service' },
+      { href: BNB_TLD_LINK, text: 'Registration' },
     ],
   },
   {
@@ -193,14 +194,14 @@ const LandingPageHeader = () => {
                 </ul>
               </div>
               <a
-                href="https://space.id/tld/1"
+                href={BNB_TLD_LINK}
                 className="btn btn-primary items-center justify-center w-[140px] !min-h-[40px] rounded-2xl border-none font-bold !text-lg !text-black !hover:text-black !active:text-black !focus:text-black"
               >
                 Get .bnb
               </a>
             </div>
             <a
-              href="https://space.id/tld/1"
+              href={BNB_TLD_LINK}
               className="md:hidden btn btn-primary items-center justify-center w-[75px] !min-h-[40px] rounded-2xl border-none font-bold !text-lg !text-black !hover:text-black !active:text-black !focus:text-black"
             >
               Get .bnb
@@ -471,7 +472,7 @@ const LandingPage = () => {
                 Register .bnb Domain
               </div>
               <a
-                href="https://space.id/tld/bnb"
+                href={BNB_TLD_LINK}
                 className="mt-6 md:h-[72px] h-[52px] xl:w-[450px] lg:w-[405px] md:w-[300px] w-full max-w-80 flex items-center justify-center backdrop-blur-sm md:rounded-[28px] rounded-[20px] font-bold cursor-pointer text-[20px] leading-[28px] md:text-[28px] md:leading-[40px] text-black "
                 style={{
                   backgroundImage:
