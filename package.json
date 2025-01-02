@@ -13,7 +13,6 @@
     "@radix-ui/react-tooltip": "^1.0.2",
     "@reduxjs/toolkit": "^1.8.1",
     "@tailwindcss/line-clamp": "^0.4.2",
-    "authereum": "^0.1.0",
     "chroma-js": "^2.4.2",
     "classnames": "^2.3.1",
     "core-js": "^3.1.4",
