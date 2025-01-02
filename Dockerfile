@@ -64,7 +64,7 @@ RUN mkdir /app
 
 COPY ./nginx.conf /etc/nginx/
 COPY ./default.conf /etc/nginx/conf.d/default.conf
-COPY ./ /app/
+COPY ./build /app/
 
 # Expose ports
 EXPOSE 8080
