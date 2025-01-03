@@ -15,18 +15,96 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'
       - run: yarn install
       - run: yarn run build
 
-      - name: Deploy
-        uses: reggionick/s3-deploy@v3
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          folder: 'build'
-          bucket: 'prd-app-space-id'
-          bucket-region: 'us-west-2'
-          dist-id: 'E2WEVVPV40MG9V'
-          invalidation: /
-          delete-removed: true
-          no-cache: false
-          private: true
+          aws-access-key-id: ${{ secrets.ECR_DEPLOYER_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_DEPLOYER_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: sid-app
+          IMAGE_TAG_0: ${{ github.sha }}
+          IMAGE_TAG_1: sha-${{ steps.slug.outputs.sha7 }}
+        run: |
+          docker build --build-arg LICENSE_KEY=${{ secrets.LICENSE_KEY }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_0 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_1 .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
+
+      - id: auth
+        name: 'GCP Auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          token_format: 'access_token'
+          credentials_json: ${{ secrets.GCS_INTERNAL_ARTIFACTS_SA_JSON }}
+
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v2
+        with:
+          registry: us-west1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - name: Build, tag, and push image to GCP Artifact Repository
+        env:
+          GAR_REGISTRY: us-west1-docker.pkg.dev/spaceid-internal-artifacts/spaceid-app
+          GAR_REPOSITORY: sid-app
+          IMAGE_TAG_0: ${{ github.sha }}
+          IMAGE_TAG_1: sha-${{ steps.slug.outputs.sha7 }}
+        run: |
+          docker build --build-arg LICENSE_KEY=${{ secrets.LICENSE_KEY }} -f Dockerfile -t $GAR_REGISTRY/$GAR_REPOSITORY:$IMAGE_TAG_0 -t $GAR_REGISTRY/$GAR_REPOSITORY:$IMAGE_TAG_1 .
+          docker push $GAR_REGISTRY/$GAR_REPOSITORY --all-tags
+
+  deploy:
+    name: Deploy with GitOps
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    env:
+      GITOPS_REPO: Space-ID/spaceid-infra-bootstrap
+
+    steps:
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
+
+      - name: Checkout Gitops code
+        # https://github.com/actions/checkout/issues/417
+        uses: actions/checkout@v2.3.3
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          fetch-depth: 1 # use 0 if later pushing to different branch
+          token: ${{ secrets.INFRA_GITOPS }}
+
+      - name: Update prd image tag - Mainnet
+        uses: docker://ryanlime/kyriosctl:latest
+        with:
+          args: gitops updateTag -t sha-${{ steps.slug.outputs.sha7 }} -d app/prd/sid-app
+
+      - name: Commit files - Mainnet
+        run: |
+          git config --local user.email "spaceid-bot@users.noreply.github.com"
+          git config --local user.name "SpaceID Bot"
+          git commit -a -m "[release][prd][sid-app] ${{ steps.slug.outputs.sha7 }}" -m "https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          branch: main
+          github_token: ${{ secrets.INFRA_GITOPS }}
