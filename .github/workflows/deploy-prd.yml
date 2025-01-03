@@ -2,7 +2,7 @@ name: Space ID App S3 Deploy - Production
 
 on:
   push:
-    branches: [master, feat-gcp]
+    branches: [master]
 
 jobs:
   build-and-deploy:
